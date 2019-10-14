@@ -1,0 +1,95 @@
+$fff:#fff;
+$theme:#C9A965;
+//卡片尺寸
+$index_card:14px;
+// 背景图片地址和大小
+@mixin bis($url) { 
+	background-image: url($url);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+//定义边角
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+//定位全屏
+@mixin allcover{
+	position:absolute;
+	top:0;
+	right:0;
+}
+// flex上下左右居中
+@mixin centerMiddel {  
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+//定位上下左右居中
+@mixin center {  
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {  
+	position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+}
+
+//定位左右居中
+@mixin cl {  
+	position: absolute;
+	left: 50%;
+    transform: translateX(-50%);
+}
+@mixin circle {
+	border-radius: 50%;
+	overflow: hidden;
+}
+//宽高
+@mixin wh($width, $height){
+	width: $width;
+	height: $height;
+}
+
+//字体大小、行高、字体
+@mixin font($size, $line-height, $family: 'Microsoft YaHei') {  
+	font: #{$size}/#{$line-height} $family;
+}
+
+//字体大小，颜色
+@mixin sc($size, $color){
+	font-size: $size;
+	color: $color;
+}
+
+//flex 布局和 子元素 对其方式
+@mixin fja($type_one: center,$type_two:center){
+	display: flex;
+	justify-content: $type_one;
+	align-items: $type_two;
+}
+
+@mixin mh($num: 1){
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp:$num;
+    -webkit-box-orient: vertical;
+  }
+//边框
+%border{
+	border:1px solid #666;
+	padding:10px;
+}
+
+//清除浮动
+%clearfix:after{content:"";display:block;height:0;clear:both;visibility:hidden}
+
+@keyframes btn-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}

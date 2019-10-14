@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "permission": {},
+  "usingComponents": {
+    "i-load-more": "/wxcomponents/load-more/index",
+    "van-button": "/wxcomponents/vant/button/index",
+    "page-head": "/components/page-head"
+  }
+}
