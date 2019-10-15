@@ -1,0 +1,1 @@
+<view><button type="primary" data-event-opts="{{[['tap',[['refresh',['$event']]]]]}}" bindtap="__e">刷新</button></view>
