@@ -1,7 +1,8 @@
 {
   "pages": [
     "pages/index/index/index",
-    "pages/me/me/me"
+    "pages/me/me/me",
+    "mycomponents/Pic/Pic"
   ],
   "subPackages": [],
   "window": {
@@ -34,7 +35,6 @@
   "usingComponents": {
     "i-load-more": "/wxcomponents/load-more/index",
     "van-button": "/wxcomponents/vant/button/index",
-    "page-head": "/components/page-head"
-  },
-  "sitemapLocation": "sitemap1.json"
+    "pic": "/mycomponents/Pic/Pic"
+  }
 }

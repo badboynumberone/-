@@ -5,7 +5,9 @@
 			<swiper class="swiper"  :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500"
 			 :circular="true">
 				<swiper-item v-for="(item,index) in images" :key="index">
-					<view class="swiper-item" @click="navigateTo" :data-url="'/pages/me/me/me'"><image lazy-load="true" @load="loadImg('imgLoadedcount')" mode="widthFix" class='fill' :src="item"></image></view>
+					<view class="swiper-item" @click="navigateTo" :data-url="'/pages/me/me/me'">
+						<Pic :src="item"></Pic>
+					</view>
 				</swiper-item>
 			</swiper>
 			<button class="login_button frm bn show"  open-type="getUserInfo" @getuserinfo="getUserInfo">

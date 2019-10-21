@@ -31,8 +31,8 @@ Vue.prototype.$tools = Tools
 /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/
 
 //头部导航条
-import pageHead from './components/page-head.vue'
-Vue.component('page-head', pageHead)
+import Pic from './mycomponents/Pic/Pic.vue'
+Vue.component('Pic', Pic)
 
 
 

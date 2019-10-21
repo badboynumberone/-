@@ -12,6 +12,10 @@
 				"navigationBarTitleText": "我的"
 			}
         }
+        ,{
+            "path" : "mycomponents/Pic/Pic",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
