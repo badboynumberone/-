@@ -1,6 +1,6 @@
 <template>
 	<view :style="{width:width,height:height}">
-		<image class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true"></image>
+		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true"></image>
 	</view>
 </template>
 

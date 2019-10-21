@@ -1,1 +1,1 @@
-<view style="{{'width:'+(width)+';'+('height:'+(height)+';')}}"><image class="fill" src="{{src}}" mode="{{mode}}" lazy-load="{{true}}" data-event-opts="{{[['load',[['imgLoad',['$event']]]]]}}" bindload="__e"></image></view>
+<view style="{{'width:'+(width)+';'+('height:'+(height)+';')}}"><image hidden="{{!(imgLoaded>0)}}" class="fill" src="{{src}}" mode="{{mode}}" lazy-load="{{true}}" data-event-opts="{{[['load',[['imgLoad',['$event']]]]]}}" bindload="__e"></image></view>
