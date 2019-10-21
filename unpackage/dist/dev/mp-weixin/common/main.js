@@ -26,22 +26,22 @@ var _index = _interopRequireDefault(__webpack_require__(/*! ./store/index.js */ 
 
 
 
-var _request = _interopRequireDefault(__webpack_require__(/*! ./utils/request.js */ 20));
+var _request = _interopRequireDefault(__webpack_require__(/*! ./utils/request.js */ 17));
 
 
 
-var _uploadImg = _interopRequireDefault(__webpack_require__(/*! ./utils/uploadImg.js */ 22));
+var _uploadImg = _interopRequireDefault(__webpack_require__(/*! ./utils/uploadImg.js */ 19));
 
 
 
-var _tools = _interopRequireDefault(__webpack_require__(/*! ./utils/tools.js */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}_vue.default.config.productionTip = false;_App.default.mpType = 'app';var app = new _vue.default(_objectSpread({}, _App.default));createApp(app).$mount(); /* ------------------------------------------------------------------------挂载常用工具-----------------------------------------------------------------*/ //挂载本地存储
+var _tools = _interopRequireDefault(__webpack_require__(/*! ./utils/tools.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}_vue.default.config.productionTip = false;_App.default.mpType = 'app';var app = new _vue.default(_objectSpread({}, _App.default));createApp(app).$mount(); /* ------------------------------------------------------------------------挂载常用工具-----------------------------------------------------------------*/ //挂载本地存储
 _vue.default.prototype.$store = _index.default; //挂载请求
-_vue.default.prototype.$sendRequest = _request.default; //挂载上传图片的请求
+_vue.default.prototype.$net = _request.default; //挂载上传图片的请求
 _vue.default.prototype.$uploadFile = _uploadImg.default; //常用工具
 _vue.default.prototype.$tools = _tools.default; /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/
 
 //头部导航条
-var pageHead = function pageHead() {return __webpack_require__.e(/*! import() | components/page-head */ "components/page-head").then(__webpack_require__.bind(null, /*! ./components/page-head.vue */ 30));};
+var pageHead = function pageHead() {return __webpack_require__.e(/*! import() | components/page-head */ "components/page-head").then(__webpack_require__.bind(null, /*! ./components/page-head.vue */ 38));};
 _vue.default.component('page-head', pageHead);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
 
@@ -119,6 +119,7 @@ __webpack_require__.r(__webpack_exports__);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
   onLaunch: function onLaunch() {
+    uni.setStorageSync("accessToken", "asdsafsasf");
     uni.getSystemInfo({
       success: function success(e) {
 
@@ -143,6 +144,7 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _i
 
   },
   onShow: function onShow() {
+
     console.log('App Show');
   },
   onHide: function onHide() {

@@ -1,7 +1,4 @@
-$fff:#fff;
 $theme:#C9A965;
-//卡片尺寸
-$index_card:14px;
 // 背景图片地址和大小
 @mixin bis($url) { 
 	background-image: url($url);
@@ -9,12 +6,14 @@ $index_card:14px;
 	background-size: 100% 100%;
 }
 //定义边角
-@mixin borderRadius($radius) {
-    -webkit-border-radius: $radius;
-    -moz-border-radius: $radius;
-    -ms-border-radius: $radius;
-    -o-border-radius: $radius;
-    border-radius: $radius;
+@mixin borderRadius($r) {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+	width: $r;
+	height: $r;
 }
 //定位全屏
 @mixin allcover{
@@ -75,6 +74,18 @@ $index_card:14px;
 	display: flex;
 	justify-content: $type_one;
 	align-items: $type_two;
+}
+
+@mixin position_right($top, $right){
+   position: absolute;
+   top : $top;
+   right : $right;
+}
+
+@mixin position_left($top, $left){
+   position: absolute;
+   top : $top;
+   left : $left;
 }
 
 @mixin mh($num: 1){

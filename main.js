@@ -17,7 +17,7 @@ Vue.prototype.$store = Store
 
 //挂载请求
 import Request from './utils/request.js'
-Vue.prototype.$sendRequest = Request
+Vue.prototype.$net = Request
 
 //挂载上传图片的请求
 import UploadFile from './utils/uploadImg.js'

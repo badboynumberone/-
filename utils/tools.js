@@ -27,9 +27,19 @@ function Toast(title,icon="none",duration=1500){
     })
 }
 
+//加载中...
+function showLoading(title){
+	wx.showLoading({
+		title,
+		mask:true
+	})
+}
+
+
 export default {
 	navigateTo,
 	redirectTo,
 	switchTab,
-	Toast
+	Toast,
+	showLoading
 }

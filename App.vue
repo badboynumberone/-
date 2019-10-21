@@ -2,6 +2,7 @@
 	import Vue from 'vue'
 	export default {
 		onLaunch: function() {
+			uni.setStorageSync("accessToken","asdsafsasf");
 			uni.getSystemInfo({
 				success: function(e) {
 					// #ifndef MP
@@ -26,6 +27,7 @@
 			})
 		},
 		onShow: function() {
+			
 			console.log('App Show')
 		},
 		onHide: function() {
@@ -36,4 +38,5 @@
 
 <style lang="scss">
 	@import './common/uni.css';
+	@import 'static/styles/common.scss';
 </style>

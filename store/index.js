@@ -6,13 +6,13 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
-		loginProvider: "",
-		openid: null
+		username: "",//用户名
+		openid: null //用户id
 	},
 	mutations: {
-		login(state, provider) {
+		login(state, username) {
 			state.hasLogin = true;
-			state.loginProvider = provider;
+			state.username = username;
 		},
 		logout(state) {
 			state.hasLogin = false
@@ -24,31 +24,20 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		// lazy loading openid
-		getUserOpenId: async function ({
-			commit,
-			state
-		}) {
-			return await new Promise((resolve, reject) => {
-				if (state.openid) {
-					resolve(state.openid)
-				} else {
-					uni.login({
-						success: (data) => {
-							commit('login')
-							setTimeout(function () { //模拟异步请求服务器获取 openid
-								const openid = '123456789'
-								console.log('uni.request mock openid[' + openid + ']');
-								commit('setOpenid', openid)
-								resolve(openid)
-							}, 1000)
-						},
-						fail: (err) => {
-							console.log('uni.login 接口调用失败，将无法正常使用开放接口等服务', err)
-							reject(err)
-						}
-					})
-				}
-			})
+		loginIn: ({commit,state},userinfo={})=>{
+			console.log("登录用户信息:",userinfo)
+			//调用接口获取获取accessToken
+				
+				
+			//再进行登录后进行返回登录信息
+			const timer = setTimeout(()=>{
+				commit("login",userinfo.username);
+				uni.hideLoading();
+				console.log(state.username)
+				clearTimeout(timer)
+			},1000)
+			
+			
 		}
 	}
 })
