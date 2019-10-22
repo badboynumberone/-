@@ -1,5 +1,5 @@
 <template>
-	<view :style="{width:width,height:height}">
+	<view class="wrapper" :style="{width:width,height:height}">
 		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true"></image>
 	</view>
 </template>
@@ -36,5 +36,7 @@
 </script>
 
 <style lang="scss">
-
+	.wrapper{
+		background: #f1f1f1;
+	}
 </style>

@@ -11,8 +11,6 @@
 	"libVersion": "2.7.0",
 	"appid": "wxbd5334d32503ecd7",
 	"projectname": "App",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -22,13 +20,24 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
-			"list": []
+			"current": 0,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/me/address/address",
+					"pathName": "pages/me/address/address",
+					"scene": null
+				}
+			]
 		}
 	}
 }

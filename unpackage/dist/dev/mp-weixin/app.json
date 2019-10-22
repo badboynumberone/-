@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/index/index",
     "pages/me/me/me",
-    "mycomponents/Pic/Pic"
+    "pages/cate/cate/cate",
+    "pages/cart/cart/cart",
+    "pages/me/address/address"
   ],
   "subPackages": [],
   "window": {
@@ -13,7 +15,7 @@
   },
   "tabBar": {
     "color": "#7A7E83",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#38A472",
     "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
@@ -22,6 +24,18 @@
         "iconPath": "static/images/sywxz.png",
         "selectedIconPath": "static/images/syxz.png",
         "text": "首页"
+      },
+      {
+        "pagePath": "pages/cate/cate/cate",
+        "iconPath": "static/images/wdwxz.png",
+        "selectedIconPath": "static/images/wdxz.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/cart/cart/cart",
+        "iconPath": "static/images/wdwxz.png",
+        "selectedIconPath": "static/images/wdxz.png",
+        "text": "购物车"
       },
       {
         "pagePath": "pages/me/me/me",
@@ -33,7 +47,7 @@
   },
   "permission": {},
   "usingComponents": {
-    "i-load-more": "/wxcomponents/load-more/index",
+    "van-icon": "/wxcomponents/vant/icon/index",
     "van-button": "/wxcomponents/vant/button/index",
     "pic": "/mycomponents/Pic/Pic"
   }
