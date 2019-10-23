@@ -3,10 +3,10 @@
 		<!-- 搜索框 -->
 		<view class="searchTopBox">
 			<view class="searchBoxRadius">
-				<view class="grace-search-icon searchBoxIcon">
+				<view class="grace-search-icon searchBoxIcon" >
 					<van-icon name="search" :color="'#38A472'" />
 				</view>
-				<input class="searchBoxIpt" type="search"  placeholder="搜索商品" disabled></input>
+				<input class="searchBoxIpt" type="search" confirm-type="搜索" :value="searchValue"  placeholder="搜索商品" :disabled="isDisabled" maxlength="30" @input="bindValue" @confirm="confirmContent"></input>
 			</view>
 		</view>
 	</view>
@@ -14,13 +14,39 @@
 
 <script>
 	export default {
+		props:{
+			isDisabled:{
+				type:Boolean,
+				default:true
+			}
+		},
 		data() {
 			return {
-				
+				searchValue:""
 			}
 		},
 		methods: {
-			
+			//数据绑定
+			bindValue(e){
+				this.searchValue = e.detail.value;
+				if(!this.searchValue.length){
+					this.$parent.isHistory = true;
+				}
+			},
+			//搜索内容
+			confirmContent(){
+				if(!this.searchValue.length){
+					this.$tools.Toast("搜索内容不能为空哦!")
+					return;
+				}
+				const history = JSON.stringify([...new Set([...JSON.parse(wx.getStorageSync("searchHistory")),this.searchValue])]);
+				uni.setStorageSync("searchHistory",history);
+				
+				this.$parent.isHistory = false;
+				
+				this.$parent.getKey();
+				
+			},
 		}
 	}
 </script>
@@ -56,32 +82,8 @@
 		line-height: 60upx;
 		margin-left: 20upx;
 		float: left;
+		width: 550upx;
 	}
 	
-	.searchBotBox {
-		width: 100%;
-		margin-top: 30upx;
-		padding: 15upx 3%;
-		box-sizing: border-box;
-	}
 	
-	.searchHistoryBox {
-		width: 100%;
-		box-sizing: border-box;
-		overflow: hidden;
-		margin-top: 40upx;
-	}
-	
-	.searchHistoryBoxItem {
-		float: left;
-		font-size: 26upx;
-		color: #666;
-		line-height: 46upx;
-		height: 46upx;
-		padding: 0 20upx;
-		border-radius: 23upx;
-		margin-left: 15upx;
-		margin-bottom: 20upx;
-		border: 1px solid #ccc;
-	}
 </style>

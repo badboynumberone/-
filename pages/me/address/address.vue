@@ -4,11 +4,11 @@
 		<!-- 输入框 -->
 		<van-cell-group>
 			<van-field required label="姓名" maxlength="15" :value="name" placeholder="请输入姓名" clearable  @change="onChange" data-name="name" />
-			<van-field required type="number" maxlength="11" label="手机号" :value="phone" placeholder="请输入手机号" clearable  @change="onChange" data-name="phone" />
+			<van-field required type="number" maxlength="11" label="手机号" :value="phone" placeholder="请输入手机号码" clearable  @change="onChange" data-name="phone" />
 			<picker mode="region" @change="bindRegionChange" :value="area" >
-				<van-field required is-link label="地区" :value="area" placeholder="请选择地区"   data-name="area" readonly />
+				<van-field required is-link label="地区" :value="area" placeholder="请选择省市区"   data-name="area" readonly />
 			 </picker>
-			<van-field required type="textarea" autosize label="详细地址" maxlength="50"  :value="detail" placeholder="请输入详细地址" clearable  @change="onChange" data-name="detail" />
+			<van-field required type="textarea" autosize label="详细地址" maxlength="50"  :value="detail" placeholder="街道门牌,楼层房间号等信息" clearable  @change="onChange" data-name="detail" />
 		</van-cell-group>
 		
 		<!-- 保存按钮 -->

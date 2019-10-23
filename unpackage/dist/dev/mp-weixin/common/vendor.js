@@ -734,7 +734,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -6979,7 +6979,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7000,14 +7000,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7083,7 +7083,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8404,7 +8404,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index/index": { "navigationBarTitleText": "首页", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white", "backgroundColor": "#38A472", "usingComponents": { "ser": "/mycomponents/Ser/Ser", "bw-swiper": "/mycomponents/bw-swiper/bw-swiper" } }, "pages/me/me/me": { "navigationBarTitleText": "我的", "usingComponents": {} }, "pages/cate/cate/cate": { "navigationBarTitleText": "分类", "usingComponents": {} }, "pages/cart/cart/cart": { "navigationBarTitleText": "购物车", "usingComponents": {} }, "pages/me/address/address": { "navigationBarTitleText": "添加地址", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "mycomponents/my-button/my-button": { "usingComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#fff" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index/index": { "navigationBarTitleText": "首页", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white", "backgroundColor": "#38A472" }, "pages/me/me/me": { "navigationBarTitleText": "我的" }, "pages/cate/cate/cate": { "navigationBarTitleText": "分类" }, "pages/cart/cart/cart": { "navigationBarTitleText": "购物车" }, "pages/me/address/address": { "navigationBarTitleText": "添加地址" }, "pages/me/address_list/address_list": { "navigationBarTitleText": "收货地址管理" }, "pages/index/search/search": { "navigationBarTitleText": "搜索商品", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#fff" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
@@ -10510,6 +10510,122 @@ if (hadRuntime) {
   })() || Function("return this")()
 );
 
+
+/***/ }),
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/*!***************************************************************!*\
+  !*** E:/workspace/小程序/App/wxcomponents/vant/dialog/dialog.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = void 0 && (void 0).__assign || function () {
+  __assign = Object.assign || function (t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+      for (var p in s) {if (Object.prototype.hasOwnProperty.call(s, p))
+        t[p] = s[p];}
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var queue = [];
+function getContext() {
+  var pages = getCurrentPages();
+  return pages[pages.length - 1];
+}
+var Dialog = function Dialog(options) {
+  options = __assign({}, Dialog.currentOptions, options);
+  return new Promise(function (resolve, reject) {
+    var context = options.context || getContext();
+    var dialog = context.selectComponent(options.selector);
+    delete options.selector;
+    if (dialog) {
+      dialog.set(__assign({ onCancel: reject, onConfirm: resolve }, options));
+      queue.push(dialog);
+    } else
+    {
+      console.warn('未找到 van-dialog 节点，请确认 selector 及 context 是否正确');
+    }
+  });
+};
+Dialog.defaultOptions = {
+  show: true,
+  title: '',
+  message: '',
+  zIndex: 100,
+  overlay: true,
+  className: '',
+  asyncClose: false,
+  messageAlign: '',
+  transition: 'scale',
+  selector: '#van-dialog',
+  showConfirmButton: true,
+  showCancelButton: false,
+  closeOnClickOverlay: false,
+  confirmButtonOpenType: '' };
+
+Dialog.alert = Dialog;
+Dialog.confirm = function (options) {
+  return Dialog(__assign({ showCancelButton: true }, options));
+};
+Dialog.close = function () {
+  queue.forEach(function (dialog) {
+    dialog.close();
+  });
+  queue = [];
+};
+Dialog.stopLoading = function () {
+  queue.forEach(function (dialog) {
+    dialog.stopLoading();
+  });
+};
+Dialog.setDefaultOptions = function (options) {
+  Object.assign(Dialog.currentOptions, options);
+};
+Dialog.resetDefaultOptions = function () {
+  Dialog.currentOptions = __assign({}, Dialog.defaultOptions);
+};
+Dialog.resetDefaultOptions();
+exports.default = Dialog;
 
 /***/ })
 ]]);

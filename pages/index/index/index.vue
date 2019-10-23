@@ -2,7 +2,9 @@
 	<view class="main">
 		<scroll-view scroll-y>
 			<!-- 搜索框 -->
-			<Ser></Ser>
+			<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
+				<Ser></Ser>	
+			</view>
 			<!-- 轮播图 -->
 			<view class="mt10">
 				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
@@ -21,7 +23,6 @@
 		},
 		data() {
 			return {
-				images: [],
 				swiperList:[{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'}]
 			}
 		},

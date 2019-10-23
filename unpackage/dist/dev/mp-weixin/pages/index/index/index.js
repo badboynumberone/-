@@ -122,7 +122,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 27));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 71));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 78));};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 27));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 82));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 89));};var _default =
+
+
 
 
 
@@ -145,7 +147,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      images: [],
       swiperList: [{ img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }] };
 
   },

@@ -4,7 +4,9 @@
     "pages/me/me/me",
     "pages/cate/cate/cate",
     "pages/cart/cart/cart",
-    "pages/me/address/address"
+    "pages/me/address/address",
+    "pages/me/address_list/address_list",
+    "pages/index/search/search"
   ],
   "subPackages": [],
   "window": {
@@ -50,5 +52,6 @@
     "van-icon": "/wxcomponents/vant/icon/index",
     "van-button": "/wxcomponents/vant/button/index",
     "pic": "/mycomponents/Pic/Pic"
-  }
+  },
+  "sitemapLocation": "sitemap37.json"
 }
