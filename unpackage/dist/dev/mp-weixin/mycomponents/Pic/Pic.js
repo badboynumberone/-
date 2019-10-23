@@ -115,7 +115,8 @@ var _default =
 {
   props: {
     src: {
-      type: String },
+      type: String,
+      default: "/static/images/201272713562117180.jpg" },
 
     mode: {
       type: String },
@@ -126,7 +127,11 @@ var _default =
 
     height: {
       type: String,
-      default: '100%' } },
+      default: '100%' },
+
+    round: {
+      type: Boolean,
+      default: false } },
 
 
   data: function data() {

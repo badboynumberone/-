@@ -27,8 +27,8 @@
 		
 		
 		<!-- 添加地址按钮 -->
-		<view class="button pf pt10 pb10" @click="perserve">
-			<my-button :color="'#38A472'" :text="'新增地址'"></my-button>
+		<view class="button pf pt10 pb10" @click="navigateTo" :data-url="'/pages/me/address/address'">
+			<my-button :color="'#38A472'" :text="'新增地址'" ></my-button>
 		</view>
 		
 		<!-- 模态框 -->

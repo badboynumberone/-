@@ -1790,6 +1790,12 @@ image {
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
+.f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
 .f1 {
   -webkit-box-flex: 1;
   -webkit-flex: 1;

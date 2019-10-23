@@ -1,45 +1,46 @@
-{	
-	"pages": [ 
-		{
+{
+	"pages": [{
 			"path": "pages/index/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor":"#38A472",
-				"navigationBarTextStyle":"white",
-				"backgroundColor":"#38A472"
+				"navigationBarBackgroundColor": "#38A472",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#38A472"
 			}
-		}
-	    ,{
-            "path" : "pages/me/me/me",
-            "style" : {
-				"navigationBarTitleText": "我的"
+		}, {
+			"path": "pages/me/me/me",
+			"style": {
+				"navigationBarTitleText": "我的",
+
+				"usingComponents": {
+					"van-cell": "/wxcomponents/vant/cell/index",
+					"van-cell-group": "/wxcomponents/vant/cell-group/index"
+				}
+
 			}
-        },
-        {
-            "path" : "pages/cate/cate/cate",
-            "style" : {
+		},
+		{
+			"path": "pages/cate/cate/cate",
+			"style": {
 				"navigationBarTitleText": "分类"
 			}
-        }
-        ,{
-            "path" : "pages/cart/cart/cart",
-            "style" : {
+		}, {
+			"path": "pages/cart/cart/cart",
+			"style": {
 				"navigationBarTitleText": "购物车"
 			}
-        }
-        ,{
-            "path" : "pages/me/address/address",
-            "style" : {
+		}, {
+			"path": "pages/me/address/address",
+			"style": {
 				"navigationBarTitleText": "添加地址",
 				"usingComponents": {
 					"van-icon": "/wxcomponents/vant/icon/index",
 					"van-field": "/wxcomponents/vant/field/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/address_list/address_list",
-            "style" : {
+		}, {
+			"path": "pages/me/address_list/address_list",
+			"style": {
 				"navigationBarTitleText": "收货地址管理",
 				"usingComponents": {
 					"van-cell": "/wxcomponents/vant/cell/index",
@@ -48,19 +49,18 @@
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/search/search",
-            "style" : {
+		}, {
+			"path": "pages/index/search/search",
+			"style": {
 				"navigationBarTitleText": "搜索商品",
-				"navigationBarBackgroundColor":"#38A472",
-				"navigationBarTextStyle":"white",
+				"navigationBarBackgroundColor": "#38A472",
+				"navigationBarTextStyle": "white",
 				"usingComponents": {
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
-        }
-    ],
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -72,30 +72,30 @@
 		}
 	},
 	"tabBar": {
-	    "color": "#7A7E83",
-	    "selectedColor": "#38A472",
-	    "borderStyle": "black",
-	    "backgroundColor": "#ffffff",
-	    "list": [{
-	        "pagePath": "pages/index/index/index",
-	        "iconPath": "static/images/sywxz.png",
-	        "selectedIconPath": "static/images/syxz.png",
-	        "text": "首页"
-	    }, {
-	        "pagePath": "pages/cate/cate/cate",
-	        "iconPath": "static/images/wdwxz.png",
-	        "selectedIconPath": "static/images/wdxz.png",
-	        "text": "分类"
-	    }, {
-	        "pagePath": "pages/cart/cart/cart",
-	        "iconPath": "static/images/wdwxz.png",
-	        "selectedIconPath": "static/images/wdxz.png",
-	        "text": "购物车"
-	    }, {
-	        "pagePath": "pages/me/me/me",
-	        "iconPath": "static/images/wdwxz.png",
-	        "selectedIconPath": "static/images/wdxz.png",
-	        "text": "我的"
-	    }]
+		"color": "#7A7E83",
+		"selectedColor": "#38A472",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index/index",
+			"iconPath": "static/images/home@2x.png",
+			"selectedIconPath": "static/images/home-Selection@2x.png",
+			"text": "首页"
+		}, {
+			"pagePath": "pages/cate/cate/cate",
+			"iconPath": "static/images/classify@2x.png",
+			"selectedIconPath": "static/images/classify-Selection@2x.png",
+			"text": "分类"
+		}, {
+			"pagePath": "pages/cart/cart/cart",
+			"iconPath": "static/images/shopping-Cart@2x.png",
+			"selectedIconPath": "static/images/shopping-Cart-Selection@2x.png",
+			"text": "购物车"
+		}, {
+			"pagePath": "pages/me/me/me",
+			"iconPath": "static/images/wdwxz.png",
+			"selectedIconPath": "static/images/my-Selection@2x.png",
+			"text": "我的"
+		}]
 	}
 }

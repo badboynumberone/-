@@ -1,6 +1,6 @@
 <template>
 	<view class="wrapper" :style="{width:width,height:height}">
-		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true"></image>
+		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true" :class="{'round':round}"></image>
 	</view>
 </template>
 
@@ -8,7 +8,8 @@
 	export default {
 		props:{
 			src:{
-				type:String
+				type:String,
+				default:"/static/images/201272713562117180.jpg"
 			},
 			mode:{
 				type:String
@@ -20,6 +21,10 @@
 			height:{
 				type:String,
 				default:'100%'
+			},
+			round:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data() {
@@ -38,5 +43,8 @@
 <style lang="scss">
 	.wrapper{
 		background: #f1f1f1;
+	}
+	.round{
+		border-radius: 50%;
 	}
 </style>
