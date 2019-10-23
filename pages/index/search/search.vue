@@ -2,7 +2,7 @@
 	<view class="main">
 		<!-- 搜索框 -->
 		<Ser :isDisabled="false" ref="search"></Ser>
-		
+
 		<!-- 搜索历史 -->
 		<view class="searchBotBox" v-if="isHistory">
 			<view class="ov ">
@@ -11,13 +11,14 @@
 					<van-icon name="delete"></van-icon>
 				</view>
 			</view>
-			<view class="searchHistoryBox" >
-				<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in searchKey" :key='index' style="max-width: 150px;" @click="itemSearch(item)">
+			<view class="searchHistoryBox">
+				<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in searchKey" :key='index' style="max-width: 150px;"
+				 @click="itemSearch(item)">
 					{{item}}
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 	</view>
@@ -27,39 +28,39 @@
 	import Ser from "../../../mycomponents/Ser/Ser";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
 	export default {
-		components:{
+		components: {
 			Ser
 		},
 		data() {
 			return {
-				searchKey:[],
-				isHistory:true
+				searchKey: [],
+				isHistory: true
 			}
 		},
-		onLoad(){
+		onLoad() {
 			this.getKey();
 		},
 		methods: {
-			getKey(){
-				try{
+			getKey() {
+				try {
 					this.searchKey = JSON.parse(uni.getStorageSync("searchHistory"));
-				}catch(e){
+				} catch (e) {
 					//TODO handle the exception
-					uni.setStorageSync("searchHistory",JSON.stringify([]))
+					uni.setStorageSync("searchHistory", JSON.stringify([]))
 				}
-				
+
 			},
-			clearKey(){
+			clearKey() {
 				Dialog.confirm({
-				  title: '提示',
-				  message: '确认删除该地址吗?'
+					title: '提示',
+					message: '确认删除该地址吗?'
 				}).then(() => {
-				  // on confirm
-				  uni.setStorageSync("searchHistory",JSON.stringify([]));
-				  this.getKey()
+					// on confirm
+					uni.setStorageSync("searchHistory", JSON.stringify([]));
+					this.getKey()
 				});
 			},
-			itemSearch(item){
+			itemSearch(item) {
 				this.$refs.search.searchValue = item;
 				this.$refs.search.confirmContent();
 			}
@@ -69,21 +70,22 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+
 	.searchBotBox {
 		width: 100%;
 		margin-top: 10upx;
 		padding: 15upx 3%;
 		box-sizing: border-box;
 	}
-	
+
 	.searchHistoryBox {
 		width: 100%;
 		box-sizing: border-box;
 		overflow: hidden;
 		margin-top: 60upx;
-		
+
 	}
-	
+
 	.searchHistoryBoxItem {
 		float: left;
 		font-size: 26upx;
