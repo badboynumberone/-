@@ -24,9 +24,6 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.wrapper {
-  background: #f1f1f1;
-}
 .round {
   border-radius: 50%;
 }

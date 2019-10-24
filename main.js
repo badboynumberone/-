@@ -27,6 +27,10 @@ Vue.prototype.$uploadFile = UploadFile
 import Tools from './utils/tools.js'
 Vue.prototype.$tools = Tools
 
+//加载更多
+import loadmore from './utils/loadmore.js'
+Vue.prototype.$loadmore = loadmore
+
 
 /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/
 

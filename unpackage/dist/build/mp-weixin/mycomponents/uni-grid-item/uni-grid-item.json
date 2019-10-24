@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-badge": "/mycomponents/uni-badge/uni-badge"
+  },
+  "component": true
+}

@@ -3,7 +3,7 @@
 		
 		<!-- 地址列表 -->
 		<van-cell-group>
-			<van-swipe-cell v-for="(item,index) in 6" :right-width="130">
+			<van-swipe-cell v-for="(item,index) in 6" :key="index" :right-width="130">
 			  <van-cell icon="location-o" center>
 			  			  <view slot="title">
 			  			      <view class="van-cell-text"><text class="fb fz16":decode="true">王磊     13685280335</text></view>
@@ -28,7 +28,7 @@
 		
 		<!-- 添加地址按钮 -->
 		<view class="button pf pt10 pb10" @click="navigateTo" :data-url="'/pages/me/address/address'">
-			<my-button :color="'#38A472'" :text="'新增地址'" ></my-button>
+			<my-button :text="'新增地址'" ></my-button>
 		</view>
 		
 		<!-- 模态框 -->

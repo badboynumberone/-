@@ -39,6 +39,7 @@
 					this.$tools.Toast("搜索内容不能为空哦!")
 					return;
 				}
+				
 				const history = [...new Set([...JSON.parse(wx.getStorageSync("searchHistory")),this.searchValue])];
 				if(history.length<=15){
 					uni.setStorageSync("searchHistory",JSON.stringify(history));

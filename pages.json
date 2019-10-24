@@ -64,7 +64,7 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#fff",
 		"usingComponents": {
 			"van-icon": "/wxcomponents/vant/icon/index",
@@ -93,7 +93,7 @@
 			"text": "购物车"
 		}, {
 			"pagePath": "pages/me/me/me",
-			"iconPath": "static/images/wdwxz.png",
+			"iconPath": "static/images/my@2x.png",
 			"selectedIconPath": "static/images/my-Selection@2x.png",
 			"text": "我的"
 		}]

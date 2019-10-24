@@ -13,7 +13,7 @@
 		
 		<!-- 保存按钮 -->
 		<view class="button pa pt10 pb10" @click="perserve">
-			<my-button :color="'#38A472'" :text="'保存'"></my-button>
+			<my-button  :text="'保存'"></my-button>
 		</view>
 		
 		

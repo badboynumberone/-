@@ -9,7 +9,10 @@
 			<view class="mt10">
 				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
 			</view>
-			
+			<view class="" v-for="(item,index) in pageData[index].list" :key="index">
+				{{item.areaName}}
+			</view>
+			<button type="primary"@click="change">切换</button>
 		</scroll-view>
 	</view>
 </template>
@@ -23,16 +26,19 @@
 		},
 		data() {
 			return {
-				swiperList:[{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'}]
+				swiperList:[{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'},{img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',text:'加油'}],				pageNum:0,
+				pageData:[{areaName:"主模块",pageNum:0,text:"",isLoading:0,list:[]}],
+				selectarea:"主模块"
+				
 			}
 		},
 		computed: {
 			//页面初次请求和图片是否加载完
-
+			index(){
+				return this.pageData.findIndex((item)=>item.areaName==this.selectarea);
+			}
 		},
 		async onLoad() {
-			//显示加载中
-			this.$tools.showLoading("加载中...");
 			
 			//检查登录状态
 			await this.$net.checkLoginStatus();
@@ -67,21 +73,34 @@
 			loadImg(flied) {
 				this[flied]++;
 			},
+			
+			change(){
+				this.selectarea="lala";
+				this.getData(true);
+			},
 			//获取数据
 			async getData(isFirst = false) {
-
+				
 				//获取数据
 				// const result = await this.$net.sendRequest("/hello",{username:"asdsa"});
-				const timer = setTimeout(() => {
-					this.images = ['https://hao6.qhimg.com/t01a4f2e0df51243cc0.jpg?780*500',
-						'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571080833783&di=05701b8aee2d111a52e8edf69e653c18&imgtype=0&src=http%3A%2F%2Fk.zol-img.com.cn%2Fdiybbs%2F5506%2Fa5505953_s.jpg',
-						'https://hao5.qhimg.com/t01ef8405a246eb51d9.jpg?780*500'
-					];
-
-					wx.hideLoading();
-					clearTimeout(timer)
-				}, 0);
+				if(this.pageData.findIndex(item=>item.areaName==this.selectarea)==-1){
+					this.pageData = [...this.pageData,{areaName:this.selectarea,pageNum:0,text:"",isLoading:0,list:[]}]
+				}
+				
+				await this.$loadmore.call(this,async (reslove,reject)=>{
+						const timer = setTimeout(()=>{
+							//获取需要加载的选项
+							const index = parseInt(this.pageData.findIndex(item=>item.areaName==this.selectarea));
+							// 获取数据
+							let v = this.pageData[index];
+							v.list = [...v.list,...["sad","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa"]]
+							this.$set(this.pageData,index,v);
+							reslove(["sad","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa","asdsa"]);
+						},2000);
+				});
 			}
+			
+			
 
 		}
 	}

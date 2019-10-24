@@ -1,6 +1,6 @@
 <template>
 	<view style="width: 95%;margin: 0 auto;">
-		<van-button type="primary" :color="color" block round>{{text}}</van-button>
+		<van-button type="default" :color="color" block round>{{text}}</van-button>
 	</view>
 </template>
 
@@ -9,7 +9,11 @@
 		props:{
 			text:{
 				type:String,
-				color:String
+				
+			},
+			color:{
+				type:String,
+				default:"linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)"
 			}
 		},
 		data() {

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "首页",
+  "navigationBarBackgroundColor": "#38A472",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#38A472",
+  "usingComponents": {
+    "ser": "/mycomponents/Ser/Ser",
+    "bw-swiper": "/mycomponents/bw-swiper/bw-swiper"
+  }
+}

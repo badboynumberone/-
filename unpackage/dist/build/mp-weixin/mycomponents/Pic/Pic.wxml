@@ -1,0 +1,1 @@
+<view class="wrapper" style="{{'width:'+(width)+';'+('height:'+(height)+';')}}"><image hidden="{{!(imgLoaded>0)}}" class="{{['fill',(round)?'round':'']}}" src="{{src}}" mode="{{mode}}" lazy-load="{{true}}" data-event-opts="{{[['load',[['imgLoad',['$event']]]]]}}" bindload="__e"></image></view>

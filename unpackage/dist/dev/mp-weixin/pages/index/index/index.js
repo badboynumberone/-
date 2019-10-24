@@ -122,7 +122,10 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 27));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 82));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 89));};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 27));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 84));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 91));};var _default =
+
+
+
 
 
 
@@ -147,25 +150,28 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
   data: function data() {
     return {
-      swiperList: [{ img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }] };
+      swiperList: [{ img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }], pageNum: 0,
+      pageData: [{ areaName: "主模块", pageNum: 0, text: "", isLoading: 0, list: [] }],
+      selectarea: "主模块" };
+
 
   },
   computed: {
     //页面初次请求和图片是否加载完
-  },
+    index: function index() {var _this = this;
+      return this.pageData.findIndex(function (item) {return item.areaName == _this.selectarea;});
+    } },
 
-  onLoad: function () {var _onLoad = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-              //显示加载中
-              this.$tools.showLoading("加载中...");
+  onLoad: function () {var _onLoad = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
 
-              //检查登录状态
-              _context.next = 3;return this.$net.checkLoginStatus();case 3:
+
+                this.$net.checkLoginStatus());case 2:
 
               //第一次加载获取数据
               this.getData(true);
 
               //提供钩子
-              this.$mp.page.hook = this.getData;case 5:case "end":return _context.stop();}}}, _callee, this);}));function onLoad() {return _onLoad.apply(this, arguments);}return onLoad;}(),
+              this.$mp.page.hook = this.getData;case 4:case "end":return _context.stop();}}}, _callee, this);}));function onLoad() {return _onLoad.apply(this, arguments);}return onLoad;}(),
 
 
   methods: {
@@ -191,20 +197,30 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     loadImg: function loadImg(flied) {
       this[flied]++;
     },
+
+    change: function change() {
+      this.selectarea = "lala";
+      this.getData(true);
+    },
     //获取数据
-    getData: function () {var _getData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var _this = this;var isFirst,timer,_args2 = arguments;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:isFirst = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : false;
+    getData: function () {var _getData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var _this2 = this;var isFirst,_args3 = arguments;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:isFirst = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : false;
 
                 //获取数据
                 // const result = await this.$net.sendRequest("/hello",{username:"asdsa"});
-                timer = setTimeout(function () {
-                  _this.images = ['https://hao6.qhimg.com/t01a4f2e0df51243cc0.jpg?780*500',
-                  'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571080833783&di=05701b8aee2d111a52e8edf69e653c18&imgtype=0&src=http%3A%2F%2Fk.zol-img.com.cn%2Fdiybbs%2F5506%2Fa5505953_s.jpg',
-                  'https://hao5.qhimg.com/t01ef8405a246eb51d9.jpg?780*500'];
+                if (this.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}) == -1) {
+                  this.pageData = [].concat(_toConsumableArray(this.pageData), [{ areaName: this.selectarea, pageNum: 0, text: "", isLoading: 0, list: [] }]);
+                }_context3.next = 4;return (
 
-
-                  wx.hideLoading();
-                  clearTimeout(timer);
-                }, 0);case 2:case "end":return _context2.stop();}}}, _callee2, this);}));function getData() {return _getData.apply(this, arguments);}return getData;}() } };exports.default = _default;
+                  this.$loadmore.call(this, /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(reslove, reject) {var timer;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                              timer = setTimeout(function () {
+                                //获取需要加载的选项
+                                var index = parseInt(_this2.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
+                                // 获取数据
+                                var v = _this2.pageData[index];
+                                v.list = [].concat(_toConsumableArray(v.list), ["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+                                _this2.$set(_this2.pageData, index, v);
+                                reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+                              }, 2000);case 1:case "end":return _context2.stop();}}}, _callee2, this);}));return function (_x, _x2) {return _ref.apply(this, arguments);};}()));case 4:case "end":return _context3.stop();}}}, _callee3, this);}));function getData() {return _getData.apply(this, arguments);}return getData;}() } };exports.default = _default;
 
 /***/ }),
 

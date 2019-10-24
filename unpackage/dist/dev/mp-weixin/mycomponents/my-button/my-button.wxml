@@ -1,1 +1,1 @@
-<view style="width:95%;margin:0 auto;"><van-button vue-id="1" type="primary" color="{{color}}" block round data-com-type="wx" bind:__l="__l" vue-slots="{{['default']}}">{{text}}</van-button></view>
+<view style="width:95%;margin:0 auto;"><van-button vue-id="1" type="default" color="{{color}}" block round data-com-type="wx" bind:__l="__l" vue-slots="{{['default']}}">{{text}}</van-button></view>

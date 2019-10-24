@@ -1,5 +1,5 @@
 <template>
-	<view class="wrapper" :style="{width:width,height:height}">
+	<view class="wrapper" :style="{width:width,height:height,background:back}">
 		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true" :class="{'round':round}"></image>
 	</view>
 </template>
@@ -9,7 +9,7 @@
 		props:{
 			src:{
 				type:String,
-				default:"/static/images/201272713562117180.jpg"
+				default:"/static/images/header.png"
 			},
 			mode:{
 				type:String
@@ -25,6 +25,10 @@
 			round:{
 				type:Boolean,
 				default:false
+			},
+			back:{
+				type:String,
+				default:'#f1f1f1'
 			}
 		},
 		data() {
@@ -41,9 +45,6 @@
 </script>
 
 <style lang="scss">
-	.wrapper{
-		background: #f1f1f1;
-	}
 	.round{
 		border-radius: 50%;
 	}

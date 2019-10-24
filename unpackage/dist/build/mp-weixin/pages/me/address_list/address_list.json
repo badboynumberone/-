@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "收货地址管理",
+  "usingComponents": {
+    "van-cell": "/wxcomponents/vant/cell/index",
+    "van-cell-group": "/wxcomponents/vant/cell-group/index",
+    "van-swipe-cell": "/wxcomponents/vant/swipe-cell/index",
+    "van-dialog": "/wxcomponents/vant/dialog/index",
+    "my-button": "/mycomponents/my-button/my-button"
+  }
+}
