@@ -151,14 +151,14 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   data: function data() {
     return {
       swiperList: [{ img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }], pageNum: 0,
-      pageData: [{ areaName: "主模块", pageNum: 0, text: "", isLoading: 0, list: [] }],
+      pageData: [],
       selectarea: "主模块" };
 
 
   },
   computed: {
     //页面初次请求和图片是否加载完
-    index: function index() {var _this = this;
+    selectIndex: function selectIndex() {var _this = this;
       return this.pageData.findIndex(function (item) {return item.areaName == _this.selectarea;});
     } },
 
@@ -200,27 +200,24 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
     change: function change() {
       this.selectarea = "lala";
-      this.getData(true);
+      this.getData();
     },
     //获取数据
-    getData: function () {var _getData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var _this2 = this;var isFirst,_args3 = arguments;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:isFirst = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : false;
-
-                //获取数据
-                // const result = await this.$net.sendRequest("/hello",{username:"asdsa"});
-                if (this.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}) == -1) {
-                  this.pageData = [].concat(_toConsumableArray(this.pageData), [{ areaName: this.selectarea, pageNum: 0, text: "", isLoading: 0, list: [] }]);
-                }_context3.next = 4;return (
-
-                  this.$loadmore.call(this, /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(reslove, reject) {var timer;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                              timer = setTimeout(function () {
-                                //获取需要加载的选项
-                                var index = parseInt(_this2.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
-                                // 获取数据
-                                var v = _this2.pageData[index];
-                                v.list = [].concat(_toConsumableArray(v.list), ["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
-                                _this2.$set(_this2.pageData, index, v);
-                                reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
-                              }, 2000);case 1:case "end":return _context2.stop();}}}, _callee2, this);}));return function (_x, _x2) {return _ref.apply(this, arguments);};}()));case 4:case "end":return _context3.stop();}}}, _callee3, this);}));function getData() {return _getData.apply(this, arguments);}return getData;}() } };exports.default = _default;
+    getData: function () {var _getData = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var _this2 = this;var isRefresh,_args3 = arguments;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:isRefresh = _args3.length > 0 && _args3[0] !== undefined ? _args3[0] : false;
+                this.$loadmore.call(this, /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(reslove, reject) {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+                              new Promise(function (res, rej) {
+                                var timer = setTimeout(function () {
+                                  //获取需要加载的选项
+                                  var index = parseInt(_this2.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
+                                  // 获取数据
+                                  var v = _this2.pageData[index];
+                                  v.list = [].concat(_toConsumableArray(v.list), ["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+                                  _this2.$set(_this2.pageData, index, v);
+                                  reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+                                  res();
+                                }, 2000);
+                              }));case 2:
+                            console.log("hello,world");case 3:case "end":return _context2.stop();}}}, _callee2, this);}));return function (_x, _x2) {return _ref.apply(this, arguments);};}());case 2:case "end":return _context3.stop();}}}, _callee3, this);}));function getData() {return _getData.apply(this, arguments);}return getData;}() } };exports.default = _default;
 
 /***/ }),
 
