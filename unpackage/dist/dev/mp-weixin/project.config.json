@@ -31,12 +31,19 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": -1,
-					"name": "pages/me/me/me",
-					"pathName": "pages/me/me/me",
+					"name": "pages/me/address/address",
+					"pathName": "pages/me/address/address",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/me/logistics/logistics",
+					"pathName": "pages/me/logistics/logistics",
 					"scene": null
 				}
 			]

@@ -60,7 +60,16 @@
 				}
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/me/logistics/logistics",
+            "style" : {
+				"navigationBarTitleText": "查看物流",
+				"usingComponents": {
+					"van-steps": "/wxcomponents/vant/steps/index"
+				}
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

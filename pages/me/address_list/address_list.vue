@@ -27,7 +27,7 @@
 		
 		
 		<!-- 添加地址按钮 -->
-		<view class="button pf pt10 pb10" @click="navigateTo" :data-url="'/pages/me/address/address'">
+		<view class="button pf" @click="navigateTo" :data-url="'/pages/me/address/address'">
 			<my-button :text="'新增地址'" ></my-button>
 		</view>
 		

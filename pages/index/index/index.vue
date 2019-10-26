@@ -12,7 +12,6 @@
 			<view class="" v-for="(item,index) in pageData[selectIndex].list" :key="index">
 				{{item.areaName}}
 			</view>
-			<button type="primary"@click="change">切换</button>
 		</scroll-view>
 	</view>
 </template>
@@ -79,7 +78,7 @@
 				this.getData();
 			},
 			//获取数据
-			async getData(isRefresh=false) {
+			getData(isRefresh=false) {
 				this.$loadmore.call(this,async (reslove,reject)=>{
 					await new Promise((res,rej)=>{
 						const timer = setTimeout(()=>{

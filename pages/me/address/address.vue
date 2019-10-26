@@ -12,7 +12,7 @@
 		</van-cell-group>
 		
 		<!-- 保存按钮 -->
-		<view class="button pa pt10 pb10" @click="perserve">
+		<view class="button pa" @click="perserve">
 			<my-button  :text="'保存'"></my-button>
 		</view>
 		

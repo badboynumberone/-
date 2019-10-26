@@ -6,7 +6,8 @@
     "pages/cart/cart/cart",
     "pages/me/address/address",
     "pages/me/address_list/address_list",
-    "pages/index/search/search"
+    "pages/index/search/search",
+    "pages/me/logistics/logistics"
   ],
   "subPackages": [],
   "window": {
@@ -52,6 +53,5 @@
     "van-icon": "/wxcomponents/vant/icon/index",
     "van-button": "/wxcomponents/vant/button/index",
     "pic": "/mycomponents/Pic/Pic"
-  },
-  "sitemapLocation": "sitemap88.json"
+  }
 }
