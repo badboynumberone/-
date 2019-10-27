@@ -150,7 +150,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! ../../../wxcomponents/vant/dialog/dialog */ 67));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 85));};var _default =
+var _dialog = _interopRequireDefault(__webpack_require__(/*! ../../../wxcomponents/vant/dialog/dialog */ 67));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 93));};var _default =
 {
   components: {
     Ser: Ser },

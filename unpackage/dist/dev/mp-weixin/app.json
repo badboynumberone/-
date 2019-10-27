@@ -7,7 +7,8 @@
     "pages/me/address/address",
     "pages/me/address_list/address_list",
     "pages/index/search/search",
-    "pages/me/logistics/logistics"
+    "pages/me/logistics/logistics",
+    "pages/me/wxlogin/wxlogin"
   ],
   "subPackages": [],
   "window": {

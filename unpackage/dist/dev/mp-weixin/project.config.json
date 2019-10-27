@@ -31,19 +31,26 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
-					"name": "pages/me/address/address",
-					"pathName": "pages/me/address/address",
+					"name": "pages/cate/cate/cate",
+					"pathName": "pages/cate/cate/cate",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "pages/me/logistics/logistics",
-					"pathName": "pages/me/logistics/logistics",
+					"name": "pages/cart/cart/cart",
+					"pathName": "pages/cart/cart/cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/me/wxlogin/wxlogin",
+					"pathName": "pages/me/wxlogin/wxlogin",
 					"scene": null
 				}
 			]

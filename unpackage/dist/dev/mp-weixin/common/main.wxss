@@ -1649,8 +1649,7 @@ page {
   height: 100%;
   background: #fff;
 }
-._div, ._p, ._span, ._h1, ._h2, ._h3, ._h4, ._h5, ._h6 {
-  color: #333;
+view, text {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }

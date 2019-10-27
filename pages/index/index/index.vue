@@ -6,12 +6,14 @@
 				<Ser></Ser>	
 			</view>
 			<!-- 轮播图 -->
-			<view class="mt10">
+			<view class="mt10 mb10">
 				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
 			</view>
-			<view class="" v-for="(item,index) in pageData[selectIndex].list" :key="index">
-				{{item.areaName}}
-			</view>
+			
+			<!-- 商品列表 -->
+			<MyList></MyList>
+			<!-- 加载更多 -->
+			<load-more :tip="'正在加载中...'" :loading="true" />
 		</scroll-view>
 	</view>
 </template>
@@ -19,9 +21,10 @@
 <script>
 	import Ser from "../../../mycomponents/Ser/Ser";
 	import BwSwiper from "../../../mycomponents/bw-swiper/bw-swiper";
+	import MyList from "../../../mycomponents/my-list/my-list.vue";
 	export default {
 		components: {
-			Ser,BwSwiper
+			Ser,BwSwiper,MyList
 		},
 		data() {
 			return {
@@ -93,7 +96,6 @@
 						},2000);
 					})
 					console.log("hello,world")
-					
 				});
 			}
 			

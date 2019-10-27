@@ -1,4 +1,11 @@
 {
   "navigationBarTitleText": "分类",
-  "usingComponents": {}
+  "disableScroll": true,
+  "usingComponents": {
+    "van-sidebar": "/wxcomponents/vant/sidebar/index",
+    "van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
+    "ser": "/mycomponents/Ser/Ser",
+    "uni-grid": "/mycomponents/uni-grid/uni-grid",
+    "uni-grid-item": "/mycomponents/uni-grid-item/uni-grid-item"
+  }
 }

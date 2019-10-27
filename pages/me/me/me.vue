@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<!-- 头部 -->
-		<div class="top f p20 pr">
+		<div class="top f p20 pr" @click="navigateTo" :data-url="'/pages/me/wxlogin/wxlogin'">
 			<button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
 			 @getuserinfo="getUserInfo"></button>
 

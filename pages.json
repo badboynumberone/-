@@ -5,13 +5,15 @@
 				"navigationBarTitleText": "首页",
 				"navigationBarBackgroundColor": "#38A472",
 				"navigationBarTextStyle": "white",
-				"backgroundColor": "#38A472"
+				"backgroundColor": "#38A472",
+				"usingComponents": {
+					"load-more": "/wxcomponents/load-more/index"
+				}
 			}
 		}, {
 			"path": "pages/me/me/me",
 			"style": {
 				"navigationBarTitleText": "我的",
-
 				"usingComponents": {
 					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-cell-group": "/wxcomponents/vant/cell-group/index"
@@ -21,13 +23,25 @@
 		},
 		{
 			"path": "pages/cate/cate/cate",
+			
 			"style": {
-				"navigationBarTitleText": "分类"
+				"navigationBarTitleText": "分类",
+				"disableScroll": true,
+				"usingComponents": {
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
+				}
+				
 			}
 		}, {
 			"path": "pages/cart/cart/cart",
 			"style": {
-				"navigationBarTitleText": "购物车"
+				"navigationBarTitleText": "购物车",
+				"usingComponents": {
+					"van-submit-bar": "/wxcomponents/vant/submit-bar/index",
+					"van-radio": "/wxcomponents/vant/radio/index",
+					"van-radio-group": "/wxcomponents/vant/radio-group/index"
+				}
 			}
 		}, {
 			"path": "pages/me/address/address",
@@ -66,6 +80,15 @@
 				"navigationBarTitleText": "查看物流",
 				"usingComponents": {
 					"van-steps": "/wxcomponents/vant/steps/index"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/me/wxlogin/wxlogin",
+            "style" : {
+				"navigationBarTitleText": "",
+				"usingComponents": {
+					"van-icon": "/wxcomponents/vant/icon/index"
 				}
 			}
         }

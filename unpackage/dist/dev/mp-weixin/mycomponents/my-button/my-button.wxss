@@ -51,6 +51,7 @@
           flex: 1;
   border-radius: 0px;
   line-height: 50px;
+  color: #fff;
 }
 .sp button.data-v-7000e20a:first-child {
     background: #222;

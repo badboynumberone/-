@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<!-- 搜索框 -->
-		<view class="searchTopBox">
-			<view class="searchBoxRadius">
+		<view class="searchTopBox" :style="{'background':back}">
+			<view class="searchBoxRadius" style="box-shadow:0 0 0 5 rgba(0,0,0,0.1);">
 				<view class="grace-search-icon searchBoxIcon" >
 					<van-icon name="search" :color="'#38A472'" />
 				</view>
@@ -15,6 +15,10 @@
 <script>
 	export default {
 		props:{
+			back:{
+				type:String,
+				default:"#38A472"
+			},
 			isDisabled:{
 				type:Boolean,
 				default:true

@@ -45,7 +45,7 @@ _vue.default.prototype.$uploadFile = _uploadImg.default; //常用工具
 _vue.default.prototype.$tools = _tools.default; //加载更多
 _vue.default.prototype.$loadmore = _loadmore.default; /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/
 //头部导航条
-var Pic = function Pic() {return __webpack_require__.e(/*! import() | mycomponents/Pic/Pic */ "mycomponents/Pic/Pic").then(__webpack_require__.bind(null, /*! ./mycomponents/Pic/Pic.vue */ 78));};
+var Pic = function Pic() {return __webpack_require__.e(/*! import() | mycomponents/Pic/Pic */ "mycomponents/Pic/Pic").then(__webpack_require__.bind(null, /*! ./mycomponents/Pic/Pic.vue */ 86));};
 _vue.default.component('Pic', Pic);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createApp"]))
 
