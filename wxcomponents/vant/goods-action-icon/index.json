@@ -2,6 +2,6 @@
   "component": true,
   "usingComponents": {
     "van-icon": "../icon/index",
-    "van-loading": "../loading/index"
+    "van-button": "../button/index"
   }
 }

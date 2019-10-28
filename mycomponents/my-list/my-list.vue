@@ -2,17 +2,19 @@
 	<view class="container clearfix">
 		<view class="content">
 			<view class="column pr5">
-				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==0">
-					<view style="border-radius: 5rpx;overflow: hidden;">
-						<Pic :width="'100%'" :height="'150px'" :src="'/static/images/background@2x.png'" :mode="'aspectFit'" :back="'#fff'" ></Pic>
+				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product'">
+					<view style="border-radius: 10rpx;overflow: hidden;">
+						<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :mode="'aspectFill'" :back="'#fff'" ></Pic>
 					</view>
 					<view>{{item}}</view>
 				</view>
 			</view>
 			
 			<view class="column pl5">
-				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==1">
-					<Pic :width="'100%'" :height="'150px'" :src="'/static/images/background@2x.png'" :mode="'aspectFit'" :back="'#fff'"  ></Pic>
+				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product'">
+					<view style="border-radius: 10rpx;overflow: hidden;">
+						<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :mode="'aspectFill'" :back="'#fff'"  ></Pic>
+					</view>
 					<view class="">
 						{{item}}
 					</view>
@@ -49,6 +51,11 @@
 			return {
 				
 			};
+		},
+		methods:{
+			toProduct(e){
+				this.$tools.navigateTo(e.currentTarget.dataset.url)
+			},
 		}
 	}
 </script>

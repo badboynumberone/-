@@ -11,8 +11,6 @@
 	"libVersion": "2.7.0",
 	"appid": "wxbd5334d32503ecd7",
 	"projectname": "App",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -31,26 +29,12 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 0,
 			"list": [
 				{
 					"id": -1,
-					"name": "pages/cate/cate/cate",
-					"pathName": "pages/cate/cate/cate",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/cart/cart/cart",
-					"pathName": "pages/cart/cart/cart",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/me/wxlogin/wxlogin",
-					"pathName": "pages/me/wxlogin/wxlogin",
+					"name": "pages/index/product/product",
+					"pathName": "pages/index/product/product",
 					"scene": null
 				}
 			]

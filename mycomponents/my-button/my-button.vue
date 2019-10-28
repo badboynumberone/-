@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view v-if="type==1" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
-			<van-button :color="color" block round><text style="color: #fff;">{{text}}</text></van-button>
+			<van-button :color="color" block round :size="size"><text style="color: #fff;">{{text}}</text></van-button>
 		</view>
 
 		<view v-if="type==2" style="width: 100%">
@@ -26,6 +26,10 @@
 <script>
 	export default {
 		props: {
+			size:{
+				type:String,
+				default:"normal"
+			},
 			type: {
 				type: Number,
 				default: 3,

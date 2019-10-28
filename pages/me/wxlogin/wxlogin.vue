@@ -10,9 +10,7 @@
 				<my-button :text="'登录'" :type="3"></my-button>
 			</view>
 		</view>
-		<view class="notice cl">
-			温馨提示：未注册用户，初次登录时将完成注册
-		</view>
+
 		<!-- 登录第二步骤 -->
 		<view v-if="step==2" class="container ct" style="width: 100%;margin-top: -130px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">绑定手机号！</view>
@@ -23,9 +21,7 @@
 				<text>绑定其他手机号</text>
 			</view>
 		</view>
-		<view class="notice cl">
-			温馨提示：未注册用户，初次登录时将完成注册
-		</view>
+
 		<!-- 登录第三步骤 -->
 		<view v-if="step==3" class="container ct" style="width: 100%;margin-top: -130px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">绑定手机号！</view>

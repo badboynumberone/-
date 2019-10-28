@@ -92,6 +92,19 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/index/product/product",
+            "style" : {
+				"navigationBarTitleText": "商品详情",
+				"usingComponents": {
+					"van-field": "/wxcomponents/vant/field/index",
+					"van-goods-action": "/wxcomponents/vant/goods-action/index",
+					  "van-goods-action-icon": "/wxcomponents/vant/goods-action-icon/index",
+					  "van-goods-action-button": "/wxcomponents/vant/goods-action-button/index",
+					  "load-more": "/wxcomponents/load-more/index"
+				}
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
