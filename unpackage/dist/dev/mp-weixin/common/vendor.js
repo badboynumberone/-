@@ -2727,7 +2727,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   //请求基础路径
   apiHost: "http://localhost:8080",
   //图片基础路径
-  imageBaseUrl: "" };exports.default = _default;
+  imageBaseUrl: "https://mini-mall-image.oss-cn-hangzhou.aliyuncs.com/user-dir-prefix/",
+  //上传路径
+  uploadurl: "https://gongchengzzz.oss-cn-beijing.aliyuncs.com" };exports.default = _default;
 
 /***/ }),
 
@@ -2739,7 +2741,59 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.upLoadFile = upLoadFile;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 20));
+var _base = _interopRequireDefault(__webpack_require__(/*! ./../utils/base.js */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function
+upLoadFile() {return _upLoadFile.apply(this, arguments);}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 单个文件上传
+function _upLoadFile() {_upLoadFile = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var file,filePathArr,i,v,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:file = _args.length > 0 && _args[0] !== undefined ? _args[0] : [];_context.prev = 1;filePathArr = file;i = 0;case 4:if (!(i < filePathArr.length)) {_context.next = 13;break;}v = filePathArr[i];if (!(v.indexOf("http://tmp") != -1 || v.indexOf("wxfile") != -1)) {_context.next = 10;break;}_context.next = 9;return upload(v);case 9:filePathArr[i] = _context.sent;case 10:i++;_context.next = 4;break;case 13:return _context.abrupt("return", filePathArr);case 16:_context.prev = 16;_context.t0 = _context["catch"](1); //TODO handle the exception
+            console.log(_context.t0);case 19:case "end":return _context.stop();}}}, _callee, this, [[1, 16]]);}));return _upLoadFile.apply(this, arguments);}function upload(filePath) {return new Promise(function (resolve, reject) {
+    //图片路径
+    var imageUrl = "user-dir-prefix/" + parseInt(Math.random() * 100) + new Date().getTime() + filePath.
+    substr(filePath.lastIndexOf("."), filePath.length - 1);
+
+    uni.uploadFile({
+      url: _base.default.uploadurl, // 仅为示例，非真实的接口地址
+      filePath: filePath,
+      name: 'file',
+
+      formData: {
+        'policy': "eyJleHBpcmF0aW9uIjoiMjAxOS0xMC0yOFQwODowMzowMC41NDNaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJ1c2VyLWRpci1wcmVmaXgvIl1dfQ",
+        'OSSAccessKeyId': 'LTAIJAgDcX5kzR5c',
+        'sucess_action_status': "200",
+        "signature": "xJ9pXJ69sn2jSQ8q7U8lXZ6r+s8=",
+        "key": imageUrl },
+
+      success: function success(res) {
+        if (res.statusCode == 204) {
+          try {
+            resolve(result.host + "/" + imageUrl.trim());
+          } catch (err) {
+            resolve("上传失败");
+          }
+        }
+      },
+      fail: function fail(err) {
+        reject(err);
+      } });
+
+  });
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -8707,152 +8761,18 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 20:
-/*!*******************************************!*\
-  !*** E:/workspace/小程序/App/utils/tools.js ***!
-  \*******************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //非主页面跳转
-function navigateTo(url) {
-  uni.navigateTo({
-    url: url });
-
-}
-
-//关闭当前页面跳转
-function redirectTo(url) {
-  uni.redirectTo({ url: url });
-}
-
-//跳转到主页面
-function switchTab(url) {
-  uni.switchTab({
-    url: url });
-
-}
-
-//轻提示
-function Toast(title) {var icon = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "none";var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
-  uni.showToast({
-    title: title,
-    icon: icon,
-    duration: duration,
-    mask: true });
-
-}
-
-//加载中...
-function showLoading(title) {
-  wx.showLoading({
-    title: title,
-    mask: true });
-
-}var _default =
-
-
-{
-  navigateTo: navigateTo,
-  redirectTo: redirectTo,
-  switchTab: switchTab,
-  Toast: Toast,
-  showLoading: showLoading };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 21:
-/*!**********************************************!*\
-  !*** E:/workspace/小程序/App/utils/loadmore.js ***!
-  \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = loadmore;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function loadmore(_x) {return _loadmore.apply(this, arguments);}function _loadmore() {_loadmore = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(callback) {var _this = this;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-            if (this.pageData.findIndex(function (item) {return item.areaName == _this.selectarea;}) == -1) {
-              this.pageData = [].concat(_toConsumableArray(this.pageData), [{
-                areaName: this.selectarea,
-                pageNum: 0,
-                text: "",
-                isLoading: 0,
-                list: [] }]);
-
-            }_context2.next = 3;return (
-
-              fn.call(this, /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(reslove, reject) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-                          callback(reslove, reject);case 1:case "end":return _context.stop();}}}, _callee, this);}));return function (_x3, _x4) {return _ref.apply(this, arguments);};}()));case 3:case "end":return _context2.stop();}}}, _callee2, this);}));return _loadmore.apply(this, arguments);}function
-
-
-
-
-fn(_x2) {return _fn.apply(this, arguments);}function _fn() {_fn = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(callback) {var _this2 = this;var index, item, v, result, s, text, m;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
-            //获取需要加载的选项
-            index = parseInt(this.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
-            console.log(index);
-            //停止加载
-            if (!(this.pageData[index].text == "到底了")) {_context3.next = 4;break;}return _context3.abrupt("return");case 4:
-
-
-            //加页数
-            item = this.pageData[index];
-            item.pageNum = ++item.pageNum;
-            this.$set(this.pageData, index, item);
-
-            //第一次加载添加加载中的对话
-            if (this.pageData[index].pageNum == 1) {
-              wx.showLoading({
-                title: "加载中",
-                mask: true });
-
-            }
-            //显示加载中
-            v = this.pageData[index];
-            v.isLoading = true;
-            v.text = "加载中...";
-            this.$set(this.pageData, index, v);
-
-            //获取数据
-            _context3.next = 14;return new Promise(function (resolve, reject) {
-              callback(resolve, reject);
-            });case 14:result = _context3.sent;
-            //隐藏loading框
-            wx.hideLoading();
-
-            s = this.pageData[index];
-            s.isLoading = false;
-            this.$set(this.pageData, index, s);
-
-            //设置加载文案
-            text = "";
-            if (this.pageData[index].pageNum == 1 && result.length == 0) {
-              text = "没有数据";
-            } else if (this.pageData[index].pageNum >= 1 && result.length == 10) {
-              text = "上拉加载更多";
-            } else {
-              text = "到底了";
-            }
-
-            m = this.pageData[index];
-            m.text = text;
-            this.$set(this.pageData, index, m);case 24:case "end":return _context3.stop();}}}, _callee3, this);}));return _fn.apply(this, arguments);}
-
-/***/ }),
-
-/***/ 22:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! regenerator-runtime */ 23);
+module.exports = __webpack_require__(/*! regenerator-runtime */ 21);
 
 
 /***/ }),
 
-/***/ 23:
+/***/ 21:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -8883,7 +8803,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(/*! ./runtime */ 24);
+module.exports = __webpack_require__(/*! ./runtime */ 22);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -8900,7 +8820,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 22:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -9629,6 +9549,139 @@ if (hadRuntime) {
   })() || Function("return this")()
 );
 
+
+/***/ }),
+
+/***/ 23:
+/*!*******************************************!*\
+  !*** E:/workspace/小程序/App/utils/tools.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //非主页面跳转
+function navigateTo(url) {
+  uni.navigateTo({
+    url: url });
+
+}
+
+//关闭当前页面跳转
+function redirectTo(url) {
+  uni.redirectTo({ url: url });
+}
+
+//跳转到主页面
+function switchTab(url) {
+  uni.switchTab({
+    url: url });
+
+}
+
+//轻提示
+function Toast(title) {var icon = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "none";var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+  uni.showToast({
+    title: title,
+    icon: icon,
+    duration: duration,
+    mask: true });
+
+}
+
+//加载中...
+function showLoading(title) {
+  wx.showLoading({
+    title: title,
+    mask: true });
+
+}var _default =
+
+
+{
+  navigateTo: navigateTo,
+  redirectTo: redirectTo,
+  switchTab: switchTab,
+  Toast: Toast,
+  showLoading: showLoading };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 24:
+/*!**********************************************!*\
+  !*** E:/workspace/小程序/App/utils/loadmore.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = loadmore;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function loadmore(_x) {return _loadmore.apply(this, arguments);}function _loadmore() {_loadmore = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(callback) {var _this = this;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+            if (this.pageData.findIndex(function (item) {return item.areaName == _this.selectarea;}) == -1) {
+              this.pageData = [].concat(_toConsumableArray(this.pageData), [{
+                areaName: this.selectarea,
+                pageNum: 0,
+                text: "",
+                isLoading: 0,
+                list: [] }]);
+
+            }_context2.next = 3;return (
+
+              fn.call(this, /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(reslove, reject) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+                          callback(reslove, reject);case 1:case "end":return _context.stop();}}}, _callee, this);}));return function (_x3, _x4) {return _ref.apply(this, arguments);};}()));case 3:case "end":return _context2.stop();}}}, _callee2, this);}));return _loadmore.apply(this, arguments);}function
+
+
+
+
+fn(_x2) {return _fn.apply(this, arguments);}function _fn() {_fn = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(callback) {var _this2 = this;var index, item, v, result, s, text, m;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:
+            //获取需要加载的选项
+            index = parseInt(this.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
+            //停止加载
+            if (!(this.pageData[index].text == "到底了")) {_context3.next = 3;break;}return _context3.abrupt("return");case 3:
+
+
+            //加页数
+            item = this.pageData[index];
+            item.pageNum = ++item.pageNum;
+            this.$set(this.pageData, index, item);
+
+            //第一次加载添加加载中的对话
+            if (this.pageData[index].pageNum == 1) {
+              wx.showLoading({
+                title: "加载中",
+                mask: true });
+
+            }
+            //显示加载中
+            v = this.pageData[index];
+            v.isLoading = true;
+            v.text = "加载中...";
+            this.$set(this.pageData, index, v);
+
+            //获取数据
+            _context3.next = 13;return new Promise(function (resolve, reject) {
+              callback(resolve, reject);
+            });case 13:result = _context3.sent;
+            //隐藏loading框
+            wx.hideLoading();
+
+            s = this.pageData[index];
+            s.isLoading = false;
+            this.$set(this.pageData, index, s);
+
+            //设置加载文案
+            text = "";
+            if (this.pageData[index].pageNum == 1 && result.length == 0) {
+              text = "没有数据";
+            } else if (this.pageData[index].pageNum >= 1 && result.length == 10) {
+              text = "上拉加载更多";
+            } else {
+              text = "到底了";
+            }
+
+            m = this.pageData[index];
+            m.text = text;
+            this.$set(this.pageData, index, m);case 23:case "end":return _context3.stop();}}}, _callee3, this);}));return _fn.apply(this, arguments);}
 
 /***/ }),
 
@@ -10581,7 +10634,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index/index": { "navigationBarTitleText": "首页", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white", "backgroundColor": "#38A472", "usingComponents": { "ser": "/mycomponents/Ser/Ser", "bw-swiper": "/mycomponents/bw-swiper/bw-swiper", "my-list": "/mycomponents/my-list/my-list" } }, "pages/me/me/me": { "navigationBarTitleText": "我的", "usingComponents": { "uni-grid": "/mycomponents/uni-grid/uni-grid", "uni-grid-item": "/mycomponents/uni-grid-item/uni-grid-item" } }, "pages/cate/cate/cate": { "navigationBarTitleText": "分类", "disableScroll": true, "usingComponents": { "ser": "/mycomponents/Ser/Ser", "uni-grid": "/mycomponents/uni-grid/uni-grid", "uni-grid-item": "/mycomponents/uni-grid-item/uni-grid-item" } }, "pages/cart/cart/cart": { "navigationBarTitleText": "购物车", "usingComponents": {} }, "pages/me/address/address": { "navigationBarTitleText": "添加地址", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/me/address_list/address_list": { "navigationBarTitleText": "收货地址管理", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/index/search/search": { "navigationBarTitleText": "搜索商品", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white", "usingComponents": { "ser": "/mycomponents/Ser/Ser" } }, "pages/me/logistics/logistics": { "navigationBarTitleText": "查看物流", "usingComponents": {} }, "pages/me/wxlogin/wxlogin": { "navigationBarTitleText": "", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/index/product/product": { "navigationBarTitleText": "商品详情", "usingComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#fff", "backgroundColor": "#fff" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index/index": { "navigationBarTitleText": "首页", "navigationBarBackgroundColor": "#fff", "navigationBarTextStyle": "black", "backgroundColor": "#fff", "usingComponents": { "ser": "/mycomponents/Ser/Ser", "bw-swiper": "/mycomponents/bw-swiper/bw-swiper", "my-list": "/mycomponents/my-list/my-list" } }, "pages/me/me/me": { "navigationBarTitleText": "我的", "usingComponents": { "uni-grid": "/mycomponents/uni-grid/uni-grid", "uni-grid-item": "/mycomponents/uni-grid-item/uni-grid-item" } }, "pages/cate/cate/cate": { "navigationBarTitleText": "分类", "disableScroll": true, "usingComponents": { "ser": "/mycomponents/Ser/Ser", "uni-grid": "/mycomponents/uni-grid/uni-grid", "uni-grid-item": "/mycomponents/uni-grid-item/uni-grid-item" } }, "pages/cart/cart/cart": { "navigationBarTitleText": "购物车", "usingComponents": {} }, "pages/me/address/address": { "navigationBarTitleText": "添加地址", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/me/address_list/address_list": { "navigationBarTitleText": "收货地址管理", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/index/search/search": { "navigationBarTitleText": "搜索商品", "navigationBarBackgroundColor": "#38A472", "navigationBarTextStyle": "white", "usingComponents": { "ser": "/mycomponents/Ser/Ser" } }, "pages/me/logistics/logistics": { "navigationBarTitleText": "查看物流", "usingComponents": {} }, "pages/me/wxlogin/wxlogin": { "navigationBarTitleText": "", "usingComponents": { "my-button": "/mycomponents/my-button/my-button" } }, "pages/index/product/product": { "navigationStyle": "custom", "usingComponents": { "my-button": "/mycomponents/my-button/my-button", "my-tag": "/mycomponents/my-tag/my-tag" } }, "pages/me/order/order": { "navigationBarTitleText": "订单列表", "usingComponents": {} }, "pages/me/refund/refund": { "navigationBarTitleText": "退货退款", "usingComponents": {} }, "pages/me/refund_apply/refund_apply": { "navigationBarTitleText": "申请退货退款", "usingComponents": { "upload-img": "/mycomponents/upload_img/upload_img" } }, "pages/index/store_details/store_details": { "navigationBarTitleText": "店铺详情", "usingComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#fff", "backgroundColor": "#fff" } };exports.default = _default;
 
 /***/ }),
 

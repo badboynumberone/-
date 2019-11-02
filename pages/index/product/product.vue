@@ -1,5 +1,9 @@
 <template>
 	<view class="main">
+		<!-- 左上角返回按钮 -->
+		<view class="back pf pr" @click="back">
+			<van-icon class="center" style="margin-top: 2px;" name="arrow-left" color="#fff" />
+		</view>
 		<!-- 轮播 -->
 		<view class="carousel">
 			<swiper indicator-dots circular=true duration="400">
@@ -10,40 +14,52 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<!-- 商品信息 -->
+		
 		<view class="wrapper">
-
-			<view class="detail fsb p10">
-				<view class="text more-hidden fz16 fb">
-					金秋红蜜桃水蜜桃子新鲜水果脆桃当金秋红蜜桃水蜜桃子新鲜水果脆桃当
+			<!-- 商品信息 -->
+			<view class="info_wrapper p10">
+				<view class="detail fsb ">
+					<view class="text more-hidden fz16 fb">
+						金秋红蜜桃水蜜桃子新鲜水果脆桃当金秋红蜜桃水蜜桃子新鲜水果脆桃当
+					</view>
+					<button class="icon fm" open-type="share" >
+						<van-icon name="share" size="16px" />
+						<text>分享</text>
+					</button>
 				</view>
-				<view class="icon fm">
-					<van-icon name="share" size="16px" />
-					<text>分享</text>
+				<view class="tag ftm mt5">
+						<my-tag :type="'first'"/>
+						<my-tag class="ml10" :type="'second'"/>
+				</view>
+				<view class="price_box fsb mt20 mb10">
+					<text class="price fb fz18">￥123.00~235.00</text>
+					<text class="sal">销量123</text>
 				</view>
 			</view>
 
 			<!-- 商家 -->
-			<van-field :border="false" is-link center readonly>
-				<view class="label  fsb" slot="label">
-					<view class="mr20">
-						<Pic :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
-					</view>
-
-					<view class="info fsr">
-						<view class="text-hidden fb fz17" style="width: 230px;">
-							南京樱桃鸭业有限公司
+			<view class="business">
+				<van-field :border="false" is-link center readonly>
+					<view class="label  fsb" slot="label">
+						<view class="mr20">
+							<Pic :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
 						</view>
-						<view class="text-hidden" style="width: 230px;color: #666;">
-							南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
+				
+						<view class="info fsr">
+							<view class="text-hidden fb fz17" style="width: 230px;">
+								南京樱桃鸭业有限公司
+							</view>
+							<view class="text-hidden" style="width: 230px;color: #666;">
+								南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
+							</view>
 						</view>
 					</view>
-				</view>
-
-			</van-field>
+				</van-field>
+			</view>
+			
 
 			<!-- 推荐 -->
-			<view class="intro p10">
+			<!-- <view class="intro p10">
 				<view class="h1 fz18 fb mb10" style="line-height: 40px;">
 					推荐理由
 				</view>
@@ -53,11 +69,11 @@
 						盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油
 					</div>
 				</view>
-			</view>
+			</view> -->
 
 			<!-- 图片 -->
-			<view class="image p10">
-				<view class="h1 fz18 fb mb10">
+			<view class="image ">
+				<view class="h1 fz18 fb p10">
 					商品详情
 				</view>
 				<view class="container">
@@ -103,6 +119,7 @@
 						</view>
 					</view>
 				</view>
+				
 				<view v-for="(item,index) in specList" :key="index" class="attr-list">
 					<text>{{item.name}}</text>
 					<view class="item-list">
@@ -112,6 +129,14 @@
 						</text>
 					</view>
 				</view>
+				
+				<view class="attr-list">
+					<text>数量</text>
+					<view class="item-list">
+						<van-stepper :value="count" @change="onCountChange" />
+					</view>
+				</view>
+				
 				<view style="height: 50px;">
 					
 				</view>
@@ -130,12 +155,15 @@
 
 <script>
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
+	import MyTag from "../../../mycomponents/my-tag/my-tag.vue";
+	
 	export default {
 		components: {
-			MyButton
+			MyButton,MyTag
 		},
 		data() {
 			return {
+				count:0,//商品数量
 				imgList: ['https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg',
 						'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg',
 						'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
@@ -201,6 +229,16 @@
 			};
 		},
 		methods:{
+			//数量绑定
+			onCountChange(e){
+				this.count = e.detail;
+			},
+			//返回上一级
+			back(){
+				uni.navigateBack({
+					delta:1
+				})
+			},
 			//预览图片
 			previewImg(e){
 				console.log(e.currentTarget.dataset.imgs)
@@ -259,7 +297,35 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+	.business{
+		.label {
+			.info {
+				flex-flow: column wrap;
+			}
+		}
+	}
+	
+	.back{
+		top: 50rpx;
+		left: 30rpx;
+		@include borderRadius(30px);
+		background: rgba(0,0,0,0.5);
+		z-index: 9;
+	}
 	.wrapper {
+		.price_box{
+			align-items: flex-end;
+			text{
+				line-height: 0;
+			}
+			.price{
+				font-size: 25px;
+				color: $theme;
+			}
+			.sal{
+				color: #666;
+			}
+		}
 		.detail {
 			.text {
 				line-height: 23px;
@@ -267,19 +333,21 @@
 			}
 
 			.icon {
+				background: none;
+				font-size: 12px;
+				margin-top: -4px;
+				&::after {
+					border: none;
+				}
 				flex-flow: column wrap;
-
 				text {
 					white-space: nowrap;
+					line-height: 10px;
 				}
 			}
 		}
 
-		.label {
-			.info {
-				flex-flow: column wrap;
-			}
-		}
+		
 	}
 
 	// 轮播
@@ -355,15 +423,16 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background: #eee;
-				margin-right: 20upx;
-				margin-bottom: 20upx;
+				background: #F2F3F5;
+				margin-right: 10upx;
+				margin-bottom: 15upx;
 				border-radius: 100upx;
-				min-width: 60upx;
-				height: 60upx;
+				min-width: 56upx;
+				height: 56upx;
 				padding: 0 20upx;
-				font-size: $font-base;
+				font-size: 12px;
 				color: $font-color-dark;
+				border: 1upx solid #eee;
 			}
 			.selected{
 				background: #fff;

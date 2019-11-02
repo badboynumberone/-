@@ -2,8 +2,8 @@
 	<view class="main">
 		<!-- 头部 -->
 		<div class="top f p20 pr" @click="navigateTo" :data-url="'/pages/me/wxlogin/wxlogin'">
-			<button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
-			 @getuserinfo="getUserInfo"></button>
+			<!-- <button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
+			 @getuserinfo="getUserInfo"></button> -->
 
 			<div class="left mr20">
 				<Pic :height="'100%'" :width="'100%'" :mode="'aspectFill'" :round="true"></Pic>
@@ -117,6 +117,7 @@
 			refresh() {
 				const lastpages = pages[pages.length - 2];
 				lastpages.hook(true);
+				
 			},
 			//获取用户信息
 			getUserInfo() {

@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | mycomponents/uni-grid/uni-grid */ "mycomponents/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../mycomponents/uni-grid/uni-grid.vue */ 132));};var uniGridItem = function uniGridItem() {return __webpack_require__.e(/*! import() | mycomponents/uni-grid-item/uni-grid-item */ "mycomponents/uni-grid-item/uni-grid-item").then(__webpack_require__.bind(null, /*! ../../../mycomponents/uni-grid-item/uni-grid-item.vue */ 139));};
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniGrid = function uniGrid() {return __webpack_require__.e(/*! import() | mycomponents/uni-grid/uni-grid */ "mycomponents/uni-grid/uni-grid").then(__webpack_require__.bind(null, /*! ../../../mycomponents/uni-grid/uni-grid.vue */ 158));};var uniGridItem = function uniGridItem() {return __webpack_require__.e(/*! import() | mycomponents/uni-grid-item/uni-grid-item */ "mycomponents/uni-grid-item/uni-grid-item").then(__webpack_require__.bind(null, /*! ../../../mycomponents/uni-grid-item/uni-grid-item.vue */ 165));};
 
 
 
@@ -241,6 +241,7 @@ var pageNum = 0;var _default =
     refresh: function refresh() {
       var lastpages = pages[pages.length - 2];
       lastpages.hook(true);
+
     },
     //获取用户信息
     getUserInfo: function getUserInfo() {

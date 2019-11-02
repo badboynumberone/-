@@ -104,11 +104,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"mycomponents/Pic/Pic":1,"mycomponents/Ser/Ser":1,"mycomponents/bw-swiper/bw-swiper":1,"mycomponents/my-list/my-list":1,"mycomponents/uni-grid-item/uni-grid-item":1,"mycomponents/uni-grid/uni-grid":1,"mycomponents/my-button/my-button":1,"mycomponents/uni-badge/uni-badge":1};
+/******/ 		var cssChunks = {"mycomponents/Pic/Pic":1,"mycomponents/Ser/Ser":1,"mycomponents/bw-swiper/bw-swiper":1,"mycomponents/my-list/my-list":1,"mycomponents/uni-grid-item/uni-grid-item":1,"mycomponents/uni-grid/uni-grid":1,"mycomponents/my-button/my-button":1,"mycomponents/my-tag/my-tag":1,"mycomponents/upload_img/upload_img":1,"mycomponents/my-item/my-item":1,"mycomponents/uni-badge/uni-badge":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"mycomponents/Pic/Pic":"mycomponents/Pic/Pic","mycomponents/Ser/Ser":"mycomponents/Ser/Ser","mycomponents/bw-swiper/bw-swiper":"mycomponents/bw-swiper/bw-swiper","mycomponents/my-list/my-list":"mycomponents/my-list/my-list","mycomponents/uni-grid-item/uni-grid-item":"mycomponents/uni-grid-item/uni-grid-item","mycomponents/uni-grid/uni-grid":"mycomponents/uni-grid/uni-grid","mycomponents/my-button/my-button":"mycomponents/my-button/my-button","mycomponents/uni-badge/uni-badge":"mycomponents/uni-badge/uni-badge"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"mycomponents/Pic/Pic":"mycomponents/Pic/Pic","mycomponents/Ser/Ser":"mycomponents/Ser/Ser","mycomponents/bw-swiper/bw-swiper":"mycomponents/bw-swiper/bw-swiper","mycomponents/my-list/my-list":"mycomponents/my-list/my-list","mycomponents/uni-grid-item/uni-grid-item":"mycomponents/uni-grid-item/uni-grid-item","mycomponents/uni-grid/uni-grid":"mycomponents/uni-grid/uni-grid","mycomponents/my-button/my-button":"mycomponents/my-button/my-button","mycomponents/my-tag/my-tag":"mycomponents/my-tag/my-tag","mycomponents/upload_img/upload_img":"mycomponents/upload_img/upload_img","mycomponents/my-item/my-item":"mycomponents/my-item/my-item","mycomponents/uni-badge/uni-badge":"mycomponents/uni-badge/uni-badge"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

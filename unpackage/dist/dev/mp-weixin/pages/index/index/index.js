@@ -1,6 +1,6 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/index/index/index"],{
 
-/***/ 160:
+/***/ 25:
 /*!*****************************************************************************!*\
   !*** E:/workspace/小程序/App/main.js?{"page":"pages%2Findex%2Findex%2Findex"} ***!
   \*****************************************************************************/
@@ -122,9 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 111));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 118));};var MyList = function MyList() {return __webpack_require__.e(/*! import() | mycomponents/my-list/my-list */ "mycomponents/my-list/my-list").then(__webpack_require__.bind(null, /*! ../../../mycomponents/my-list/my-list.vue */ 125));};var _default =
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var Ser = function Ser() {return __webpack_require__.e(/*! import() | mycomponents/Ser/Ser */ "mycomponents/Ser/Ser").then(__webpack_require__.bind(null, /*! ../../../mycomponents/Ser/Ser */ 137));};var BwSwiper = function BwSwiper() {return __webpack_require__.e(/*! import() | mycomponents/bw-swiper/bw-swiper */ "mycomponents/bw-swiper/bw-swiper").then(__webpack_require__.bind(null, /*! ../../../mycomponents/bw-swiper/bw-swiper */ 144));};var MyList = function MyList() {return __webpack_require__.e(/*! import() | mycomponents/my-list/my-list */ "mycomponents/my-list/my-list").then(__webpack_require__.bind(null, /*! ../../../mycomponents/my-list/my-list.vue */ 151));};var _default =
 
 
 
@@ -148,12 +146,28 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 {
   components: {
-    Ser: Ser, BwSwiper: BwSwiper, MyList: MyList },
+    Ser: Ser,
+    BwSwiper: BwSwiper,
+    MyList: MyList },
 
   data: function data() {
     return {
-      swiperList: [{ img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }, { img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg', text: '加油' }], pageNum: 0,
-      pageData: [],
+      swiperList: [{
+        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',
+        text: '加油' },
+      {
+        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',
+        text: '加油' },
+      {
+        img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',
+        text: '加油' }],
+
+      pageNum: 0,
+      pageData: [
+      "as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d", "asdas",
+      "adsgaassd", "asddsga",
+      "adsgaassd", "asddsga"],
+
       selectarea: "主模块" };
 
 
@@ -213,7 +227,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
                         var index = parseInt(_this2.pageData.findIndex(function (item) {return item.areaName == _this2.selectarea;}));
                         // 获取数据
                         var v = _this2.pageData[index];
-                        v.list = [].concat(_toConsumableArray(v.list), ["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+                        v.list = [].concat(_toConsumableArray(v.list), ["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
+                        "asdsa"]);
+
                         _this2.$set(_this2.pageData, index, v);
                         reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
                         res();
@@ -252,5 +268,5 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ })
 
-},[[160,"common/runtime","common/vendor"]]]);
+},[[25,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/index/index/index.js.map

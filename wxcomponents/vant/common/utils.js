@@ -16,4 +16,12 @@ exports.isNumber = isNumber;
 function range(num, min, max) {
     return Math.min(Math.max(num, min), max);
 }
+export function addUnit(value) {
+    if (!isDef(value)) {
+        return undefined;
+    }
+    value = String(value);
+    return isNumber(value) ? `${value}px` : value;
+}
+
 exports.range = range;

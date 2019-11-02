@@ -9,7 +9,11 @@
     "pages/index/search/search",
     "pages/me/logistics/logistics",
     "pages/me/wxlogin/wxlogin",
-    "pages/index/product/product"
+    "pages/index/product/product",
+    "pages/me/order/order",
+    "pages/me/refund/refund",
+    "pages/me/refund_apply/refund_apply",
+    "pages/index/store_details/store_details"
   ],
   "subPackages": [],
   "window": {
@@ -54,6 +58,7 @@
   "usingComponents": {
     "van-icon": "/wxcomponents/vant/icon/index",
     "van-button": "/wxcomponents/vant/button/index",
+    "van-image": "/wxcomponents/vant/image/index",
     "pic": "/mycomponents/Pic/Pic"
   }
 }

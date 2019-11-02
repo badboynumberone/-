@@ -1,8 +1,8 @@
 {
   "navigationBarTitleText": "首页",
-  "navigationBarBackgroundColor": "#38A472",
-  "navigationBarTextStyle": "white",
-  "backgroundColor": "#38A472",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#fff",
   "usingComponents": {
     "load-more": "/wxcomponents/load-more/index",
     "ser": "/mycomponents/Ser/Ser",

@@ -2,25 +2,14 @@
 	<view class="container clearfix">
 		<view class="content">
 			<view class="column pr5">
-				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product'">
-					<view style="border-radius: 10rpx;overflow: hidden;">
-						<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :mode="'aspectFill'" :back="'#fff'" ></Pic>
-					</view>
-					<view>{{item}}</view>
+				<view v-for="(item,index) in pageData" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product'">
+					<MyItem></MyItem>
 				</view>
 			</view>
 			
 			<view class="column pl5">
-				<view class="item p5" v-for="(item,index) in pageData" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product'">
-					<view style="border-radius: 10rpx;overflow: hidden;">
-						<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :mode="'aspectFill'" :back="'#fff'"  ></Pic>
-					</view>
-					<view class="">
-						{{item}}
-					</view>
-					<view class="">
-						{{item}}
-					</view>
+				<view v-for="(item,index) in pageData" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product'">
+					<MyItem></MyItem>
 				</view>
 			</view>
 		</view>
@@ -28,17 +17,18 @@
 </template>
 
 <script>
-	import Pic from "../Pic/Pic.vue";
+	import MyItem from "../my-item/my-item.vue";
+	
 	export default {
 		components:{
-			Pic
+			MyItem
 		},
 		props:{
 			pageData:{
 				type:Array,
 				default:function(){
 					return [
-						"asd","asdas",
+						"as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d","asdas",
 						"adsgaassd","asddsga",
 						"adsgaassd","asddsga"
 					]
@@ -70,11 +60,7 @@
 			display: flex;
 			.column {
 				width: 50%;
-				.item{
-					background: #fff;
-					box-shadow: 0px 0px 5px 2px #E8E8E8;
-					margin-bottom: 5px;
-				}
+				
 			}
 		}
 		

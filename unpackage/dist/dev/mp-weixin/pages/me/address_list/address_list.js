@@ -162,7 +162,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _dialog = _interopRequireDefault(__webpack_require__(/*! ../../../wxcomponents/vant/dialog/dialog */ 71));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var MyButton = function MyButton() {return __webpack_require__.e(/*! import() | mycomponents/my-button/my-button */ "mycomponents/my-button/my-button").then(__webpack_require__.bind(null, /*! ../../../mycomponents/my-button/my-button.vue */ 146));};var _default =
+var _dialog = _interopRequireDefault(__webpack_require__(/*! ../../../wxcomponents/vant/dialog/dialog */ 71));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var MyButton = function MyButton() {return __webpack_require__.e(/*! import() | mycomponents/my-button/my-button */ "mycomponents/my-button/my-button").then(__webpack_require__.bind(null, /*! ../../../mycomponents/my-button/my-button.vue */ 172));};var _default =
 {
   components: {
     MyButton: MyButton },

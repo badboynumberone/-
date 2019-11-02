@@ -18,7 +18,6 @@ export default async function loadmore(callback) {
 async function fn(callback) {
 	//获取需要加载的选项
 	const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
-	console.log(index)
 	//停止加载
 	if (this.pageData[index].text == "到底了") {
 		return;
