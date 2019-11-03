@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "购物车",
-  "usingComponents": {
-    "van-submit-bar": "/wxcomponents/vant/submit-bar/index",
-    "van-radio": "/wxcomponents/vant/radio/index",
-    "van-radio-group": "/wxcomponents/vant/radio-group/index"
-  }
-}

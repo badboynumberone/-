@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "添加地址",
-  "usingComponents": {
-    "van-icon": "/wxcomponents/vant/icon/index",
-    "van-field": "/wxcomponents/vant/field/index",
-    "my-button": "/mycomponents/my-button/my-button"
-  }
-}
