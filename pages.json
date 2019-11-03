@@ -40,7 +40,12 @@
 				"usingComponents": {
 					"van-submit-bar": "/wxcomponents/vant/submit-bar/index",
 					"van-radio": "/wxcomponents/vant/radio/index",
-					"van-radio-group": "/wxcomponents/vant/radio-group/index"
+					"van-radio-group": "/wxcomponents/vant/radio-group/index",
+					"van-checkbox": "/wxcomponents/vant/checkbox/index",
+					"van-checkbox-group": "/wxcomponents/vant/checkbox-group/index",
+					"van-stepper": "/wxcomponents/vant/stepper/index",
+					"load-more": "/wxcomponents/load-more/index",
+					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
 		}, {
@@ -142,7 +147,10 @@
             "style" : {
 				"navigationBarTitleText": "店铺详情",
 				"usingComponents": {
-					"van-field": "/wxcomponents/vant/field/index"
+					"van-field": "/wxcomponents/vant/field/index",
+					"van-divider": "/wxcomponents/vant/divider/index",
+					"load-more": "/wxcomponents/load-more/index"
+					
 				}
 			}
         }
