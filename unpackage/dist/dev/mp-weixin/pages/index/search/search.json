@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "搜索商品",
-  "navigationBarBackgroundColor": "#38A472",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "van-dialog": "/wxcomponents/vant/dialog/index",
-    "ser": "/mycomponents/Ser/Ser"
-  }
-}

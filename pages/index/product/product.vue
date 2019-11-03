@@ -38,7 +38,7 @@
 			</view>
 
 			<!-- 商家 -->
-			<view class="business">
+			<view class="business" @click="navigateTo" :data-url="'/pages/index/store_details/store_details'">
 				<van-field :border="false" is-link center readonly>
 					<view class="label  fsb" slot="label">
 						<view class="mr20">
@@ -281,6 +281,10 @@
 					} 
 				})
 				
+			},
+			//页面跳转
+			navigateTo(e) {
+				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			showModal(){
 				this.toggleSpec();
