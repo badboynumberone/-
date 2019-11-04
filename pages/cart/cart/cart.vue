@@ -27,10 +27,18 @@
 				</view>
 			</view>
 			<view class="content ftm p10" v-for="(item,index) in single.goods" :key="index">
-				<van-checkbox :value="item.ischecked" @change="onGoodsChange(idx,index)" />
+				<view style="width: 100%;">
+					<van-checkbox v-if="!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!isEdit)" :value="item.ischecked" @change="onGoodsChange(idx,index)" />
+				</view>
+				
 				<view class="info f ml10 pr">
 					<view class="pa" style="height: 100%;width: 220px;opacity: 0;z-index: 9;top: 0px;left: 0px;" @click="navigateTo" :data-url="'/pages/index/product/product'"></view>
-					<Pic :src="item.goodsPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
+					<view class="pr">
+						<Pic :src="item.goodsPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
+						<view class="status center" v-if="item.status==1&&item.leftNum<=0">已售罄</view>
+						<view class="status center" v-if="item.status==2">已下架</view>
+						<view class="left pa" v-if="item.status==1&&item.leftNum<=5&&item.leftNum>0">仅剩{{item.leftNum}}件</view>
+					</view>
 					<view class="text f ml10">
 						<text class="text-hidden" style="width: 230px;">{{item.goodsName}}</text>
 						<text class="text-hidden fz10 size" :decode="true" style="width: 240px;">{{item.goodsSize}}</text>
@@ -49,14 +57,14 @@
 		<view style="height: 50px;"></view>
 		<!-- 底部结算条 -->
 		<view class="submit_bar pf">
-			<van-submit-bar :price="totalPrice" :button-text="isEdit?'删除':'提交订单'" @submit="onClickButton" :tip="true">
+			<van-submit-bar :price="totalPrice" :button-text="isEdit?`删除`:`结算(${selectedCount})`" @submit="onClickButton" :tip="true">
 				<view class="pl10">
 					<van-checkbox :value="isAllChecked" @change="onAllChange()">全选</van-checkbox>
 				</view>
 			</van-submit-bar>
-			<!-- 模态框 -->
-			<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 		</view>
+		<!-- 模态框 -->
+		<van-dialog id="van-dialog" confirm-button-color="#38A472" :z-index="999" />
 	</view>
 </template>
 
@@ -78,14 +86,18 @@
 						goodsSize: "10斤 5号",
 						goodsPrice: 13.5,
 						goodsNum: 1,
-						ischecked: false
+						ischecked: false,
+						status:1,
+						leftNum:10
 					}, {
 						goodsPic: "https://gw.alicdn.com/bao/upload/TB1YIrykbH1gK0jSZFwXXc7aXXa.jpg_Q75.jpg",
 						goodsName: "云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯",
 						goodsSize: "10斤 5号",
 						goodsPrice: 13.5,
 						goodsNum: 1,
-						ischecked: true
+						ischecked: true,
+						status:2,
+						leftNum:3
 					}]
 				}, {
 					shopName: "南京普贸有限公司",
@@ -95,14 +107,18 @@
 						goodsSize: "10斤 5号",
 						goodsPrice: 13.5,
 						goodsNum: 1,
-						ischecked: true
+						ischecked: true,
+						status:2,
+						leftNum:4
 					}, {
 						goodsPic: "https://gw.alicdn.com/bao/upload/TB1YIrykbH1gK0jSZFwXXc7aXXa.jpg_Q75.jpg",
 						goodsName: "铃薯云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯",
 						goodsSize: "10斤 5号",
 						goodsPrice: 13.5,
 						goodsNum: 3,
-						ischecked: true
+						ischecked: true,
+						status:1,
+						leftNum:2
 					}]
 				}, ],
 				checked: false
@@ -111,16 +127,19 @@
 		computed: {
 			//店铺是否全选
 			isStoreChecked() {
+				let _this = this;
 				return function(arr = [{
 					ischecked: false
 				}]) {
+					arr = arr.filter(item=>!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!_this.isEdit));
 					return arr.every((item)=>item.ischecked==true);
 				}
 			},
 			// 商品是否全选
 			isAllChecked(){
-				let arr=[];
+				let arr=[];let _this = this;
 				this.cartData.forEach(item=>{arr=[...arr,...item.goods]});
+				arr = arr.filter(item=>!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!_this.isEdit));
 				return this.cartData==false ? false:arr.every((item)=>item.ischecked==true);
 			},
 			//计算已选商品的数量
@@ -128,7 +147,10 @@
 				let count = 0;
 				this.cartData.forEach((item,idx)=>{
 					item.goods.forEach((single,index)=>{
-						if(single.ischecked){
+						if(!this.isEdit && single.ischecked && !((single.status==1&&single.leftNum<=0) || (single.status==2))){
+							count++;
+						}
+						if(this.isEdit && single.ischecked){
 							count++;
 						}
 					})
@@ -140,7 +162,7 @@
 				let total = 0;
 				this.cartData.forEach((item,idx)=>{
 					item.goods.forEach((single,index)=>{
-						if(single.ischecked){
+						if(single.ischecked && !((single.status==1&&single.leftNum<=0) || (single.status==2))){
 							total+=(single.goodsPrice*100*single.goodsNum);
 						}
 					})
@@ -170,7 +192,7 @@
 			onStoreChange(idx){
 					const flag = this.cartData[idx].goods.every((item)=>item.ischecked==true);
 					this.cartData[idx].goods.forEach((item,index)=>{
-						this.$set(this.cartData[idx].goods[index],'ischecked',!flag);
+						item.ischecked = !flag
 					});
 			},
 			//当商品复选框改变时
@@ -182,12 +204,33 @@
 				if (this.isEdit) {
 					Dialog.confirm({
 						title: '提示',
-						message: '确认删除这3件商品吗?'
+						message: `确认删除这${this.selectedCount}件商品吗?`
 					}).then(() => {
 						// on confirm
 					}).catch(() => {
 						// on cancel
 					});
+				}
+				
+				//如果是结算
+				if(!this.isEdit){
+					//深度拷贝
+					if(this.selectedCount<=0){
+						this.$tools.Toast("您还没有选择宝贝哦")
+						return;
+					}
+					const cartData = JSON.parse(JSON.stringify(this.cartData));
+					const checkedResult = cartData.filter(item=>{
+						const filterResult = item.goods.reduce((arr,single)=>{
+							   const flag = !(single.status==1&&single.leftNum<=0 || single.status==2) && single.ischecked;
+							   return flag ? [...arr,single]:arr
+						},[]);
+						if(filterResult!=false){
+							item.goods=filterResult;
+						}
+						return filterResult!=false
+					});
+					console.log(checkedResult)
 				}
 
 			},
@@ -218,8 +261,26 @@
 
 		.content {
 			align-items: center;
-
+			
 			.info {
+				.status{
+					@include borderRadius(110rpx);
+					background: rgba(0,0,0,0.6);
+					line-height: 110rpx;
+					text-align: center;
+					z-index: 0;
+					@include sc(12px,#f1f1f1);
+				}
+				.left{
+					@include sc(12px,#f1f1f1);
+					line-height: 20px;
+					width: 100%;
+					text-align: center;
+					z-index: 0;
+					background: rgba(0,0,0,0.6);
+					bottom: 0px;
+					left: 0px;
+				}
 				.text {
 					flex-flow: column wrap;
 
