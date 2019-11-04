@@ -118,7 +118,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
 
 	.swiper {
