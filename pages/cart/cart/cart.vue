@@ -230,7 +230,7 @@
 						}
 						return filterResult!=false
 					});
-					console.log(checkedResult)
+					this.$tools.navigateTo("/pages/cart/submit_order/submit_order");
 				}
 
 			},

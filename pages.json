@@ -150,13 +150,21 @@
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-divider": "/wxcomponents/vant/divider/index",
 					"load-more": "/wxcomponents/load-more/index"
-					
 				}
 			}
         }
         ,{
             "path" : "pages/cart/submit_order/submit_order",
-            "style" : {}
+            "style" : {
+				"navigationBarTitleText": "提交订单",
+				"backgroundColor": "#F1F1F1",
+				"usingComponents":{
+					"van-field": "/wxcomponents/vant/field/index",
+					"van-cell": "/wxcomponents/vant/cell/index",
+					"van-submit-bar": "/wxcomponents/vant/submit-bar/index",
+					"load-more": "/wxcomponents/load-more/index"
+				}
+			}
         }
     ],
 	"globalStyle": {

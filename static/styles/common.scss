@@ -20,13 +20,11 @@
     width: 90%;
     margin: 0 auto;
   }
-  image{
-  	animation: fadeIn 0.25s, 100ms;
-	transition: opacity 0.3s linear 0.3s;
-  }
   .clearfix:after { display: table; content: " "; clear: both;}
   
-
+	.s{
+		white-space: nowrap;
+	}
   
   .clearfix{ zoom: 1;}
   .fill{
@@ -132,6 +130,20 @@
   }
   .fb{
 	  font-weight: bold;
+  }
+  
+  // 边框
+  .bt{
+	  border-top: 1rpx solid #f1f1f1;
+  }
+  .bb{
+	  border-bottom: 1rpx solid #f1f1f1;
+  }
+  .bl{
+	  border-left: 1rpx solid #f1f1f1;
+  }
+  .br{
+	  border-right: 1rpx solid #f1f1f1;
   }
   
   /*编剧*/

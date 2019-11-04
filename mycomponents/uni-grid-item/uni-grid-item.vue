@@ -177,9 +177,7 @@
 		border-top: 1px #d0dee5 solid
 	}
 
-	.uni-grid-item__box.uni-highlight:active {
-		background-color: #eee
-	}
+	
 
 	.uni-grid-item__box-badge,
 	.uni-grid-item__box-dot,

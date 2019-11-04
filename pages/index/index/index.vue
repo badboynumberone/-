@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-show="isLoaded">
 
 		<!-- 搜索框 -->
 		<!-- <view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
@@ -29,7 +29,7 @@
 		data() {
 			return {
 				swiperList: [{
-					img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',
+					img: 'http://img3.imgtn.bdimg.com/it/u=3243149245,4073544300&fm=26&gp=0.jpg',
 					text: '加油'
 				}, {
 					img: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big25011.jpg',
@@ -44,8 +44,8 @@
 					"adsgaassd", "asddsga",
 					"adsgaassd", "asddsga"
 				],
-				selectarea: "主模块"
-
+				selectarea: "主模块",
+				isLoaded:false
 			}
 		},
 		computed: {
@@ -107,6 +107,7 @@
 								"asdsa"
 							]]
 							this.$set(this.pageData, index, v);
+							this.isLoaded = true;
 							reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
 							res();
 						}, 2000);
