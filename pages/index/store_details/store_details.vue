@@ -2,21 +2,27 @@
 	<view class="main">
 		<!-- 店铺信息 -->
 		<view class="store_info">
-			<view class="business pr20 pl20 pt10 pb10">
-				<view class="label f">
-					<view class="store_header mr20">
-						<Pic :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
-					</view>
-					<view class="info fsr">
-						<view class="text-hidden fb fz17" style="width: 230px;">
-							南京樱桃鸭业有限公司
+			<view class="wrapper pr">
+				<view class="business pr20 pl20 pt10 pb10 pa" style="top: 0px;left: 0px;width: 100%;z-index: 9;">
+					<view class="label f">
+						<view class="store_header mr20">
+							<Pic :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
 						</view>
-						<view class="text-hidden" style="width: 230px;color: #666;">
-							南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
+						<view class="info fsr">
+							<view class="text-hidden fb fz17" style="width: 230px;">
+								南京樱桃鸭业有限公司
+							</view>
+							<view class="text-hidden" style="width: 230px;color: #666;">
+								南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
+							</view>
 						</view>
 					</view>
 				</view>
+				<view style="height: 80px;opacity: 0.6;">
+					<Pic :src="'/static/images/background-Merchant@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
+				</view>
 			</view>
+			
 			<view class="store_word">
 				<view class="">
 					<text :class="[isLoadMore?'more-hidden':'' ,'word','p10']" :decode="true" :space="'nbsp'">南京樱桃鸭业有限公司自成立以来，一直以弘扬中国传统美食文化为己任，在传承和创新中不断快速发展，目标只为演绎出食尚和经典的金陵鸭韵，做最具南京—“中国鸭都”形象的一张城市名片，成为南京美食的延续者，让它去务实的触摸老百姓的生活，显示一个真实的南京、回味隽秀的南京、魂牵梦绕的南京。</text>
@@ -41,9 +47,10 @@
 
 <script>
 	import MyList from "../../../mycomponents/my-list/my-list.vue";
+	import Pic from "../../../mycomponents/Pic/Pic.vue";
 	export default {
 		components:{
-			MyList
+			MyList,Pic
 		},
 		data() {
 			return {

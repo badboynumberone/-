@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main">
 
 		<!-- 搜索框 -->
 		<!-- <view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">

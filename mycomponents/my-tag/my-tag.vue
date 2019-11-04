@@ -1,7 +1,7 @@
 <template>
 	<view class="ftm">
 		<view class="ftm di" v-if="type=='first'">
-			<Pic :src="'/static/images/header.png'" :height="'50rpx'" :width="'50rpx'" :mode="'aspectFill'" :back="'#fff'" :round="true"></Pic>
+			<Pic :src="'/static/images/brand name@2x.png'" :height="'50rpx'" :width="'50rpx'" :mode="'aspectFill'" :back="'#fff'" :round="true"></Pic>
 			<text class="ml5 key">樱桃鸭</text>
 		</view>
 		

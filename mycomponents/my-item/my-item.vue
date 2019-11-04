@@ -4,7 +4,7 @@
 			<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'"
 			 :mode="'aspectFill'" :back="'#fff'"></Pic>
 		</view>
-		<view class="mt5" style="transform: scale(0.8,0.8);margin-left: -18px;">
+		<view class="mt5" style="transform: scale(0.7,0.7);margin-left: -27px;">
 			<my-tag :type="'first'" />
 		</view>
 		<text class=" fz12 more-hidden title">是东莞市大嘎达是十大杀手的哥哥都是嘎都是嘎</text>

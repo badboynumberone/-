@@ -35,11 +35,10 @@
 				<view class="box pt10 pb10">
 					<uni-grid :column="5" :show-border="false" :square="false">
 						<uni-grid-item v-for="(item,index) in keys" :key="index">
-							<view class="pic_item pr">
+							<view class="pic_item pr"  @click="navigateTo" :data-url="'/pages/me/order/order'">
 								<Pic :src="item.src" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 								<view v-if="item.num" class="pa num">{{item.num}}</view>
 							</view>
-
 							<text class="text fz12" style="color: #222;">{{item.text}}</text>
 						</uni-grid-item>
 					</uni-grid>
@@ -125,6 +124,7 @@
 			},
 			//页面跳转
 			navigateTo(e) {
+				console.log(e)
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			}
 		}
