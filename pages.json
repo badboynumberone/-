@@ -154,6 +154,10 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/cart/submit_order/submit_order",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
