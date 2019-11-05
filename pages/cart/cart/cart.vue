@@ -27,11 +27,13 @@
 				</view>
 			</view>
 			<view class="content ftm p10" v-for="(item,index) in single.goods" :key="index">
-				<view style="width: 100%;">
-					<van-checkbox v-if="!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!isEdit)" :value="item.ischecked" @change="onGoodsChange(idx,index)" />
+				
+				<view class="pr10 ftm pr" style="height: 75px;width: 100%;" >
+						<van-checkbox :class="'key-'+idx+'-'+index" v-if="!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!isEdit)" :value="item.ischecked" @change="onGoodsChange(idx,index)" />
+						<view class="pa" style="top: 0px;left: 0px;z-index: 9;width: 30px;height: 100%;" @click="clickCheckHandle($event,idx,index)"></view>
 				</view>
 				
-				<view class="info f ml10 pr">
+				<view class="info f  pr">
 					<view class="pa" style="height: 100%;width: 220px;opacity: 0;z-index: 9;top: 0px;left: 0px;" @click="navigateTo" :data-url="'/pages/index/product/product'"></view>
 					<view class="pr">
 						<Pic :src="item.goodsPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
@@ -194,6 +196,11 @@
 					this.cartData[idx].goods.forEach((item,index)=>{
 						item.ischecked = !flag
 					});
+			},
+			clickCheckHandle(e,idx,index){
+				const checkbox = this.$mp.page.selectComponent(`.key-${idx}-${index}`);
+				console.log(checkbox)
+				checkbox.toggle();
 			},
 			//当商品复选框改变时
 			onGoodsChange(idx,index){
