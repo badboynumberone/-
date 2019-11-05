@@ -165,9 +165,17 @@
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-submit-bar": "/wxcomponents/vant/submit-bar/index",
-					
 					"load-more": "/wxcomponents/load-more/index"
-					
+				}
+			}
+        }
+        ,{
+            "path" : "pages/me/order_detail/order_detail",
+            "style" : {
+				"navigationBarTitleText": "订单详情",
+				"usingComponents":{
+					"van-field": "/wxcomponents/vant/field/index",
+					"van-tag": "/wxcomponents/vant/tag/index"
 				}
 			}
         }

@@ -58,6 +58,10 @@
 		methods: {
 			onTabChange(e){
 				this.active = parseInt(e.detail.index);
+			},
+			//页面跳转
+			navigateTo(e) {
+				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			}
 		}
 	}
