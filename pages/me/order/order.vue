@@ -20,10 +20,24 @@
 					实付款:<text class="theme fz16 fb">￥68.90</text>
 				</view>
 				<view class="action f p5">
-					<view class="mr5">
+					<!-- <view class="ml5">
 						<van-tag plain round size="medium">取消订单</van-tag>
 					</view>
-					<van-tag type="success" plain round size="medium" :color="'#38A472'">支付23时59分</van-tag>
+					<view class="ml5">
+						<van-tag type="success" plain round size="medium" :color="'#38A472'">支付23时59分</van-tag>
+					</view>
+					<view class="ml5">
+						<van-tag plain round size="medium">申请退货退款</van-tag>
+					</view> -->
+					<view class="ml5">
+						<van-tag plain round size="medium">删除订单</van-tag>
+					</view>
+					<view class="ml5">
+						<van-tag plain round size="medium">查看物流</van-tag>
+					</view>
+					<view class="ml5">
+						<van-tag type="success" round size="medium" :color="'#38A472'">确认收货</van-tag>
+					</view>
 				</view>
 			</view>
 		</div>

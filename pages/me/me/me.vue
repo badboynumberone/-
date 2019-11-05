@@ -35,7 +35,7 @@
 				<view class="box pt10 pb10">
 					<uni-grid :column="5" :show-border="false" :square="false">
 						<uni-grid-item v-for="(item,index) in keys" :key="index">
-							<view class="pic_item pr"  @click="navigateTo" :data-url="'/pages/me/order/order'">
+							<view class="pic_item pr"  @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
 								<Pic :src="item.src" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 								<view v-if="item.num" class="pa num">{{item.num}}</view>
 							</view>
@@ -123,8 +123,11 @@
 
 			},
 			//页面跳转
-			navigateTo(e) {
-				console.log(e)
+			navigateTo(e,index) {
+				if(index==4){
+					this.$tools.navigateTo("/pages/me/refund/refund");
+					return;
+				}
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			}
 		}

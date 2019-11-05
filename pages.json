@@ -130,7 +130,9 @@
 				"navigationBarTitleText": "退货退款",
 				"usingComponents": {
 					"van-tab": "/wxcomponents/vant/tab/index",
-					"van-tabs": "/wxcomponents/vant/tabs/index"
+					"van-tabs": "/wxcomponents/vant/tabs/index",
+					"load-more": "/wxcomponents/load-more/index",
+					"van-tag": "/wxcomponents/vant/tag/index"
 				}
 			}
         }
