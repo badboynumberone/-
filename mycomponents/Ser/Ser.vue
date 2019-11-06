@@ -2,9 +2,9 @@
 	<view>
 		<!-- 搜索框 -->
 		<view class="searchTopBox" :style="{'background':back}">
-			<view class="searchBoxRadius" style="box-shadow:0 0 0 5 rgba(0,0,0,0.1);">
+			<view class="searchBoxRadius" style="box-shadow:0px 0px 5px  rgba(0,0,0,0.1);">
 				<view class="grace-search-icon searchBoxIcon">
-					<van-icon name="search" :color="'#38A472'" />
+					<van-icon name="search" :color="'#666'" />
 				</view>
 				<input class="searchBoxIpt" type="search" confirm-type="搜索" :value="searchValue" placeholder="搜索商品" :disabled="isDisabled"
 				 maxlength="30" @input="bindValue" @confirm="confirmContent"></input>
@@ -75,7 +75,6 @@
 		width: 90%;
 		height: 60upx;
 		background-color: #fff;
-		border: 1upx solid #ccc;
 		margin-left: 5%;
 		overflow: hidden;
 		border-radius: 35upx;

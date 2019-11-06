@@ -179,6 +179,16 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/index/brand/brand",
+            "style" : {
+				"navigationBarTitleText": "自由品牌",
+				"usingComponents":{
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
+				}
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -201,12 +211,7 @@
 			"iconPath": "static/images/home@2x.png",
 			"selectedIconPath": "static/images/home-Selection@2x.png",
 			"text": "首页"
-		}, {
-			"pagePath": "pages/cate/cate/cate",
-			"iconPath": "static/images/classify@2x.png",
-			"selectedIconPath": "static/images/classify-Selection@2x.png",
-			"text": "分类"
-		}, {
+		},  {
 			"pagePath": "pages/cart/cart/cart",
 			"iconPath": "static/images/shopping-Cart@2x.png",
 			"selectedIconPath": "static/images/shopping-Cart-Selection@2x.png",
