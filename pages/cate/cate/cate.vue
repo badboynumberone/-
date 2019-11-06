@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-if="isLoaded">
 		
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
@@ -8,13 +8,11 @@
 		
 		<!-- 内容 -->
 		<view style="height: 45px;">
-			
-			
 		</view>
 		<view class=" fsb">
 			<scroll-view scroll-y="true" :style="{height: scrollHeight,width: '85px'}" >
 				<van-sidebar :active="active" @change="onChange">
-				  <van-sidebar-item v-for="(item,index) in 20" title="标签名称" />
+				  <van-sidebar-item v-for="(item,index) in 20" :key="index" title="标签名称" />
 				</van-sidebar>
 			</scroll-view>
 			<scroll-view scroll-y="true" style="height: 100%;width: 290px;" >
@@ -47,6 +45,7 @@
 		},
 		data() {
 			return {
+				isLoaded:false,
 				active: 0,
 				scrollHeight:"",
 				keys: [{
@@ -83,7 +82,12 @@
 			}
 		},
 		onLoad() {
-			this.computeScrollHeight();
+			uni.showLoading({
+				title:"加载中",
+				mask: false
+			});
+			setTimeout(()=>{this.computeScrollHeight();uni.hideLoading();this.isLoaded=true},1000)
+			
 		},
 		methods: {
 			//页面跳转

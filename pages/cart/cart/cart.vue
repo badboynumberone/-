@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-if="isLoaded">
 		<!-- 编辑栏 -->
 		<view class="top_bar fsb p10 pf">
 			<text class="good_count fz10">已选{{selectedCount}}件商品</text>
@@ -76,8 +76,16 @@
 		components: {
 
 		},
+		onLoad() {
+			uni.showLoading({
+				title:"加载中",
+				mask: false
+			});
+			setTimeout(()=>{uni.hideLoading();this.isLoaded=true},1000)
+		},
 		data() {
 			return {
+				isLoaded:false,
 				allRadio: '1',
 				isEdit: false, //顶部文案
 				cartData: [{
@@ -127,6 +135,13 @@
 			}
 		},
 		computed: {
+			
+			setTimeGetData(){
+				const app = getApp();
+				this.getData()
+				return null;
+			},
+			
 			//店铺是否全选
 			isStoreChecked() {
 				let _this = this;
@@ -173,6 +188,10 @@
 			}
 		},
 		methods: {
+			//获取数据
+			async getData(){
+				console.log("jaja")
+			},
 			//页面跳转
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)

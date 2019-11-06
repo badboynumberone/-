@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-if="isLoaded">
 		<!-- 头部 -->
 		<div class="top f p20 pr" @click="navigateTo" :data-url="'/pages/me/wxlogin/wxlogin'">
 			<!-- <button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
@@ -36,7 +36,9 @@
 					<uni-grid :column="5" :show-border="false" :square="false">
 						<uni-grid-item v-for="(item,index) in keys" :key="index">
 							<view class="pic_item pr"  @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
-								<Pic :src="item.src" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+								<view style="height: 45px;width: 45px;">
+									<Pic :src="item.src" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+								</view>
 								<view v-if="item.num" class="pa num">{{item.num}}</view>
 							</view>
 							<text class="text fz12" style="color: #222;">{{item.text}}</text>
@@ -72,6 +74,7 @@
 		},
 		data() {
 			return {
+				isLoaded:false,
 				keys: [{
 						text: "待付款",
 						url: "",
@@ -106,6 +109,14 @@
 				
 				
 			}
+		},
+		onLoad() {
+			uni.showLoading({
+				title:"加载中",
+				mask: false
+			});
+			setTimeout(()=>{uni.hideLoading();this.isLoaded=true},1000)
+			
 		},
 		computed: {
 			isLogin() {
