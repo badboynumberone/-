@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view v-if="type==1" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
-			<van-button :color="color" block round :size="size"><text style="color: #fff;">{{text}}</text></van-button>
+			<van-button :color="color" block :round="round" :size="size"><text style="color: #fff;">{{text}}</text></van-button>
 		</view>
 
 		<view v-if="type==2" style="width: 100%">
@@ -9,11 +9,11 @@
 		</view>
 
 		<view v-if="type==3" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
-			<van-button :color="color" block round open-type="getUserInfo" @getuserinfo="getUserInfo"><text style="color: #fff;">{{text}}</text></van-button>
+			<van-button :color="color" block :round="round" open-type="getUserInfo" @getuserinfo="getUserInfo"><text style="color: #fff;">{{text}}</text></van-button>
 		</view>
 		
 		<view v-if="type==4" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
-			<van-button :color="color" block round open-type="getPhoneNumber" @getphonenumber="getphonenumber"><text style="color: #fff;">{{text}}</text></van-button>
+			<van-button :color="color" block :round="round" open-type="getPhoneNumber" @getphonenumber="getphonenumber"><text style="color: #fff;">{{text}}</text></van-button>
 		</view>
 
 		<view v-if="type==5" class="sp fsb" style="width: 100%">
@@ -26,6 +26,10 @@
 <script>
 	export default {
 		props: {
+			round:{
+				type:Boolean,
+				default:true
+			},
 			size:{
 				type:String,
 				default:"normal"

@@ -80,16 +80,17 @@ export default {
 
 <style lang="scss">
 	.upload-content{
-		padding:24upx 0 0 28upx;
+		padding-top: 5px;
 		background-color: #fff;
 		overflow:hidden;
+		padding-right: 5px;
 	}
 	.upload-item{
 		position: relative;
 		float:left;
 		width:150upx;
 		height:150upx;
-		margin-right:30upx;
+		margin-right:27upx;
 		margin-bottom:30upx;
 		&:nth-child(4n){
 			margin-right:0;
