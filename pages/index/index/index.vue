@@ -100,7 +100,7 @@
 				keys: [{
 						text: "蔬菜菌菇",
 						url: "",
-						src: "/static/images/vegetable-normal @2x.png",
+						src: "/static/images/vegetable-normal_@2x.png",
 						num: 1
 					},
 					{
@@ -206,7 +206,6 @@
 							res();
 						}, 2000);
 					})
-					console.log("hello,world")
 				});
 			}
 		}

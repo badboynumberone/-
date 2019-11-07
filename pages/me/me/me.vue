@@ -72,6 +72,7 @@
 			uniGrid,
 			uniGridItem
 		},
+		
 		data() {
 			return {
 				isLoaded:false,
