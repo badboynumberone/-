@@ -37,6 +37,8 @@ Vue.prototype.$loadmore = loadmore
 //头部导航条
 import Pic from './mycomponents/Pic/Pic.vue'
 Vue.component('Pic', Pic)
+import Imgs from './mycomponents/Imgs/Imgs.vue'
+Vue.component('Imgs', Imgs)
 
 
 

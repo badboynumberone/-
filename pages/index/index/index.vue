@@ -1,83 +1,85 @@
 <template>
 	<view class="main" v-if="isLoaded">
-		<!-- 搜索框 -->
-		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
-			<Ser :back="'#fff'"></Ser>	
-		</view>
-		<!-- 搜索框 -->
-		<!-- <view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
+		<Imgs :images="needLoadResource">
+			<!-- 搜索框 -->
+			<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
+				<Ser :back="'#fff'"></Ser>
+			</view>
+			<!-- 搜索框 -->
+			<!-- <view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 				<Ser></Ser>	
 			</view> -->
+			<view class="mt10 mb10">
+				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
+			</view>
 
-		<view class="mt10 mb10">
-			<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
-		</view>
-		<!-- 商品列表 -->
-		<view class="goods">
-			<view class="fsb  pl10 pr10 pb5" style="align-items: center;">
-				<view class="ftm fz18 fb h1 ">
+			<!-- 商品列表 -->
+			<view class="goods">
+				<view class="fsb  pl10 pr10 pb5" style="align-items: center;">
+					<view class="ftm fz18 fb h1 ">
+						<view style="transform: translateY(4px);margin-right: 5rpx;">
+							<van-icon name="apps-o" color="#38A472" size="21px" />
+						</view>
+						优质优品
+					</view>
+					<view class="fz14 f">
+						<text style="color: #666;">查看更多</text>
+						<view style="transform: translateY(2px);">
+							<van-icon name="arrow" color="#666" />
+						</view>
+					</view>
+				</view>
+				<view class="">
+
+				</view>
+				<uni-grid :column="5" :show-border="false" :square="false">
+					<uni-grid-item v-for="(item,index) in keys" :key="index">
+						<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
+							<Pic :src="item.src" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+						</view>
+						<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.text}}</text>
+					</uni-grid-item>
+				</uni-grid>
+				<div class="menu  fsb p10">
+					<div class="item pr">
+						<Pic :src="'/static/images/own-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+						<view class="wrapper pa fm">
+							<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">自有品牌</text>
+							<text class="fz14" style="color: #fff;transform: translateY(-12px);">品质好物</text>
+						</view>
+					</div>
+					<div class="item pr">
+						<Pic :src="'/static/images/co-create-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+						<view class="wrapper pa fm">
+							<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">共创品牌</text>
+							<text class="fz14" style="color: #fff;transform: translateY(-12px);">精品有约</text>
+						</view>
+					</div>
+					<div class="item pr">
+						<Pic :src="'/static/images/recommended-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+						<view class="wrapper pa fm">
+							<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">推荐品牌</text>
+							<text class="fz14" style="color: #fff;transform: translateY(-12px);">持续热销</text>
+						</view>
+					</div>
+				</div>
+				<view class="ftm fz18 fb h1 pl10 pr10 pb15">
 					<view style="transform: translateY(4px);margin-right: 5rpx;">
-						<van-icon name="apps-o" color="#38A472" size="21px" />
+						<van-icon name="good-job-o" color="#38A472" size="21px" />
 					</view>
-					优质优品
+					为你推荐
 				</view>
-				<view class="fz14 f">
-					<text style="color: #666;">查看更多</text>
-					<view style="transform: translateY(2px);">
-						<van-icon name="arrow" color="#666" />
-					</view>
+				<view class="container pl10 pr10 fsb  mb10">
+					<view class="item active">全部</view>
+					<view class="item">品牌好货</view>
+					<view class="item">便宜好货</view>
+					<view class="item">时令新鲜</view>
 				</view>
+				<MyList :pageData="pageData"></MyList>
 			</view>
-			<view class="">
-				
-			</view>
-			<uni-grid :column="5" :show-border="false" :square="false">
-				<uni-grid-item v-for="(item,index) in keys" :key="index">
-					<view class="pic_item pr"  @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
-						<Pic :src="item.src" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
-					</view>
-					<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.text}}</text>
-				</uni-grid-item>
-			</uni-grid>
-			<div class="menu  fsb p10">
-				<div class="item pr">
-					<Pic :src="'/static/images/own-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
-					<view class="wrapper pa fm">
-						<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">自有品牌</text>
-						<text class="fz14" style="color: #fff;transform: translateY(-12px);">品质好物</text>
-					</view>
-				</div>
-				<div class="item pr">
-					<Pic :src="'/static/images/co-create-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
-					<view class="wrapper pa fm">
-						<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">共创品牌</text>
-						<text class="fz14" style="color: #fff;transform: translateY(-12px);">精品有约</text>
-					</view>
-				</div>
-				<div class="item pr">
-					<Pic :src="'/static/images/recommended-brand@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
-					<view class="wrapper pa fm">
-						<text class="fz18 fb" style="color: #fff;transform: translateY(-12px);">推荐品牌</text>
-						<text class="fz14" style="color: #fff;transform: translateY(-12px);">持续热销</text>
-					</view>
-				</div>
-			</div>
-			<view class="ftm fz18 fb h1 pl10 pr10 pb15">
-				<view style="transform: translateY(4px);margin-right: 5rpx;">
-					<van-icon name="good-job-o" color="#38A472" size="21px"/>
-				</view>
-				为你推荐
-			</view>
-			<view class="container pl10 pr10 fsb  mb10">
-				<view class="item active">全部</view>
-				<view class="item">品牌好货</view>
-				<view class="item">便宜好货</view>
-				<view class="item">时令新鲜</view>
-			</view>
-			<MyList :pageData="pageData"></MyList>
-		</view>
-		<!-- 加载更多 -->
-		<load-more :tip="'正在加载中...'" :loading="true" />
+			<!-- 加载更多 -->
+			<load-more :tip="'正在加载中...'" :loading="true" />
+		</Imgs>
 	</view>
 </template>
 
@@ -128,16 +130,7 @@
 						num: 0
 					}
 				],
-				swiperList: [{
-					img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573021277249&di=eae378d7790ae425aee3a6ba62a76480&imgtype=0&src=http%3A%2F%2Fpic24.nipic.com%2F20121013%2F6644181_092652597000_2.jpg',
-					text: '加油'
-				}, {
-					img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573021090374&di=01134df111d69feae70276a9d610fd19&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F92%2F16pic_92582_b.jpg',
-					text: '加油'
-				}, {
-					img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1573021090372&di=d00f19895527d2934da5bc955a883732&imgtype=0&src=http%3A%2F%2Fpic1.16pic.com%2F00%2F10%2F73%2F16pic_1073979_b.jpg',
-					text: '加油'
-				}],
+				swiperList: [],
 				pageNum: 0,
 				pageData: [
 					"as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d", "asdas",
@@ -145,7 +138,7 @@
 					"adsgaassd", "asddsga"
 				],
 				selectarea: "主模块",
-				isLoaded:false
+				isLoaded: false
 			}
 		},
 		async onLoad() {
@@ -159,6 +152,11 @@
 			//提供钩子
 			this.$mp.page.hook = this.getData;
 
+		},
+		computed: {
+			needLoadResource() {
+				return [...this.keys, ...this.swiperList]
+			}
 		},
 		methods: {
 
@@ -200,11 +198,21 @@
 							v.list = [...v.list, ...["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
 								"asdsa"
 							]]
+							this.swiperList = [{
+								img: 'http://img2.imgtn.bdimg.com/it/u=1509436749,76325603&fm=15&gp=0.jpg',
+								text: '加油'
+							}, {
+								img: 'http://img3.imgtn.bdimg.com/it/u=3750359057,3264830258&fm=26&gp=0.jpg',
+								text: '加油'
+							}, {
+								img: 'http://img0.imgtn.bdimg.com/it/u=2405794550,2319224924&fm=15&gp=0.jpg',
+								text: '加油'
+							}];
 							this.$set(this.pageData, index, v);
 							this.isLoaded = true;
 							reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
 							res();
-						}, 2000);
+						}, 100);
 					})
 				});
 			}
@@ -219,7 +227,8 @@
 		.menu {
 			.item {
 				@include wh(214rpx, 256rpx);
-				.wrapper{
+
+				.wrapper {
 					top: 0rpx;
 					left: 0rpx;
 					@include wh(214rpx, 256rpx);

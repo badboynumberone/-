@@ -1,72 +1,76 @@
 <template>
 	<view class="main" v-if="isLoaded">
-		<!-- 编辑栏 -->
-		<view class="top_bar fsb p10 pf">
-			<text class="good_count fz10">已选{{selectedCount}}件商品</text>
-			<view class="good_edit" @click="editGoods">
-				<view v-if="!isEdit" style="display: inline-block;transform: translateY(2px);">
-					<van-icon name="edit" />
+		<Imgs :images="cartData">
+			<!-- 编辑栏 -->
+			<view class="top_bar fsb p10 pf">
+				<text class="good_count fz10">已选{{selectedCount}}件商品</text>
+				<view class="good_edit" @click="editGoods">
+					<view v-if="!isEdit" style="display: inline-block;transform: translateY(2px);">
+						<van-icon name="edit" />
+					</view>
+					<text>{{isEdit?'完成':'编辑商品'}}</text>
 				</view>
-				<text>{{isEdit?'完成':'编辑商品'}}</text>
 			</view>
-		</view>
-		<view style="height: 46px;"></view>
+			<view style="height: 46px;"></view>
 
-		<!-- 商品内容 -->
-		<view class="container" v-for="(single,idx) in cartData" :key="idx">
-			<view class="header ftm p10">
-				<van-checkbox :value="isStoreChecked(single.goods)" @change="onStoreChange(idx)" />
-				<view class="store ftm ml10" @click="navigateTo" :data-url="'/pages/index/store_details/store_details'">
-					<view class="icon mr5">
-						<van-icon name="shop-o" :size="'20x'" />
-					</view>
-					<text class="fb">{{single.shopName}}</text>
-					<view class="icon right">
-						<van-icon name="arrow" :color="'#ccc'" />
+			<!-- 商品内容 -->
+			<view class="container" v-for="(single,idx) in cartData" :key="idx">
+				<view class="header ftm p10">
+					<van-checkbox :value="isStoreChecked(single.goods)" @change="onStoreChange(idx)" />
+					<view class="store ftm ml10" @click="navigateTo" :data-url="'/pages/index/store_details/store_details'">
+						<view class="icon mr5">
+							<van-icon name="shop-o" :size="'20x'" />
+						</view>
+						<text class="fb">{{single.shopName}}</text>
+						<view class="icon right">
+							<van-icon name="arrow" :color="'#ccc'" />
+						</view>
 					</view>
 				</view>
-			</view>
-			<view class="content ftm p10" v-for="(item,index) in single.goods" :key="index">
-				
-				<view class="pr10 ftm pr" style="height: 75px;width: 100%;" >
-						<van-checkbox :class="'key-'+idx+'-'+index" v-if="!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!isEdit)" :value="item.ischecked" @change="onGoodsChange(idx,index)" />
+				<view class="content ftm p10" v-for="(item,index) in single.goods" :key="index">
+
+					<view class="pr10 ftm pr" style="height: 75px;width: 100%;">
+						<van-checkbox :class="'key-'+idx+'-'+index" v-if="!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!isEdit)"
+						 :value="item.ischecked" @change="onGoodsChange(idx,index)" />
 						<view class="pa" style="top: 0px;left: 0px;z-index: 9;width: 30px;height: 100%;" @click="clickCheckHandle($event,idx,index)"></view>
-				</view>
-				
-				<view class="info f  pr">
-					<view class="pa" style="height: 100%;width: 220px;opacity: 0;z-index: 9;top: 0px;left: 0px;" @click="navigateTo" :data-url="'/pages/index/product/product'"></view>
-					<view class="pr">
-						<Pic :src="item.goodsPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
-						<view class="status center" v-if="item.status==1&&item.leftNum<=0">已售罄</view>
-						<view class="status center" v-if="item.status==2">已下架</view>
-						<view class="left pa" v-if="item.status==1&&item.leftNum<=5&&item.leftNum>0">仅剩{{item.leftNum}}件</view>
 					</view>
-					<view class="text f ml10">
-						<text class="text-hidden" style="width: 230px;">{{item.goodsName}}</text>
-						<text class="text-hidden fz10 size" :decode="true" style="width: 240px;">{{item.goodsSize}}</text>
-						<view class="price fz16 fb fsb">
-							<text>￥{{item.goodsPrice}}</text>
-							<view style="transform: scale(0.8,0.8);">
-								<van-stepper :value="item.goodsNum" @change="onCountChange($event,idx,index)"  />
+
+					<view class="info f  pr">
+						<view class="pa" style="height: 100%;width: 220px;opacity: 0;z-index: 9;top: 0px;left: 0px;" @click="navigateTo"
+						 :data-url="'/pages/index/product/product'"></view>
+						<view class="pr">
+							<Pic :src="item.goodsPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
+							<view class="status center" v-if="item.status==1&&item.leftNum<=0">已售罄</view>
+							<view class="status center" v-if="item.status==2">已下架</view>
+							<view class="left pa" v-if="item.status==1&&item.leftNum<=5&&item.leftNum>0">仅剩{{item.leftNum}}件</view>
+						</view>
+						<view class="text f ml10">
+							<text class="text-hidden" style="width: 230px;">{{item.goodsName}}</text>
+							<text class="text-hidden fz10 size" :decode="true" style="width: 240px;">{{item.goodsSize}}</text>
+							<view class="price fz16 fb fsb">
+								<text>￥{{item.goodsPrice}}</text>
+								<view style="transform: scale(0.8,0.8);">
+									<van-stepper :value="item.goodsNum" @change="onCountChange($event,idx,index)" />
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-		</view>
-		<!-- 加载更多 -->
-		<load-more :tip="'到底了'" :loading="false" />
-		<view style="height: 50px;"></view>
-		<!-- 底部结算条 -->
-		<view class="submit_bar pf">
-			<van-submit-bar :price="totalPrice" :button-text="isEdit?`删除`:`结算(${selectedCount})`" @submit="onClickButton" :tip="true">
-				<view class="pl10">
-					<van-checkbox :value="isAllChecked" @change="onAllChange()">全选</van-checkbox>
-				</view>
-			</van-submit-bar>
-		</view>
-		<!-- 模态框 -->
-		<van-dialog id="van-dialog" confirm-button-color="#38A472" :z-index="999" />
+			<!-- 加载更多 -->
+			<load-more :tip="'到底了'" :loading="false" />
+			<view style="height: 50px;"></view>
+			<!-- 底部结算条 -->
+			<view class="submit_bar pf">
+				<van-submit-bar :price="totalPrice" :button-text="isEdit?`删除`:`结算(${selectedCount})`" @submit="onClickButton" :tip="true">
+					<view class="pl10">
+						<van-checkbox :value="isAllChecked" @change="onAllChange()">全选</van-checkbox>
+					</view>
+				</van-submit-bar>
+			</view>
+			<!-- 模态框 -->
+			<van-dialog id="van-dialog" confirm-button-color="#38A472" :z-index="999" />
+		</Imgs>
 	</view>
 </template>
 
@@ -78,14 +82,17 @@
 		},
 		onLoad() {
 			uni.showLoading({
-				title:"加载中",
+				title: "加载中",
 				mask: false
 			});
-			setTimeout(()=>{uni.hideLoading();this.isLoaded=true},1000)
+			setTimeout(() => {
+				uni.hideLoading();
+				this.isLoaded = true
+			}, 1000)
 		},
 		data() {
 			return {
-				isLoaded:false,
+				isLoaded: false,
 				allRadio: '1',
 				isEdit: false, //顶部文案
 				cartData: [{
@@ -97,8 +104,8 @@
 						goodsPrice: 13.5,
 						goodsNum: 1,
 						ischecked: false,
-						status:1,
-						leftNum:10
+						status: 1,
+						leftNum: 10
 					}, {
 						goodsPic: "https://gw.alicdn.com/bao/upload/TB1YIrykbH1gK0jSZFwXXc7aXXa.jpg_Q75.jpg",
 						goodsName: "云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯",
@@ -106,8 +113,8 @@
 						goodsPrice: 13.5,
 						goodsNum: 1,
 						ischecked: true,
-						status:2,
-						leftNum:3
+						status: 2,
+						leftNum: 3
 					}]
 				}, {
 					shopName: "南京普贸有限公司",
@@ -118,8 +125,8 @@
 						goodsPrice: 13.5,
 						goodsNum: 1,
 						ischecked: true,
-						status:2,
-						leftNum:4
+						status: 2,
+						leftNum: 4
 					}, {
 						goodsPic: "https://gw.alicdn.com/bao/upload/TB1YIrykbH1gK0jSZFwXXc7aXXa.jpg_Q75.jpg",
 						goodsName: "铃薯云南小土豆新鲜10斤马铃薯云南小土豆新鲜10斤马铃薯",
@@ -127,47 +134,50 @@
 						goodsPrice: 13.5,
 						goodsNum: 3,
 						ischecked: true,
-						status:1,
-						leftNum:2
+						status: 1,
+						leftNum: 2
 					}]
 				}, ],
 				checked: false
 			}
 		},
 		computed: {
-			
-			setTimeGetData(){
+
+			setTimeGetData() {
 				const app = getApp();
 				this.getData()
 				return null;
 			},
-			
+
 			//店铺是否全选
 			isStoreChecked() {
 				let _this = this;
 				return function(arr = [{
 					ischecked: false
 				}]) {
-					arr = arr.filter(item=>!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!_this.isEdit));
-					return arr.every((item)=>item.ischecked==true);
+					arr = arr.filter(item => !((item.status == 1 && item.leftNum <= 0) || (item.status == 2) && !_this.isEdit));
+					return arr.every((item) => item.ischecked == true);
 				}
 			},
 			// 商品是否全选
-			isAllChecked(){
-				let arr=[];let _this = this;
-				this.cartData.forEach(item=>{arr=[...arr,...item.goods]});
-				arr = arr.filter(item=>!((item.status==1&&item.leftNum<=0) || (item.status==2)&&!_this.isEdit));
-				return this.cartData==false ? false:arr.every((item)=>item.ischecked==true);
+			isAllChecked() {
+				let arr = [];
+				let _this = this;
+				this.cartData.forEach(item => {
+					arr = [...arr, ...item.goods]
+				});
+				arr = arr.filter(item => !((item.status == 1 && item.leftNum <= 0) || (item.status == 2) && !_this.isEdit));
+				return this.cartData == false ? false : arr.every((item) => item.ischecked == true);
 			},
 			//计算已选商品的数量
-			selectedCount(){
+			selectedCount() {
 				let count = 0;
-				this.cartData.forEach((item,idx)=>{
-					item.goods.forEach((single,index)=>{
-						if(!this.isEdit && single.ischecked && !((single.status==1&&single.leftNum<=0) || (single.status==2))){
+				this.cartData.forEach((item, idx) => {
+					item.goods.forEach((single, index) => {
+						if (!this.isEdit && single.ischecked && !((single.status == 1 && single.leftNum <= 0) || (single.status == 2))) {
 							count++;
 						}
-						if(this.isEdit && single.ischecked){
+						if (this.isEdit && single.ischecked) {
 							count++;
 						}
 					})
@@ -175,12 +185,12 @@
 				return count;
 			},
 			// 计算总价
-			totalPrice(){
+			totalPrice() {
 				let total = 0;
-				this.cartData.forEach((item,idx)=>{
-					item.goods.forEach((single,index)=>{
-						if(single.ischecked && !((single.status==1&&single.leftNum<=0) || (single.status==2))){
-							total+=(single.goodsPrice*100*single.goodsNum);
+				this.cartData.forEach((item, idx) => {
+					item.goods.forEach((single, index) => {
+						if (single.ischecked && !((single.status == 1 && single.leftNum <= 0) || (single.status == 2))) {
+							total += (single.goodsPrice * 100 * single.goodsNum);
 						}
 					})
 				});
@@ -189,7 +199,7 @@
 		},
 		methods: {
 			//获取数据
-			async getData(){
+			async getData() {
 				console.log("jaja")
 			},
 			//页面跳转
@@ -197,33 +207,33 @@
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//改变数量
-			onCountChange(e,idx,index) {
-				this.$set(this.cartData[idx].goods[index],'goodsNum',e.detail);
+			onCountChange(e, idx, index) {
+				this.$set(this.cartData[idx].goods[index], 'goodsNum', e.detail);
 			},
 			//当所有选项发生变化
 			onAllChange(e) {
 				const flag = this.isAllChecked;
-				this.cartData.forEach((item,idx)=>{
-					item.goods.forEach((single,index)=>{
-						this.$set(this.cartData[idx].goods[index],'ischecked',!flag);
+				this.cartData.forEach((item, idx) => {
+					item.goods.forEach((single, index) => {
+						this.$set(this.cartData[idx].goods[index], 'ischecked', !flag);
 					})
 				});
 			},
 			// 当店铺复选框改变的时候
-			onStoreChange(idx){
-					const flag = this.cartData[idx].goods.every((item)=>item.ischecked==true);
-					this.cartData[idx].goods.forEach((item,index)=>{
-						item.ischecked = !flag
-					});
+			onStoreChange(idx) {
+				const flag = this.cartData[idx].goods.every((item) => item.ischecked == true);
+				this.cartData[idx].goods.forEach((item, index) => {
+					item.ischecked = !flag
+				});
 			},
-			clickCheckHandle(e,idx,index){
+			clickCheckHandle(e, idx, index) {
 				const checkbox = this.$mp.page.selectComponent(`.key-${idx}-${index}`);
 				console.log(checkbox)
 				checkbox.toggle();
 			},
 			//当商品复选框改变时
-			onGoodsChange(idx,index){
-				this.$set(this.cartData[idx].goods[index],'ischecked',!this.cartData[idx].goods[index].ischecked);
+			onGoodsChange(idx, index) {
+				this.$set(this.cartData[idx].goods[index], 'ischecked', !this.cartData[idx].goods[index].ischecked);
 			},
 			//点击底部按钮
 			onClickButton() {
@@ -237,24 +247,24 @@
 						// on cancel
 					});
 				}
-				
+
 				//如果是结算
-				if(!this.isEdit){
+				if (!this.isEdit) {
 					//深度拷贝
-					if(this.selectedCount<=0){
+					if (this.selectedCount <= 0) {
 						this.$tools.Toast("您还没有选择宝贝哦")
 						return;
 					}
 					const cartData = JSON.parse(JSON.stringify(this.cartData));
-					const checkedResult = cartData.filter(item=>{
-						const filterResult = item.goods.reduce((arr,single)=>{
-							   const flag = !(single.status==1&&single.leftNum<=0 || single.status==2) && single.ischecked;
-							   return flag ? [...arr,single]:arr
-						},[]);
-						if(filterResult!=false){
-							item.goods=filterResult;
+					const checkedResult = cartData.filter(item => {
+						const filterResult = item.goods.reduce((arr, single) => {
+							const flag = !(single.status == 1 && single.leftNum <= 0 || single.status == 2) && single.ischecked;
+							return flag ? [...arr, single] : arr
+						}, []);
+						if (filterResult != false) {
+							item.goods = filterResult;
 						}
-						return filterResult!=false
+						return filterResult != false
 					});
 					this.$tools.navigateTo("/pages/cart/submit_order/submit_order");
 				}
@@ -287,26 +297,28 @@
 
 		.content {
 			align-items: center;
-			
+
 			.info {
-				.status{
+				.status {
 					@include borderRadius(110rpx);
-					background: rgba(0,0,0,0.6);
+					background: rgba(0, 0, 0, 0.6);
 					line-height: 110rpx;
 					text-align: center;
 					z-index: 0;
-					@include sc(12px,#f1f1f1);
+					@include sc(12px, #f1f1f1);
 				}
-				.left{
-					@include sc(12px,#f1f1f1);
+
+				.left {
+					@include sc(12px, #f1f1f1);
 					line-height: 20px;
 					width: 100%;
 					text-align: center;
 					z-index: 0;
-					background: rgba(0,0,0,0.6);
+					background: rgba(0, 0, 0, 0.6);
 					bottom: 0px;
 					left: 0px;
 				}
+
 				.text {
 					flex-flow: column wrap;
 

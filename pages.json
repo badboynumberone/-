@@ -190,6 +190,10 @@
 				}
 			}
         }
+        ,{
+            "path" : "mycomponents/Imgs/Imgs",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
