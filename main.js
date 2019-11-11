@@ -27,9 +27,9 @@ Vue.prototype.$uploadFile = UploadFile
 import Tools from './utils/tools.js'
 Vue.prototype.$tools = Tools
 
-//加载更多
-import loadmore from './utils/loadmore.js'
-Vue.prototype.$loadmore = loadmore
+//数据加载
+import loadData from './utils/loaddata.js'
+Vue.prototype.$loadData = loadData
 
 
 /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/

@@ -39,43 +39,22 @@ function showLoading(title) {
 
 //获取其中的图片
 export function getImages() {
-	let images = [];
+	let r = [];
 
-	function isHas(str, arr) {
-		for (let s of arr) {
-			if (str.includes(s)) {
-				return true;
-			}
-		}
-		return false
+	function t(r, t) {
+		for (let c of t)
+			if (r.includes(c)) return !0;
+		return !1
 	}
-	return function getAllImages(obj, suffix = [".jpg", ".jpeg", ".png",".svg","webp"]) {
-		if (obj.constructor == Object) {
-			for (let v of Object.values(obj)) {
-				if (v.constructor == String && isHas(v, suffix)) {
-					images.push(v);
-				}
-				if ([Object, Array].includes(v.constructor)) {
-					getAllImages(v);
-				}
-			}
-		}
-		if (obj.constructor == Array) {
-			for (let v of obj) {
-				if ([Object, Array].includes(v.constructor)) {
-					getAllImages(v);
-				}
-				if (v.constructor == String && isHas(v, suffix)) {
-					images.push(v)
-				}
-			}
-		}
-		if (obj.constructor == String && isHas(obj, suffix)) {
-			images.push(obj)
-		}
-		return images;
+	return function c(n, o = [".jpg", ".jpeg", ".png", ".svg", "webp"]) {
+		if (n.constructor == Object)
+			for (let e of Object.values(n)) e.constructor == String && t(e, o) && r.push(e), [Object, Array].includes(e.constructor) &&
+				c(e);
+		if (n.constructor == Array)
+			for (let e of n)[Object, Array].includes(e.constructor) && c(e), e.constructor == String && t(e, o) && r.push(e);
+		return n.constructor == String && t(n, o) && r.push(n), r
 	}
-}
+};
 
 
 export default {

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="container" :style="{opacity: isLoaded?1:0}">
+		<view class="container" :style="{opacity: num==getImgs.length?1:0}">
 			<slot></slot>
 		</view>
 		<image v-for="(item,index) in getImgs" :key="index" @load="loadImg" :src="item" mode="aspectFill"></image>
@@ -9,6 +9,7 @@
 
 <script>
 	import {getImages} from "../../utils/tools.js";
+	let num=0
 	export default {
 		props:{
 			images:{
@@ -27,9 +28,6 @@
 			getImgs(){
 				let arr =getImages()(this.images) || ['0'];
 				return arr;
-			},
-			isLoaded(){
-				return this.num==this.getImgs.length;
 			}
 		},
 		methods:{

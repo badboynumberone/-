@@ -1,6 +1,6 @@
 <template>
 	<view class="main" v-if="isLoaded">
-		<Imgs :images="needLoadResource">
+		<Imgs :images="needLoadImg">
 			<!-- 搜索框 -->
 			<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 				<Ser :back="'#fff'"></Ser>
@@ -69,17 +69,21 @@
 					</view>
 					为你推荐
 				</view>
+				
 				<view class="container pl10 pr10 fsb  mb10">
-					<view class="item active">全部</view>
-					<view class="item">品牌好货</view>
-					<view class="item">便宜好货</view>
-					<view class="item">时令新鲜</view>
+					<view :class="['item',{'active':selectarea=='全部'}]" @click="itemClick('全部')">全部</view>
+					<view :class="['item',{'active':selectarea=='品牌好货'}]" @click="itemClick('品牌好货')">品牌好货</view>
+					<view :class="['item',{'active':selectarea=='便宜好货'}]" @click="itemClick('便宜好货')">便宜好货</view>
+					<view :class="['item',{'active':selectarea=='时令新鲜'}]" @click="itemClick('时令新鲜')">时令新鲜</view>
 				</view>
-				<MyList :pageData="pageData"></MyList>
+				
+				<MyList :list="pageData[loadIndex].list"></MyList>
 			</view>
 			<!-- 加载更多 -->
-			<load-more :tip="'正在加载中...'" :loading="true" />
+			<load-more v-if="pageData[loadIndex].list.length" :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].text=='加载中...'" />
+			<view v-if="pageData[loadIndex].text=='加载中...'" style="height: 2000px;"></view>
 		</Imgs>
+		
 	</view>
 </template>
 
@@ -132,12 +136,8 @@
 				],
 				swiperList: [],
 				pageNum: 0,
-				pageData: [
-					"as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d", "asdas",
-					"adsgaassd", "asddsga",
-					"adsgaassd", "asddsga"
-				],
-				selectarea: "主模块",
+				pageData: [],
+				selectarea: "全部",
 				isLoaded: false
 			}
 		},
@@ -147,15 +147,23 @@
 			await this.$net.checkLoginStatus();
 
 			//第一次加载获取数据
-			this.getData(true);
+			this.getData();
 
 			//提供钩子
 			this.$mp.page.hook = this.getData;
 
 		},
+		onReachBottom() {
+			//如果正在加载则不允许点击
+			if (parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea)).isLoading) return;
+			this.getData();
+		},
 		computed: {
-			needLoadResource() {
+			needLoadImg() {
 				return [...this.keys, ...this.swiperList]
+			},
+			loadIndex() {
+				return parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea)) || 0;
 			}
 		},
 		methods: {
@@ -181,19 +189,25 @@
 			loadImg(flied) {
 				this[flied]++;
 			},
-
-			change() {
-				this.selectarea = "lala";
-				this.getData();
+			//切换
+			itemClick(item) {
+				this.selectarea = item;
+				//获取需要加载的选项
+				try {
+					!this.pageData[parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea))].list.length && this.getData();
+				} catch (e) {
+					//TODO handle the exception
+					this.getData()
+				}
 			},
 			//获取数据
-			getData(isRefresh = false) {
-				this.$loadmore.call(this, async (reslove, reject) => {
+			getData() {
+				this.$loadData.loadMore.call(this, async (reslove, reject) => {
 					await new Promise((res, rej) => {
 						const timer = setTimeout(() => {
 							//获取需要加载的选项
 							const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
-							// 获取数据
+							// 获取需要加载的那一项
 							let v = this.pageData[index];
 							v.list = [...v.list, ...["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
 								"asdsa"
@@ -208,7 +222,7 @@
 								img: 'http://img0.imgtn.bdimg.com/it/u=2405794550,2319224924&fm=15&gp=0.jpg',
 								text: '加油'
 							}];
-							this.$set(this.pageData, index, v);
+							// this.$set(this.pageData, index, v);
 							this.isLoaded = true;
 							reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
 							res();
@@ -253,7 +267,7 @@
 				background: linear-gradient(142deg, rgba(26, 174, 104, 1) 0%, rgba(124, 206, 89, 1) 100%);
 				color: #fff !important;
 				box-shadow: 0px 4px 9px 0px rgba(125, 238, 99, 0.53);
-				border: none;
+				border-color: $theme;
 			}
 		}
 	}
