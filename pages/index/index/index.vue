@@ -10,7 +10,7 @@
 				<Ser></Ser>	
 			</view> -->
 			<view class="mt10 mb10">
-				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" @clickItem="swiperClick"></BwSwiper>
+				<BwSwiper :swiperList="swiperList" swiperType style="width:100%" :imageKey="'pic'" @clickItem="swiperClick"></BwSwiper>
 			</view>
 
 			<!-- 商品列表 -->
@@ -35,7 +35,7 @@
 				<uni-grid :column="5" :show-border="false" :square="false">
 					<uni-grid-item v-for="(item,index) in keys" :key="index">
 						<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
-							<Pic :src="item.src" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+							<Pic :src="item.icon" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 						</view>
 						<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.text}}</text>
 					</uni-grid-item>
@@ -69,21 +69,21 @@
 					</view>
 					为你推荐
 				</view>
-				
-				<view class="container pl10 pr10 fsb  mb10">
+
+				<!-- <view class="container pl10 pr10 fsb  mb10">
 					<view :class="['item',{'active':selectarea=='全部'}]" @click="itemClick('全部')">全部</view>
 					<view :class="['item',{'active':selectarea=='品牌好货'}]" @click="itemClick('品牌好货')">品牌好货</view>
 					<view :class="['item',{'active':selectarea=='便宜好货'}]" @click="itemClick('便宜好货')">便宜好货</view>
 					<view :class="['item',{'active':selectarea=='时令新鲜'}]" @click="itemClick('时令新鲜')">时令新鲜</view>
-				</view>
-				
+				</view> -->
+
 				<MyList :list="pageData[loadIndex].list"></MyList>
 			</view>
 			<!-- 加载更多 -->
 			<load-more v-if="pageData[loadIndex].list.length" :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].text=='加载中...'" />
-			<view v-if="pageData[loadIndex].text=='加载中...'" style="height: 2000px;"></view>
+			<view v-if="pageData[loadIndex].text=='加载中...' && pageData[loadIndex].pageNum==1" style="height: 1000rpx;"></view>
 		</Imgs>
-		
+
 	</view>
 </template>
 
@@ -135,7 +135,6 @@
 					}
 				],
 				swiperList: [],
-				pageNum: 0,
 				pageData: [],
 				selectarea: "全部",
 				isLoaded: false
@@ -144,9 +143,10 @@
 		async onLoad() {
 
 			//检查登录状态
-			await this.$net.checkLoginStatus();
-
+			
+			await this.getSwiperCate();
 			//第一次加载获取数据
+			this.selectarea="全部";
 			this.getData();
 
 			//提供钩子
@@ -167,7 +167,6 @@
 			}
 		},
 		methods: {
-
 			//获取用户信息
 			getUserInfo(e) {
 				console.debug("用户信息:" + e);
@@ -200,34 +199,50 @@
 					this.getData()
 				}
 			},
+			async getSwiperCate(){
+				const result =await this.$net.sendRequest("/home/content",{},"GET");
+				this.swiperList = result.data.advertiseList,this.keys=result.data.catList;
+			},
 			//获取数据
 			getData() {
 				this.$loadData.loadMore.call(this, async (reslove, reject) => {
-					await new Promise((res, rej) => {
-						const timer = setTimeout(() => {
-							//获取需要加载的选项
-							const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
-							// 获取需要加载的那一项
-							let v = this.pageData[index];
-							v.list = [...v.list, ...["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
-								"asdsa"
-							]]
-							this.swiperList = [{
-								img: 'http://img2.imgtn.bdimg.com/it/u=1509436749,76325603&fm=15&gp=0.jpg',
-								text: '加油'
-							}, {
-								img: 'http://img3.imgtn.bdimg.com/it/u=3750359057,3264830258&fm=26&gp=0.jpg',
-								text: '加油'
-							}, {
-								img: 'http://img0.imgtn.bdimg.com/it/u=2405794550,2319224924&fm=15&gp=0.jpg',
-								text: '加油'
-							}];
-							// this.$set(this.pageData, index, v);
-							this.isLoaded = true;
-							reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
-							res();
-						}, 100);
-					})
+					const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
+					let v = this.pageData[index];
+					const result =await this.$net.sendRequest("/home/getProductList",{
+						recommandStatus:1,
+						pageNum: v.pageNum,
+						pageSize: 20,
+					},"GET");
+					v.list = [...v.list, ...result.data];
+					this.$set(this.pageData, index, v);
+					reslove(result.data);
+					this.isLoaded = true;
+					// await new Promise((res, rej) => {
+					// 	const timer = setTimeout(() => {
+					// 		//获取需要加载的选项
+					// 		const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
+					// 		// 获取需要加载的那一项
+					// 		let v = this.pageData[index];
+					// 		v.list = [...v.list, ...["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
+					// 			"asdsa", "sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa",
+					// 			"asdsa"
+					// 		]]
+					// 		// this.swiperList = [{
+					// 		// 	img: 'http://img2.imgtn.bdimg.com/it/u=1509436749,76325603&fm=15&gp=0.jpg',
+					// 		// 	text: '加油'
+					// 		// }, {
+					// 		// 	img: 'http://img3.imgtn.bdimg.com/it/u=3750359057,3264830258&fm=26&gp=0.jpg',
+					// 		// 	text: '加油'
+					// 		// }, {
+					// 		// 	img: 'http://img0.imgtn.bdimg.com/it/u=2405794550,2319224924&fm=15&gp=0.jpg',
+					// 		// 	text: '加油'
+					// 		// }];
+					// 		this.$set(this.pageData, index, v);
+					// 		this.isLoaded = true;
+					// 		reslove(["sad", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa", "asdsa"]);
+					// 		res();
+					// 	}, 100);
+					// })
 				});
 			}
 		}
@@ -241,7 +256,6 @@
 		.menu {
 			.item {
 				@include wh(214rpx, 256rpx);
-
 				.wrapper {
 					top: 0rpx;
 					left: 0rpx;
@@ -262,7 +276,6 @@
 				line-height: 45rpx;
 				color: #666;
 			}
-
 			.active {
 				background: linear-gradient(142deg, rgba(26, 174, 104, 1) 0%, rgba(124, 206, 89, 1) 100%);
 				color: #fff !important;

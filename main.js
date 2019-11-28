@@ -31,7 +31,6 @@ Vue.prototype.$tools = Tools
 import loadData from './utils/loaddata.js'
 Vue.prototype.$loadData = loadData
 
-
 /* ------------------------------------------------------------------------挂载全局组件-----------------------------------------------------------------*/
 
 //头部导航条

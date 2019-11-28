@@ -2,7 +2,7 @@
 	<view class="ftm">
 		<view class="ftm di" v-if="type=='first'">
 			<Pic :src="'/static/images/brand_name@2x.png'" :height="'50rpx'" :width="'50rpx'" :mode="'aspectFill'" :back="'#fff'" :round="true"></Pic>
-			<text class="ml5 key">樱桃鸭</text>
+			<text class="ml5 key">{{text}}</text>
 		</view>
 		
 		<view class="fm pl10 pr10 text-tag di fz12" v-if="type=='second'">

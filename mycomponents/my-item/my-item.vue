@@ -1,18 +1,18 @@
 <template>
-	<view class="item p5">
+	<view class="item p5 fadeIn">
 		<view style="border-radius: 10rpx;overflow: hidden;">
-			<Pic :width="'100%'" :height="'150px'" :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'"
+			<Pic :width="'100%'" :height="'150px'" :src="item.pic"
 			 :mode="'aspectFill'" :back="'#fff'"></Pic>
 		</view>
 		<view class="mt5" style="transform: scale(0.7,0.7);margin-left: -27px;">
-			<my-tag :type="'first'" />
+			<my-tag :type="'first'" :text="item.brandName" />
 		</view>
-		<text class=" fz12 more-hidden title">是东莞市大嘎达是十大杀手的哥哥都是嘎都是嘎</text>
+		<text class=" fz12 more-hidden title">{{item.name}}</text>
 		<view class="mt5" style="transform: scale(0.8,0.8);margin-left: -18px;">
-			<my-tag :type="'second'" :text="'绿色食品'" />
+			<my-tag :type="'second'" :text="item.tagName" />
 		</view>
 		<view class="fz14 fb price">
-			￥123
+			￥{{item.price}}
 		</view>
 	</view>
 </template>
@@ -52,5 +52,32 @@
 		.price {
 			color: $theme;
 		}
+	}
+	
+	
+	@-webkit-keyframes fadeIn {
+	  from {
+	    opacity: 0;
+	  }
+	
+	  to {
+	    opacity: 1;
+	  }
+	}
+	
+	@keyframes fadeIn {
+	  from {
+	    opacity: 0;
+	  }
+	
+	  to {
+	    opacity: 1;
+	  }
+	}
+	
+	.fadeIn {
+	  -webkit-animation-name: fadeIn;
+	  animation-name: fadeIn;
+	  animation-duration: 500ms;
 	}
 </style>

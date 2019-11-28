@@ -2,23 +2,44 @@
 	<view class="main">
 		<!-- 搜索框 -->
 		<Ser :isDisabled="false" ref="search"></Ser>
-
-		<!-- 搜索历史 -->
-		<view class="searchBotBox" v-if="isHistory">
-			<view class="ov ">
-				<view class="fl" style="color: #898989;">搜索历史</view>
-				<view @click="clearKey" class="fr grace-more-r grace-search-remove">
-					<van-icon name="delete"></van-icon>
+		<view class="before_search">
+			<!-- 热门搜索 -->
+			<view class="searchBotBox" v-if="isHistory">
+				<view class="ov ">
+					<view class="fl" style="color: #898989;">热门搜索</view>
+				</view>
+				<view class="searchHistoryBox">
+					<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in hotKey" :key='index' style="max-width: 150px;"
+					 @click="itemSearch(item)">
+						{{item}}
+					</view>
 				</view>
 			</view>
-			<view class="searchHistoryBox">
-				<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in searchKey" :key='index' style="max-width: 150px;"
-				 @click="itemSearch(item)">
-					{{item}}
+			
+			<!-- 搜索历史 -->
+			<view class="searchBotBox" v-if="isHistory">
+				<view class="ov ">
+					<view class="fl" style="color: #898989;">搜索历史</view>
+					<view @click="clearKey" class="fr grace-more-r grace-search-remove">
+						<van-icon name="delete"></van-icon>
+					</view>
+				</view>
+				<view class="searchHistoryBox">
+					<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in searchKey" :key='index' style="max-width: 150px;"
+					 @click="itemSearch(item)">
+						{{item}}
+					</view>
 				</view>
 			</view>
 		</view>
-
+		
+		<!-- 已经搜索 -->
+		<view class="searched">
+			<!-- 状态栏 -->
+			<cate-bar></cate-bar>
+		</view>
+		
+		
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 	</view>
@@ -27,21 +48,36 @@
 <script>
 	import Ser from "../../../mycomponents/Ser/Ser";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
+	import CateBar from '../../../mycomponents/cate-bar/cate-bar.vue'
 	export default {
 		components: {
-			Ser
+			Ser,CateBar
 		},
 		data() {
 			return {
 				searchKey: [],
+				hotKey:[],
 				isHistory: true
 			}
 		},
-		onLoad() {
-			this.getKey();
+		async onLoad() {
+			wx.showLoading({
+				title:"请稍后..."
+			})
+			//获取历史搜索
+			this.getKeyHistory();
+			//获取热门搜索
+			await this.getHotKey();
+			wx.hideLoading();
 		},
 		methods: {
-			getKey() {
+			//获取热门搜索
+			async getHotKey(){
+				const result = await this.$net.sendRequest("/home/getSearch",{limit:10},"GET");
+				this.hotKey = result.data.hotKey;
+			},
+			//获取搜索历史
+			getKeyHistory() {
 				try {
 					this.searchKey = JSON.parse(uni.getStorageSync("searchHistory"));
 				} catch (e) {
@@ -57,7 +93,7 @@
 				}).then(() => {
 					// on confirm
 					uni.setStorageSync("searchHistory", JSON.stringify([]));
-					this.getKey()
+					this.getKeyHistory()
 				});
 			},
 			itemSearch(item) {

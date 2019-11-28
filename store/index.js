@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import Request from './../utils/request.js'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -24,18 +24,9 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		// lazy loading openid
-		loginIn: ({commit,state},userinfo={})=>{
-			console.log("登录用户信息:",userinfo)
-			//调用接口获取获取accessToken
-				
-				
+		autoLoginIn: ({commit,state},userinfo={})=>{
 			//再进行登录后进行返回登录信息
-			const timer = setTimeout(()=>{
-				commit("login",userinfo.username);
-				uni.hideLoading();
-				console.log(state.username)
-				clearTimeout(timer)
-			},1000)
+			Request.sendRequest("/sso/userinfo",{},"GET");
 			
 			
 		}

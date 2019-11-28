@@ -59,18 +59,47 @@
 		},
 		data() {
 			return {
-
+				
 
 			}
 		},
 		methods: {
 			//获取用户信息
-			getUserInfo(e) {
+			async getUserInfo(e) {
 				console.log(e)
+				//获取openid或者token
+				await this.$net.getAccessToken((res)=>{
+					//未绑定手机号,去绑定手机
+					
+					 if(res.openid){ //
+						this.$parent.$data.step = 2,this.$parent.$data.openid = res.openid;
+						this.$parent.$data.userinfo = e.detail.userInfo;
+					}
+					//已经绑定手机号,直接登录
+					if(res.token){
+						wx.setStorageSync('accessToken','Authorization   Bearer sdvnasdnvsdnfsldfdsf'+res.token);
+						wx.showToast({
+							title:"登陆成功",
+							duration:1500,
+							icon:"success",
+							success:()=>{
+								let timer = setTimeout(function(){
+									wx.switchTab({
+										url:"/pages/me/me/me"
+									})
+									clearTimeout(timer)
+								},1500)
+							}
+						})
+						//获取用户信息
+					}
+					
+				});
 			},
 			//获取用户手机号
-			getphonenumber(e){
+			async getphonenumber(e){
 				console.log(e)
+				
 			}
 		}
 	}

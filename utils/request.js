@@ -5,23 +5,34 @@ import Store from './../store/index.js'
 const sendRequest = (url,params={},method="POST")=>{
 	//将方法转为小写
     method = method.toUpperCase();
+	let addurl = '';
+	 if(method =="GET"&&Object.entries(params).length){
+		 for(let [key,value] of Object.entries(params)){
+			 addurl+=('&'+key+'='+value);
+		 }
+		 addurl = "?" + addurl.slice(1,-1)
+		 url+=addurl
+	 } 
     return new Promise((resolve,reject) =>{
       uni.request({
           url:base.apiHost + url,
           method,
           data:params,
           header: {
-              'content-type':'application/json;charset=UTF-8',
+              'content-type':'application/x-www-form-urlencoded;charset=UTF-8',
               'Authorization': uni.getStorageSync('accessToken'),
           },
           dataType: 'json',
           responseType: 'text',
           success: res => {
-              
-			  
-			  if(AccessToken失效){
-				  getAccessToken(function(){sendRequest(url, method, params).then(resolve, reject)});
+			  console.log(`接口:${url},返回状态:${res.statusCode},请求返回结果`, res)
+			  if(res.statusCode==200){
+				  resolve(res.data)
 			  }
+			  
+			  // if(AccessToken失效){
+				 //  getAccessToken(function(){sendRequest(url, method, params).then(resolve, reject)});
+			  // }
               
           },
           fail: (error) => {
@@ -40,15 +51,15 @@ const sendRequest = (url,params={},method="POST")=>{
  function getAccessToken(callback=()=>{}) {
 	uni.login({
 		success: (data) => {
+			console.log(data)
 			uni.request({
+				url:`${base.apiHost}/sso/wx/loginByCode?code=${data.code}`,
 				method:"POST",
-				data:{code},
 				dataType: 'json',
-				responseType: 'text',
 				success(res){
-					console.log("accessToken:"+res);
-					uni.setStorageSync("accessToken",值);
-					callback();
+					console.log("accessToken:",res);
+					uni.setStorageSync("accessToken",`Authorization   Bearersdvnasdnvsdnfsldfdsf${res.data.data.openid}`);
+					callback(res.data.data);
 				},
 				fail(err) {
 					console.log("获取AccessToken失败"+err)
@@ -70,18 +81,19 @@ function checkLoginStatus(){
 				console.log("code&&session:未过期");
 				
 				uni.showLoading({mask:true});
+				//自动获取用户信息
+				Store.dispatch("autoLoginIn");
 				
-				Store.dispatch("loginIn",{username:"dzf"});
 				resolve();
 			},
 			fail:()=>{
 				console.log("code&&session:已过期")
 				uni.removeStorageSync("accessToken");
+				
 				resolve();
 			}
 		})
 	})
-	
 }
 
 export default {

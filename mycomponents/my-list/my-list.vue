@@ -2,14 +2,14 @@
 	<view class="container clearfix">
 		<view class="content">
 			<view class="column pr5">
-				<view v-for="(item,index) in list" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product'">
-					<MyItem></MyItem>
+				<view v-for="(item,index) in list" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product?id='+item.id">
+					<MyItem :item="item"></MyItem>
 				</view>
 			</view>
 			
 			<view class="column pl5">
-				<view v-for="(item,index) in list" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product'">
-					<MyItem></MyItem>
+				<view v-for="(item,index) in list" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product?id='+item.id">
+					<MyItem :item="item"></MyItem>
 				</view>
 			</view>
 		</view>
@@ -49,7 +49,6 @@
 <style lang="scss" scoped>
 	@import './../../static/styles/mixin.scss';
 	.container {
-		
 		.content{
 			width: 750upx;
 			padding: 0px 10px;

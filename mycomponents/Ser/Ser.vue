@@ -53,7 +53,7 @@
 
 				this.$parent.isHistory = false;
 
-				this.$parent.getKey();
+				this.$parent.getKeyHistory();
 
 			},
 		}

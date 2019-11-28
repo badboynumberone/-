@@ -59,14 +59,22 @@
 					"as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d", "asdas",
 					"adsgaassd", "asddsga",
 					"adsgaassd", "asddsga"
-				]
+				],
+				businessInfo:{}//商家信息
 			}
 		},
+		//
+		onLoad(options) {
+			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
+			//获取商户信息
+			this.getData(options)
+		},
 		methods:{
-			//加载更多信息
-			loadMoreInfo(){
-				this.isLoadMore = !this.isLoadMore;
+			async getData(options){
+				const result = await this.$net.sendRequest(`/home/business/${options.id}`,{},"GET");
+				this.businessInfo = result.data;
 			}
+			
 		}
 	}
 </script>

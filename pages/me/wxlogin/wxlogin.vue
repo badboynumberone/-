@@ -17,7 +17,7 @@
 			<view class="button p10">
 				<my-button :text="'手机号一键绑定'" :type="4"></my-button>
 			</view>
-			<view class="button" style="text-align: center;">
+			<view class="button" style="text-align: center;" @click="bindOtherPhone">
 				<text>绑定其他手机号</text>
 			</view>
 		</view>
@@ -40,8 +40,8 @@
 					</view>
 				</view>
 			</view>
-			<view class="next margin" @click="bindPhone">
-				<Pic :height="'100%'" :width="'100%'" :mode="'aspectFill'" :round="true"></Pic>
+			<view class="next margin fm" @click="bindPhone">
+				<image src="/static/images/sign in@2x.png" :mode="'aspectFit'" style="width: 60%;"></image>
 			</view>
 		</view>
 		<view class="notice cl">
@@ -52,7 +52,7 @@
 
 <script>
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
-	const timer = null;
+	let timer = null;
 	export default {
 		components: {
 			MyButton
@@ -63,6 +63,8 @@
 				phone: "", //手机号
 				code: "", //验证码
 				seconds: 60, //剩余时间
+				openid:"",//openid
+				userinfo:{},//用户信息
 			}
 		},
 		onHide() {
@@ -72,24 +74,49 @@
 			clearInterval(timer);
 		},
 		methods: {
+			//绑定其他手机号
+			bindOtherPhone(){
+				this.step = 3;
+			},
 			onChangge(e) {
 				this[e.currentTarget.dataset.name] = e.detail.value;
 			},
-			getCode() {
+			async getCode() {
 				if (!this.checkForm(1)) {
 					return;
 				}
+				const result  =await this.$net.sendRequest("/sso/getAuthCode",{telephone:this.phone},"GET");
+				this.$tools.Toast("验证码发送成功!")
 				timer = setInterval(() => {
 					this.seconds--;
+					(this.seconds<=0)&&(this.seconds=0)
 				}, 1000);
 
 			},
-			//登录
-			bindPhone() {
+			//注册成功
+			async bindPhone() {
 				if (!this.checkForm(2)) {
 					return;
 				}
-				this.$tools.switchTab("/pages/me/me/me")
+				await this.sendBindPhone(2);
+				wx.showToast({
+					title:"绑定成功",
+					duration:1500,
+					icon:"success",
+					success:()=>{
+						let timer = setTimeout(function(){
+							wx.switchTab({
+								url:"/pages/me/me/me"
+							})
+							clearTimeout(timer)
+						},1500)
+					}
+				})
+			},
+			//绑定手机号
+			async sendBindPhone(type){
+				const result = await this.$net.sendRequest(`/sso/wx/regByOpenid`,{type:type,openid:this.openid,telephone:this.phone,authCode:this.code,wxPic:this.userinfo.avatarUrl,wxName:this.userinfo.nickName});
+				
 			},
 			checkForm(checkNum) {
 				if (checkNum == 1 && !/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone)) {
@@ -154,6 +181,7 @@
 		margin-top: 20px;
 		border-radius: 25px;
 		overflow: hidden;
+		background: linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%);
 	}
 
 	.notice {

@@ -1,8 +1,8 @@
 <script>
 	import Vue from 'vue'
+	import Request from 'utils/request.js'
 	export default {
 		onLaunch: function() {
-			uni.setStorageSync("accessToken","asdsafsasf");
 			uni.getSystemInfo({
 				success: function(e) {
 					// #ifndef MP
@@ -27,6 +27,12 @@
 			})
 		},
 		onShow: function() {
+			this.$nextTick(()=>{
+				//登录状态未过期获取用户信息
+				// Request.checkLoginStatus();
+				//重新获取token
+				// Request.getAccessToken();
+			})
 			
 			console.log('App Show')
 		},

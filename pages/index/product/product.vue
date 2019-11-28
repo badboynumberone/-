@@ -20,20 +20,22 @@
 			<view class="info_wrapper p10">
 				<view class="detail fsb ">
 					<view class="text more-hidden fz16 fb">
-						金秋红蜜桃水蜜桃子新鲜水果脆桃当金秋红蜜桃水蜜桃子新鲜水果脆桃当
+						{{pageData.name}}
 					</view>
-					<button class="icon fm" open-type="share" >
+					<view class="icon fm pr" style="width: 40px;">
 						<van-icon name="share" size="16px" />
 						<text>分享</text>
-					</button>
+						<button class="pa fill" style="z-index:9;opacity: 0;" open-type="share" ></button>
+					</view>
+					
 				</view>
 				<view class="tag ftm mt5">
-						<my-tag :type="'first'"/>
-						<my-tag class="ml10" :type="'second'"/>
+						<my-tag :type="'first'" :text="pageData.brandName"/>
+						<my-tag v-if="pageData.tagName" class="ml10" :type="'second'" :text="pageData.tagName"/>
 				</view>
 				<view class="price_box fsb mt20 mb10">
-					<text class="price fb fz18">￥123.00~235.00</text>
-					<text class="sal">销量123</text>
+					<text class="price fb fz18">￥{{pageData.price}}</text>
+					<text class="sal">销量{{pageData.sale}}</text>
 				</view>
 			</view>
 
@@ -47,9 +49,10 @@
 				
 						<view class="info fsr">
 							<view class="text-hidden fb fz17" style="width: 230px;">
-								南京樱桃鸭业有限公司
+								{{pageData.businessName}}
 							</view>
 							<view class="text-hidden" style="width: 230px;color: #666;">
+								
 								南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
 							</view>
 						</view>
@@ -107,24 +110,24 @@
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
-					<image src="https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg"></image>
+					<image :src="pageData.pic"></image>
 					<view class="right">
-						<text class="price">¥328.00</text>
-						<text class="stock">库存：188件</text>
+						<text class="price">¥{{selectedItem.price}}</text>
+						<text class="stock">库存：{{selectedItem.stockNum}}{{pageData.unit}}</text>
 						<view class="selected">
 							已选：
-							<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
-								{{sItem.name}}
+							<text class="selected-text" >
+								{{selectedItem.name}}
 							</text>
 						</view>
 					</view>
 				</view>
 				
-				<view v-for="(item,index) in specList" :key="index" class="attr-list">
+				<view  :key="index" class="attr-list"><!-- v-for="(item,index) in specList" -->
 					<text>{{item.name}}</text>
 					<view class="item-list">
-						<text v-for="(childItem, childIndex) in specChildList" v-if="childItem.pid === item.id" :key="childIndex" class="tit"
-						 :class="{selected: childItem.selected}" @click="selectSpec(childIndex, childItem.pid)">
+						<text v-for="(childItem, childIndex) in selectItems"  :key="childIndex" class="tit"
+						 :class="{selected: childItem.selected}" @click="selectSpec(childIndex, childItem)">
 							{{childItem.name}}
 						</text>
 					</view>
@@ -140,7 +143,7 @@
 				<view style="height: 50px;">
 					
 				</view>
-				<view class="pa pt10 pb10"style="width: 348px;bottom: 0px;" @click="finsh">
+				<view class="pa pt10 pb10" style="width: 348px;bottom: 0px;" @click="finsh">
 					<van-button :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" block round :size="'small'"><text style="color: #fff;">完成</text></van-button>
 				</view>
 				
@@ -168,6 +171,12 @@
 						'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg',
 						'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
 				],
+				selectItems:[],
+				selectedItem:{
+					name:"",
+					price:0,
+					stockNum:0
+				},
 				specClass:"none",
 				specSelected:[],
 				specList: [
@@ -180,6 +189,7 @@
 						name: '颜色',
 					},
 				],
+				pageData:null,
 				specChildList: [{
 						id: 1,
 						pid: 1,
@@ -228,7 +238,17 @@
 				]
 			};
 		},
+		onLoad(options) {
+			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
+			this.getData(options)
+		},
 		methods:{
+			async getData(options){
+				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
+				this.imgList = result.data.albumPics.split(",");
+				this.pageData = result.data;
+				this.selectItems = result.data.attrs;
+			},
 			//数量绑定
 			onCountChange(e){
 				this.count = e.detail;
@@ -259,28 +279,10 @@
 				}
 			},
 			//选择规格
-			selectSpec(index, pid){
-				let list = this.specChildList;
-				list.forEach(item=>{
-					if(item.pid === pid){
-						this.$set(item, 'selected', false);
-					}
-				})
-			
-				this.$set(list[index], 'selected', true);
-				//存储已选择
-				/**
-				 * 修复选择规格存储错误
-				 * 将这几行代码替换即可
-				 * 选择的规格存放在specSelected中
-				 */
-				this.specSelected = []; 
-				list.forEach(item=>{ 
-					if(item.selected === true){ 
-						this.specSelected.push(item); 
-					} 
-				})
-				
+			selectSpec(index, single){
+				this.selectItems = this.selectItems.map((item)=>{item.selected=false;return item})
+				this.$set(this.selectItems[index],'selected',true);
+				this.selectedItem = single;
 			},
 			//页面跳转
 			navigateTo(e) {

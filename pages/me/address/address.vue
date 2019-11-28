@@ -52,12 +52,15 @@
 			},
 			//表单验证
 			checkForm(){
+				//校验规则
 				const array = [
 					[!this.name.length,"姓名不能为空!"],
 					[!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone),"手机格式不正确!"],
 					[!this.area.length,"地区不能为空!"],
 					[!this.detail.length,"详细地址不能为空!"]
 				];
+				
+				//校验器
 				for (let v of array) {
 					if(v[0]){
 						this.$tools.Toast(v[1]);
