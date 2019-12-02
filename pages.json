@@ -46,7 +46,8 @@
 					"van-stepper": "/wxcomponents/vant/stepper/index",
 					"load-more": "/wxcomponents/load-more/index",
 					"van-dialog": "/wxcomponents/vant/dialog/index"
-				}
+				},
+				"enablePullDownRefresh":true
 			}
 		}, {
 			"path": "pages/me/address/address",
@@ -192,6 +193,10 @@
         }
         ,{
             "path" : "mycomponents/Imgs/Imgs",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/index/brand_product/brand_product",
             "style" : {}
         }
     ],

@@ -1,77 +1,120 @@
 <template>
 	<view class="main">
-		
-		<!-- 地址列表 -->
-		<van-cell-group>
-			<van-swipe-cell v-for="(item,index) in 6" :key="index" :right-width="130">
-			  <van-cell icon="location-o" center>
-			  			  <view slot="title">
-			  			      <view class="van-cell-text"><text class="fb fz16":decode="true">王磊     13685280335</text></view>
-			  				  <view class="address more-hidden">江苏省南京市秦淮区新街口十号店20-20厅萨达多所</view>
-			  			  </view>
-			  			  <view slot="right-icon" @click="setDefault">
-			  			       <view :class="['van-cell-text','theme'] ">设为默认</view>
-			  			  </view>
-			  </van-cell>
-			  <view class="right" slot="right">
-				  <view class="edit fm" @click="navigateTo" :data-url="'/pages/me/address/address'">
-				  	编辑
+		<view class="container" v-if="list.length">
+			<!-- 地址列表 -->
+			<van-cell-group>
+				<van-swipe-cell v-for="(item,index) in list" :key="index" :right-width="isLastOrder ? 1:item.defaultStatus?65:130" @click="setOrderAddress(item)">
+				  <van-cell icon="location-o" center>
+				  			  <view slot="title">
+				  			      <view class="van-cell-text"><text class="fb fz16" :decode="true">{{item.name }}     {{item.phoneNumber }}</text></view>
+				  				  <view class="address more-hidden">{{item.province+item.city+item.region+item.detailAddress}}</view>
+				  			  </view>
+				  			  <view slot="right-icon" @click="setDefault(item.id)" v-if="!item.defaultStatus">
+				  			       <view :class="['van-cell-text','theme'] ">设为默认</view>
+				  			  </view>
+				  </van-cell>
+				  <view class="right" slot="right">
+					  <view class="edit fm" @click="toEdit(item)" :data-url="''">
+					  	编辑
+					  </view>
+					  <view class="del fm" @click="delAddress(item.id)">
+					  	删除
+					  </view>
 				  </view>
-				  <view class="del fm" @click="delAddress">
-				  	删除
-				  </view>
-			  </view>
-			</van-swipe-cell>
-		</van-cell-group>
-		<view style="height: 64px;"></view>
+				</van-swipe-cell>
+			</van-cell-group>
+			<view style="height: 64px;"></view>
+			
+			
+			
+			
+			<!-- 模态框 -->
+			<van-dialog id="van-dialog" confirm-button-color="#38A472" />
+		</view>
 		
+		<view style="height: 100%;" v-if="!list.length">
+			<Empty :type="'address'" :text="'您还没有收货地址哦'" :src="'/static/images/dzwsj@2x.png'" />
+		</view>
 		
 		<!-- 添加地址按钮 -->
 		<view class="button pf" @click="navigateTo" :data-url="'/pages/me/address/address'">
-			<my-button :text="'新增地址'" ></my-button>
+			<my-button :type="1" :text="'新增地址'" :round="true" ></my-button>
 		</view>
-		
-		<!-- 模态框 -->
-		<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 	</view>
 </template>
 
 <script>
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
+	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
+	import {sendRequest} from "../../../utils/request.js";
+	let pages=null;
 	export default {
 		components:{
-			MyButton
+			MyButton,Empty
 		},
 		data() {
 			return {
-				
+			
 			}
 		},
+		computed:{
+			list(){
+				return this.$store.state.addressList
+			},
+			isLastOrder(){
+				console.log(getCurrentPages())
+				return getCurrentPages()[getCurrentPages().length-2].route=='pages/cart/submit_order/submit_order'
+			}
+		},
+		onLoad() {
+			this.getAddressList();
+			pages = getCurrentPages();
+		},
 		methods: {
+			//获取地址栏信息列表
+			getAddressList(){
+				this.$store.dispatch("getUserAddress");
+			},
 			//页面跳转
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
+			//去编辑
+			toEdit(item){
+				this.$tools.navigateTo(`/pages/me/address/address?item=${JSON.stringify(item)}`)
+			},
+			//设置地址
+			setOrderAddress(item){
+				if(this.isLastOrder){
+					pages[pages.length-2].hook(item);
+					wx.navigateBack()
+				}
+				
+			},
 			//设置默认地址
-			setDefault(){
-				console.log(Dialog)
+			setDefault(id){
 				Dialog.confirm({
 				  title: '提示',
 				  message: '确认设置该地址为默认地址吗?'
-				}).then(() => {
+				}).then(async () => {
+					const result = await this.$net.sendRequest(`/member/address/setDefault/${id}`);
+					this.$tools.Toast("设置成功","success");
+					this.getAddressList();
 				  // on confirm
 				}).catch(() => {
 				  // on cancel
 				});
 			},
 			//删除地址
-			delAddress(){
+			delAddress(id){
 				Dialog.confirm({
 				  title: '提示',
 				  message: '确认删除该地址吗?'
-				}).then(() => {
+				}).then(async () => {
 				  // on confirm
+				  const result = await this.$net.sendRequest(`/member/address/delete/${id}`);
+				  this.getAddressList();
 				}).catch(() => {
 				  // on cancel
 				});

@@ -5,26 +5,26 @@
 				<view class="icon mr5">
 					<van-icon name="shop-o" :size="'20x'" />
 				</view>
-				<text class="fb">南京普朗克科贸有限公司</text>
+				<text class="fb">{{item.businessName}}</text>
 				<view class="icon right">
 					<van-icon name="arrow" :color="'#ccc'" />
 				</view>
 			</view>
-			<text class="status theme fz14" v-if="status">
-				{{status}}
+			<text class="status theme fz14" v-if="item.status">
+				{{arr[item.status]}}
 			</text>
 		</view>
-		<view class="container f pb5 pt5" v-for="(item,index) in 2" :key="index" @click="navigateTo" :data-url="'/pages/me/order_detail/order_detail'">
+		<view class="container f pb5 pt5" v-for="(single,index) in item.items" :key="index" @click="navigateTo" :data-url="'/pages/me/order_detail/order_detail'">
 			<view class="pic">
 				<Pic :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :height="'90px'" :width="'90px'" :mode="'aspectFill'"></Pic>
 			</view>
 			<view class="info fsr ml10">
-				<text class="text-hidden" style="width: 230px;">樱桃盐水鸭正宗南京特产咸水鸭樱桃盐水鸭正宗南京特产咸水鸭</text>
-				<text class="text-hidden fz10 size" :decode="true" style="width: 220px;margin-top: -5px;">10斤20斤10斤20斤10斤20斤10斤20斤10斤20斤10斤20斤10斤20斤10斤20斤</text>
+				<text class="text-hidden" style="width: 230px;">{{single.productName}}</text>
+				<text class="text-hidden fz10 size" :decode="true" style="width: 220px;margin-top: -5px;">{{single.attrName || single.productAttrName}}</text>
 				<view class="price fz16  fsb">
-					<text>￥32.00</text>
+					<text>￥{{single.price || single.productPrice}}</text>
 					<view class="fz12" style="color: #727272;">
-						x1
+						x{{single.quantity || single.productQuantity}}
 					</view>
 				</view>
 			</view>
@@ -39,13 +39,20 @@
 			Pic
 		},
 		props:{
+			isClick:{
+				type:Boolean,
+				default:false
+			},
+			item:{
+				type:Object
+			},
 			status:{
 				type:String
 			}
 		},
 		data() {
 			return {
-				
+				arr:['待付款','待发货','待收货','交易成功','交易关闭']
 			};
 		},
 		computed:{
@@ -58,6 +65,7 @@
 		methods:{
 			//页面跳转
 			navigateTo(e) {
+				if(!this.isClick)return
 				const url = e.currentTarget.dataset.url;
 				if(!url){
 					return;

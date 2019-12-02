@@ -11,9 +11,10 @@
 		<view v-if="type==3" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
 			<van-button :color="color" block :round="round" open-type="getUserInfo" @getuserinfo="getUserInfo"><text style="color: #fff;">{{text}}</text></van-button>
 		</view>
-		
+
 		<view v-if="type==4" class="pt10 pb10" style="width: 95%;margin: 0 auto;">
-			<van-button :color="color" block :round="round" open-type="getPhoneNumber" @getphonenumber="getphonenumber"><text style="color: #fff;">{{text}}</text></van-button>
+			<van-button :color="color" block :round="round" open-type="getPhoneNumber" @getphonenumber="getphonenumber"><text
+				 style="color: #fff;">{{text}}</text></van-button>
 		</view>
 
 		<view v-if="type==5" class="sp fsb" style="width: 100%">
@@ -26,13 +27,13 @@
 <script>
 	export default {
 		props: {
-			round:{
-				type:Boolean,
-				default:true
+			round: {
+				type: Boolean,
+				default: true
 			},
-			size:{
-				type:String,
-				default:"normal"
+			size: {
+				type: String,
+				default: "normal"
 			},
 			type: {
 				type: Number,
@@ -59,7 +60,7 @@
 		},
 		data() {
 			return {
-				
+
 
 			}
 		},
@@ -68,38 +69,40 @@
 			async getUserInfo(e) {
 				console.log(e)
 				//获取openid或者token
-				await this.$net.getAccessToken((res)=>{
+				await this.$net.getAccessToken((res) => {
 					//未绑定手机号,去绑定手机
-					
-					 if(res.openid){ //
-						this.$parent.$data.step = 2,this.$parent.$data.openid = res.openid;
+					if (res.openid) { //
+						this.$parent.$data.step = 2, this.$parent.$data.openid = res.openid;
 						this.$parent.$data.userinfo = e.detail.userInfo;
 					}
 					//已经绑定手机号,直接登录
-					if(res.token){
-						wx.setStorageSync('accessToken','Authorization   Bearer sdvnasdnvsdnfsldfdsf'+res.token);
+					console.log()
+					debugger;
+					if (res.token) {
+						//用户相关地址和信息
+						this.$store.dispatch("autoLoginIn");
+						// 提示登录成功
 						wx.showToast({
-							title:"登陆成功",
-							duration:1500,
-							icon:"success",
-							success:()=>{
-								let timer = setTimeout(function(){
+							title: "登陆成功",
+							duration: 1500,
+							icon: "success",
+							success: () => {
+								let timer = setTimeout(function() {
 									wx.switchTab({
-										url:"/pages/me/me/me"
+										url: "/pages/me/me/me"
 									})
 									clearTimeout(timer)
-								},1500)
+								}, 1500)
 							}
 						})
-						//获取用户信息
 					}
-					
+
 				});
 			},
 			//获取用户手机号
-			async getphonenumber(e){
+			async getphonenumber(e) {
 				console.log(e)
-				
+
 			}
 		}
 	}

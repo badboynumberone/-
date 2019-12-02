@@ -3,6 +3,7 @@
 	import Request from 'utils/request.js'
 	export default {
 		onLaunch: function() {
+			console.log('App Launch')
 			uni.getSystemInfo({
 				success: function(e) {
 					// #ifndef MP
@@ -29,11 +30,8 @@
 		onShow: function() {
 			this.$nextTick(()=>{
 				//登录状态未过期获取用户信息
-				// Request.checkLoginStatus();
-				//重新获取token
-				// Request.getAccessToken();
+				Request.checkLoginStatus();
 			})
-			
 			console.log('App Show')
 		},
 		onHide: function() {

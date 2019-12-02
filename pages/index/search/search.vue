@@ -74,7 +74,7 @@
 			//获取热门搜索
 			async getHotKey(){
 				const result = await this.$net.sendRequest("/home/getSearch",{limit:10},"GET");
-				this.hotKey = result.data.hotKey;
+				this.hotKey = result.hotKey;
 			},
 			//获取搜索历史
 			getKeyHistory() {

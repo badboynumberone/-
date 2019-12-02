@@ -40,11 +40,11 @@
 			</view>
 
 			<!-- 商家 -->
-			<view class="business" @click="navigateTo" :data-url="'/pages/index/store_details/store_details'">
+			<view class="business" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+pageData.businessId">
 				<van-field :border="false" is-link center readonly>
 					<view class="label  fsb" slot="label">
 						<view class="mr20">
-							<Pic :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
+							<Pic :src="pageData.businessPic" :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
 						</view>
 				
 						<view class="info fsr">
@@ -52,8 +52,7 @@
 								{{pageData.businessName}}
 							</view>
 							<view class="text-hidden" style="width: 230px;color: #666;">
-								
-								南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司南京樱桃鸭业有限公司
+								{{pageData.bussinessDesc}}
 							</view>
 						</view>
 					</view>
@@ -80,7 +79,7 @@
 					商品详情
 				</view>
 				<view class="container">
-					<Pic :width="'100%'" :mode="'widthFix'"></Pic>
+					<Pic v-for="(item,index) in pageData.detailPics" :key="index" :src="item" :width="'100%'" :mode="'widthFix'"></Pic>
 				</view>
 				<!-- 加载更多 -->
 				<load-more :tip="'到底了'" :loading="false" />
@@ -95,10 +94,11 @@
 		<!-- 商品提交条 -->
 		<van-goods-action>
 			<van-goods-action-icon icon="chat-o" text="客服" />
-			<van-goods-action-icon icon="cart-o" text="购物车" />
+			<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
+			<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 			<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-				<van-goods-action-button text="加入购物车" :color="'#222'" @click="showModal" />
-				<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal" />
+				<van-goods-action-button text="加入购物车" :color="'#222'" @click="showModal(false)" />
+				<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 			</view>
 			<view style="width: 10px;height: 100%;"></view>
 		</van-goods-action>
@@ -143,7 +143,7 @@
 				<view style="height: 50px;">
 					
 				</view>
-				<view class="pa pt10 pb10" style="width: 348px;bottom: 0px;" @click="finsh">
+				<view class="pa pt10 pb10" style="width: 348px;bottom: 0px;" @click="subOrder">
 					<van-button :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" block round :size="'small'"><text style="color: #fff;">完成</text></van-button>
 				</view>
 				
@@ -166,17 +166,18 @@
 		},
 		data() {
 			return {
-				count:0,//商品数量
+				action:true,//当前操作 true代表立即购买 false 代表加入购物车
+				count:1,//商品数量
 				imgList: ['https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg',
 						'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg',
 						'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
-				],
-				selectItems:[],
+				],//轮播图
+				selectItems:[],//所有商品尺寸
 				selectedItem:{
 					name:"",
 					price:0,
 					stockNum:0
-				},
+				},//已选商品尺寸
 				specClass:"none",
 				specSelected:[],
 				specList: [
@@ -238,6 +239,17 @@
 				]
 			};
 		},
+		computed:{
+			cartCount(){
+				let length = 0;
+				if(this.$store.state.cart.length){
+					this.$store.state.cart.forEach(function(item){
+						length+=item.items.length;
+					})
+				}
+				return length
+			}
+		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
 			this.getData(options)
@@ -245,9 +257,12 @@
 		methods:{
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
-				this.imgList = result.data.albumPics.split(",");
-				this.pageData = result.data;
-				this.selectItems = result.data.attrs;
+				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
+				this.pageData = result;
+				this.selectItems = result.attrs;
+			},
+			toCart(){
+				this.$tools.switchTab("/pages/cart/cart/cart")
 			},
 			//数量绑定
 			onCountChange(e){
@@ -288,11 +303,49 @@
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
-			showModal(){
+			showModal(action){
+				this.action = action;  
 				this.toggleSpec();
 			},
-			finsh(){
+			async subOrder(){
+				
+				//判断商家是否登录
+				
+				//判断是否已经选中商品
+				if(this.selectedItem=={name:"",price:0,stockNum:0}){
+					this.$tools.Toast("请选择商品种类");return;
+				}
+				//判断是否已经选中商品
+				if(!this.selectedItem.stockNum){
+					this.$tools.Toast("请选择商品库存不足,请重新选择!");return;
+				}
+				//关闭弹窗
 				this.toggleSpec();
+				//跳转页面 
+				if(this.action){//直接下订单
+					let submitData=[{
+						businessId:this.pageData.businessId,
+						businessName:this.pageData.businessName,
+						items:[
+							{	
+								attrName:this.selectedItem.name,
+								attrId:this.selectedItem.id,
+								productName:this.pageData.name,
+								productPic:this.pageData.pic,
+								price:this.selectedItem.price,
+								quantity:this.count
+							}
+						],
+						note:""
+					}];
+					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}`);
+				}else{
+					//添加购物车
+					const result  =await this.$net.sendRequest("/cart/add",{productAttrId:this.selectedItem.id,quantity:this.count});
+					this.$tools.Toast("添加购物车成功","success");
+					this.$store.dispatch("getCart");
+				}
+				
 			},
 			stopPrevent(){
 				// this.toggleSpec();

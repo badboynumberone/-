@@ -1,6 +1,5 @@
 <template>
 	<view class="main" v-if="isLoaded">
-		<Imgs :images="needLoadImg">
 			<!-- 搜索框 -->
 			<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 				<Ser :back="'#fff'"></Ser>
@@ -82,7 +81,6 @@
 			<!-- 加载更多 -->
 			<load-more v-if="pageData[loadIndex].list.length" :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].text=='加载中...'" />
 			<view v-if="pageData[loadIndex].text=='加载中...' && pageData[loadIndex].pageNum==1" style="height: 1000rpx;"></view>
-		</Imgs>
 
 	</view>
 </template>
@@ -142,8 +140,6 @@
 		},
 		async onLoad() {
 
-			//检查登录状态
-			
 			await this.getSwiperCate();
 			//第一次加载获取数据
 			this.selectarea="全部";
@@ -159,9 +155,6 @@
 			this.getData();
 		},
 		computed: {
-			needLoadImg() {
-				return [...this.keys, ...this.swiperList]
-			},
 			loadIndex() {
 				return parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea)) || 0;
 			}
@@ -201,7 +194,7 @@
 			},
 			async getSwiperCate(){
 				const result =await this.$net.sendRequest("/home/content",{},"GET");
-				this.swiperList = result.data.advertiseList,this.keys=result.data.catList;
+				this.swiperList = result.advertiseList,this.keys=result.catList;
 			},
 			//获取数据
 			getData() {
@@ -213,9 +206,9 @@
 						pageNum: v.pageNum,
 						pageSize: 20,
 					},"GET");
-					v.list = [...v.list, ...result.data];
+					v.list = [...v.list, ...result];
 					this.$set(this.pageData, index, v);
-					reslove(result.data);
+					reslove(result);
 					this.isLoaded = true;
 					// await new Promise((res, rej) => {
 					// 	const timer = setTimeout(() => {

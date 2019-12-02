@@ -77,27 +77,31 @@
 
 		data() {
 			return {
-				isLoaded: false,
+				isLoaded: true,
 				keys: [{
+						status:0,
 						text: "待付款",
 						url: "",
 						src: "/static/images/Pending-payment@2x.png",
-						num: 1
+						num: 0
 					},
 					{
 						text: "待发货",
+						status:1,
 						url: "",
 						src: "/static/images/shipped@2x.png",
 						num: 0
 					},
 					{
 						text: "待收货",
+						status:2,
 						url: "",
 						src: "/static/images/Goods-to-be-received@2x.png",
 						num: 0
 					},
 					{
 						text: "已完成",
+						status:3,
 						url: "",
 						src: "/static/images/complete@2x.png",
 						num: 0
@@ -114,14 +118,7 @@
 			}
 		},
 		onLoad() {
-			uni.showLoading({
-				title: "加载中",
-				mask: false
-			});
-			setTimeout(() => {
-				uni.hideLoading();
-				this.isLoaded = true
-			}, 1000)
+			this.getOrderCount();
 
 		},
 		computed: {
@@ -138,6 +135,19 @@
 			//获取用户信息
 			getUserInfo() {
 
+			},
+			//获取订单数量
+			async getOrderCount(){
+				const result = await this.$net.sendRequest("/order/countOrder");
+				for(let v of result){
+					const findIndex = this.keys.findIndex(item=>item.status==v.status)
+					if(findIndex){
+						let item = this.keys[findIndex];
+						item.num = v.value;
+						this.$set(this.keys,findIndex,item);
+					}
+				}
+			
 			},
 			//页面跳转
 			navigateTo(e, index) {
@@ -184,10 +194,10 @@
 		.box {
 			.pic_item {
 				.num {
-					padding: 0px 8px;
+					padding: 0px 14rpx;
 					background: red;
 					@include sc(12px, #fff);
-					border-radius: 20px;
+					border-radius: 25px;
 					top: -10px;
 					right: -10px;
 				}

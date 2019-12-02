@@ -76,7 +76,8 @@ function dateFormat(fmt, date) {
     };
     return fmt;
 }
-
+//平铺数组
+const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v)));
 
 export default {
 	navigateTo,
@@ -85,5 +86,6 @@ export default {
 	Toast,
 	showLoading,
 	getImages,
-	dateFormat
+	dateFormat,
+	deepFlatten
 }
