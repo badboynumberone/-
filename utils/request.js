@@ -1,11 +1,14 @@
 import base from './base'
 
 import Store from './../store/index.js'
+
+const applicationJSON = ['/order/generateOrder'];
 //发送数据
-export function sendRequest(url, params = {}, method = "POST"){
+export function sendRequest(url, params = {}, method = "POST") {
 	//将方法转为小写
 	method = method.toUpperCase();
-	let addurl = '';let baseUrl=url;
+	let addurl = '';
+	let baseUrl = url;
 	if (method == "GET" && Object.entries(params).length) {
 		for (let [key, value] of Object.entries(params)) {
 			addurl += ('&' + key + '=' + value);
@@ -19,7 +22,7 @@ export function sendRequest(url, params = {}, method = "POST"){
 			method,
 			data: params,
 			header: {
-				'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+				'content-type': applicationJSON.includes(url) ? 'application/json;charset=UTF-8' : 'application/x-www-form-urlencoded;charset=UTF-8',
 				'Authorization': uni.getStorageSync('accessToken'),
 			},
 			dataType: 'json',
@@ -29,17 +32,17 @@ export function sendRequest(url, params = {}, method = "POST"){
 
 				if (res.statusCode == 200) {
 					const result = res.data;
-					if (result.code == 401) {//登录已经过期
-						getAccessToken(()=>{
-							sendRequest(url,params,method).then(resolve, reject)
+					if (result.code == 401 && Store.state.hasLogin) { //token已经过期 不过此时是登录有效期
+						getAccessToken(() => {
+							sendRequest(url, params, method).then(resolve, reject)
 						});
 					}
 					if (result.code == 200) { //正常返回
 						resolve(result.data)
 					}
-					
+
 					//各页面返回数据异常处理
-					
+
 
 				}
 
@@ -68,7 +71,7 @@ export function getAccessToken(callback = () => {}) {
 				dataType: 'json',
 				success(res) {
 					console.log("accessToken:", res.data.data.token);
-					if(res.data.data.token){
+					if (res.data.data.token) {
 						uni.setStorageSync("accessToken", `Bearer ${res.data.data.token}`);
 					}
 					callback(res.data.data);
@@ -97,7 +100,7 @@ function checkLoginStatus() {
 				});
 				//自动登录
 				await Store.dispatch("autoLoginIn");
-				
+
 				wx.hideLoading();
 				resolve();
 			},
@@ -111,7 +114,26 @@ function checkLoginStatus() {
 	})
 }
 
+//检查登录
+function checkLogin() {
+	if (!Store.state.hasLogin) {
+		wx.showModal({
+			title: "提示",
+			content: "你还尚未登录,赶紧去登录吧",
+			success(res) {
+				if (res.confirm) {
+					uni.navigateTo({
+						url: "/pages/me/wxlogin/wxlogin"
+					})
+				}
+			}
+		})
+	}
+	return Store.state.hasLogin;
+}
+
 export default {
+	checkLogin,
 	sendRequest,
 	checkLoginStatus,
 	getAccessToken

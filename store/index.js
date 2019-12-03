@@ -6,16 +6,15 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 	state: {
 		hasLogin: false,
-		username: "",//用户名
 		openid: null ,//用户id
+		userinfo:{},//用户信息
 		addressList:[] ,//用户地址
 		defaultAddress:{},//默认地址
 		cart:[],//购物车信息
 	},
 	mutations: {
-		login(state, username) {
+		login(state) {
 			state.hasLogin = true;
-			state.username = username;
 		},
 		logout(state) {
 			state.hasLogin = false
@@ -23,6 +22,10 @@ const store = new Vuex.Store({
 		},
 		setOpenid(state, openid) {
 			state.openid = openid
+		},
+		//存储用户信息
+		setUserInfo(state,userinfo){
+			state.userinfo =userinfo
 		},
 		//设置地址
 		saveAddress(state,addressList){
@@ -35,9 +38,11 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
+		
 		// lazy loading openid
 		//自动登录
 		autoLoginIn({dispatch,commit,state}){
+			commit("login");
 			//获取用户信息
 			dispatch("getUserInfo"); 
 			//获取用户地址
@@ -46,9 +51,9 @@ const store = new Vuex.Store({
 			dispatch("getCart");
 		},
 		//获取用户信息
-		async getUserInfo(){
-			return;
-			// Request.sendRequest("/sso/userinfo",{},"GET");
+		async getUserInfo({commit}){
+			const result = await Request.sendRequest("/sso/userinfo",{},"GET");
+			commit('setUserInfo',result);
 		},
 		//获取用户地址列表
 		async getUserAddress({dispatch,commit,state}){

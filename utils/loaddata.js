@@ -1,15 +1,21 @@
 export default {
 	// 清空数据
 	clear: async function clear() {
-		const index = this.pageData.findIndex(e => e.areaName == this.selectarea); 
-		- 1 != index && this.$set(this.pageData,
-			index, {
-				areaName: this.selectarea,
-				pageNum: 0,
-				text: "",
-				isLoading: 0,
-				list: []
-			});
+		try{
+			const index = this.pageData.findIndex(e => e.areaName == this.selectarea);
+			- 1 != index && this.$set(this.pageData,
+				index, {
+					areaName: this.selectarea,
+					pageNum: 0,
+					text: "",
+					isLoading: 0,
+					list: []
+				});
+		}catch(e){
+			//TODO handle the exception
+		}finally{
+			return true;
+		}
 	},
 	//加载更多
 	loadMore: async function loadMore(a) {

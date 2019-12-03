@@ -1,45 +1,61 @@
 <template>
 	<view class="main">
 		<!-- 搜索框 -->
-		<Ser :isDisabled="false" ref="search"></Ser>
-		<view class="before_search">
+		<view class="pf" style="width: 100%;top: 0px;left: 0px;">
+			<Ser :isDisabled="false" ref="search" @startSerch='search'></Ser>
+		</view>
+		<view style="height: 45px;"></view>
+		<view class="before_search" v-if="isHistory">
 			<!-- 热门搜索 -->
-			<view class="searchBotBox" v-if="isHistory">
+			<view class="searchBotBox" v-if="hotKey.length">
 				<view class="ov ">
 					<view class="fl" style="color: #898989;">热门搜索</view>
 				</view>
 				<view class="searchHistoryBox">
 					<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in hotKey" :key='index' style="max-width: 150px;"
-					 @click="itemSearch(item)">
+					 @click="itemsearch(item)">
 						{{item}}
 					</view>
 				</view>
 			</view>
-			
+
 			<!-- 搜索历史 -->
-			<view class="searchBotBox" v-if="isHistory">
+			<view class="searchBotBox">
 				<view class="ov ">
 					<view class="fl" style="color: #898989;">搜索历史</view>
 					<view @click="clearKey" class="fr grace-more-r grace-search-remove">
 						<van-icon name="delete"></van-icon>
 					</view>
 				</view>
-				<view class="searchHistoryBox">
+				<view class="searchHistoryBox" v-if="searchKey.length">
 					<view class="searchHistoryBoxItem text-hidden" v-for="(item,index) in searchKey" :key='index' style="max-width: 150px;"
-					 @click="itemSearch(item)">
+					 @click="itemsearch(item)">
 						{{item}}
 					</view>
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 已经搜索 -->
-		<view class="searched">
+		<view class="searched"  :style="{'opacity':isHistory?0:1,'position': !isHistory?'static':'fixed','z-index':!isHistory?1:-1}">
 			<!-- 状态栏 -->
-			<cate-bar></cate-bar>
+			<view class="pf" style="width: 100%;top: 45px;">
+				<cate-bar ref='cate' @get="reload"></cate-bar>
+			</view>
+			<view style="height: 44px;"></view>
+			
+			<view v-if="pageData[loadIndex].list.length">
+				<!-- 内容 -->
+				<MyList :list="pageData[loadIndex].list"></MyList>
+				<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
+			</view>
+			
+			<view class="fm" v-if="!pageData[loadIndex].list.length" style="height: 100%;">
+				<Empty :text="'没有找到商品,请更换条件在试试哦'" :src="'/static/images/ddwsj@2x.png'" style="height: 100%;" />
+			</view>
 		</view>
-		
-		
+
+
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 	</view>
@@ -48,21 +64,44 @@
 <script>
 	import Ser from "../../../mycomponents/Ser/Ser";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
-	import CateBar from '../../../mycomponents/cate-bar/cate-bar.vue'
+	import CateBar from '../../../mycomponents/cate-bar/cate-bar.vue';
+	import MyList from "../../../mycomponents/my-list/my-list.vue";
+	import loadData from "../../../utils/loaddata.js";
+	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	export default {
 		components: {
-			Ser,CateBar
+			Ser,
+			CateBar,
+			MyList,
+			Empty
 		},
 		data() {
 			return {
 				searchKey: [],
-				hotKey:[],
-				isHistory: true
+				hotKey: [],
+				isHistory: true,
+				isLoaded: false,
+				pageData: [{
+					areaName: "初始化",
+					list: []
+				}],
+				selectarea: "初始"
 			}
+		},
+		computed: {
+			//需要加载的索引
+			loadIndex() {
+				let index = 0;
+				index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
+				return index;
+			}
+		},
+		onReachBottom() {
+			this.search();
 		},
 		async onLoad() {
 			wx.showLoading({
-				title:"请稍后..."
+				title: "请稍后..."
 			})
 			//获取历史搜索
 			this.getKeyHistory();
@@ -72,9 +111,11 @@
 		},
 		methods: {
 			//获取热门搜索
-			async getHotKey(){
-				const result = await this.$net.sendRequest("/home/getSearch",{limit:10},"GET");
-				this.hotKey = result.hotKey;
+			async getHotKey() {
+				const result = await this.$net.sendRequest("/home/getSearch", {
+					limit: 10
+				}, "GET");
+				this.hotKey = result.hotKey;this.isLoaded = true;
 			},
 			//获取搜索历史
 			getKeyHistory() {
@@ -96,9 +137,40 @@
 					this.getKeyHistory()
 				});
 			},
-			itemSearch(item) {
+			itemsearch(item) {
 				this.$refs.search.searchValue = item;
-				this.$refs.search.confirmContent();
+				this.reload();
+			},
+			reload(){
+				this.pageData.splice(1,1);
+				this.$nextTick(()=>{this.$refs.search.confirmContent();})
+			},
+			//搜索
+			search(){
+				this.selectarea = "搜索商品";
+				loadData.loadMore.call(this, async (reslove, reject) => {
+					await new Promise(async (res, rej) => {
+						//获取需要加载的选项
+						const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
+						// 获取需要加载的那一项
+						let v = this.pageData[index];
+						console.log(this.$refs.cate.active)
+						//发送请求了
+						const result = await this.$net.sendRequest('/home/getProductList', {
+							name:this.$refs.search.searchValue.trim(),
+							...this.$refs.cate.active!=1 ?{
+								listOrder:(()=>{const arr = ['price','sale'];return arr[this.$refs.cate.active-2]})(),
+								listOrderSort:(()=>{const arr = [this.$refs.cate.priceSort,this.$refs.cate.saleSort];return arr[this.$refs.cate.active-1]?1:0})(),
+							}:{},
+							pageNum: v.pageNum,
+							pageSize: 20
+						},"GET")
+						v.list = [...v.list, ...result]
+						this.$set(this.pageData, index, v);
+						reslove(result);
+						res();
+					})
+				});
 			}
 		}
 	}
@@ -120,6 +192,9 @@
 		overflow: hidden;
 		margin-top: 60upx;
 
+	}
+	.searched{
+		height: 100%;
 	}
 
 	.searchHistoryBoxItem {

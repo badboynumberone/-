@@ -76,7 +76,8 @@
 				"navigationBarBackgroundColor": "#38A472",
 				"navigationBarTextStyle": "white",
 				"usingComponents": {
-					"van-dialog": "/wxcomponents/vant/dialog/index"
+					"van-dialog": "/wxcomponents/vant/dialog/index",
+					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
 		}
@@ -119,7 +120,8 @@
 				"usingComponents": {
 					"van-tab": "/wxcomponents/vant/tab/index",
 					"van-tabs": "/wxcomponents/vant/tabs/index",
-					"van-tag": "/wxcomponents/vant/tag/index"
+					"van-tag": "/wxcomponents/vant/tag/index",
+					"load-more": "/wxcomponents/load-more/index"
 					
 				}
 			}

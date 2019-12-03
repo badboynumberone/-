@@ -76,8 +76,6 @@
 						this.$parent.$data.userinfo = e.detail.userInfo;
 					}
 					//已经绑定手机号,直接登录
-					console.log()
-					debugger;
 					if (res.token) {
 						//用户相关地址和信息
 						this.$store.dispatch("autoLoginIn");

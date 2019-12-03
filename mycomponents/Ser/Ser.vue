@@ -52,9 +52,9 @@
 
 
 				this.$parent.isHistory = false;
-
+				this.$parent.pageData.splice(1,1);
 				this.$parent.getKeyHistory();
-
+				this.$emit("startSerch")
 			},
 		}
 	}

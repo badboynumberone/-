@@ -40,7 +40,7 @@
 			</view>
 
 			<!-- 商家 -->
-			<view class="business" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+pageData.businessId">
+			<view class="business" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+pageData.businessId+'&brandId='+pageData.brandId">
 				<van-field :border="false" is-link center readonly>
 					<view class="label  fsb" slot="label">
 						<view class="mr20">
@@ -92,16 +92,20 @@
 
 
 		<!-- 商品提交条 -->
-		<van-goods-action>
-			<van-goods-action-icon icon="chat-o" text="客服" />
-			<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
-			<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
-			<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-				<van-goods-action-button text="加入购物车" :color="'#222'" @click="showModal(false)" />
-				<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
-			</view>
-			<view style="width: 10px;height: 100%;"></view>
-		</van-goods-action>
+		<view class="bottom_bar">
+			<view class="bar fz14" v-if="pageData.stock<=5 || !pageData.publishStatus">{{ !pageData.publishStatus ?  '当前商品已下架,快去看看其他商品吧!' :  pageData.stock<=0 ? '当前商品已售罄，可查看更多商品':`当前商品库存仅剩${pageData.stock}件`}}</view>
+			<van-goods-action>
+				<van-goods-action-icon icon="chat-o" text="客服" />
+				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
+				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
+				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
+					<van-goods-action-button text="加入购物车" :color="'#222'" @click="showModal(false)" />
+					<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
+				</view>
+				<view style="width: 10px;height: 100%;"></view>
+			</van-goods-action>
+		</view>
+		
 
 
 		<!-- 规格-模态层弹窗 -->
@@ -150,16 +154,16 @@
 				<view class="pa pr10 pt10" style="top: 0px;right: 0px;" @click="toggleSpec">
 					<van-icon name="close" size="20px" :color="'#D0D0D0'" />
 				</view>
-				
 			</view>
 		</view>
+		<van-dialog id="van-dialog" />
 	</view>
 </template>
 
 <script>
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
 	import MyTag from "../../../mycomponents/my-tag/my-tag.vue";
-	
+	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	export default {
 		components: {
 			MyButton,MyTag
@@ -258,8 +262,7 @@
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
 				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
-				this.pageData = result;
-				this.selectItems = result.attrs;
+				this.pageData = result;this.selectItems = result.attrs;
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")
@@ -303,7 +306,15 @@
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
+			//显示模态框
 			showModal(action){
+				if (!this.$net.checkLogin()) {
+					return;
+				}
+				if(!parseInt(this.pageData.publishStatus)){
+					this.$tools.Toast("商品已下架,快去看看其他商品吧")
+					return;
+				}
 				this.action = action;  
 				this.toggleSpec();
 			},
@@ -317,7 +328,7 @@
 				}
 				//判断是否已经选中商品
 				if(!this.selectedItem.stockNum){
-					this.$tools.Toast("请选择商品库存不足,请重新选择!");return;
+					this.$tools.Toast("商品库存不足,请重新选择!");return;
 				}
 				//关闭弹窗
 				this.toggleSpec();
@@ -363,7 +374,20 @@
 			}
 		}
 	}
-	
+	.bottom_bar{
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		.bar{
+			@include wh(100%,60rpx);
+			line-height: 60rpx;
+			text-align: center;
+			color: #fff;
+			background: rgba(0,0,0,0.5);
+		}
+	}
 	.back{
 		top: 50rpx;
 		left: 30rpx;

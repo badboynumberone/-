@@ -11,8 +11,11 @@
 		<view class="mt5" style="transform: scale(0.8,0.8);margin-left: -18px;">
 			<my-tag :type="'second'" :text="item.tagName" />
 		</view>
-		<view class="fz14 fb price">
-			￥{{item.price}}
+		<view class="fsb" style="align-items: center;">
+			<view class="fz14 fb price">
+				￥{{item.price}}
+			</view>
+			<image style="width: 45rpx;height: 60rpx;" src="/static/images/shopping-Cart-Selection@2x.png" mode="aspectFit"></image>
 		</view>
 	</view>
 </template>

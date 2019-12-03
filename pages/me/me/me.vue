@@ -2,21 +2,22 @@
 	<view class="main" v-if="isLoaded">
 		<Imgs :images="keys">
 			<!-- 头部 -->
-			<div class="top f p20 pr" @click="navigateTo" :data-url="'/pages/me/wxlogin/wxlogin'">
+			<div class="top f p20 pr" @click="toLogin" :data-url="'/pages/me/wxlogin/wxlogin'">
 				<!-- <button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
 			 @getuserinfo="getUserInfo"></button> -->
 
 				<div class="left mr20">
-					<Pic :height="'100%'" :width="'100%'" :mode="'aspectFill'" :round="true"></Pic>
+					<Pic :src="userInfo.wxPic || '/static/images/header.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"
+					 :round="true"></Pic>
 				</div>
 
 				<div class="right fsr">
-					<block v-if="false">
+					<block v-if="isLogin">
 						<view class="fb fz18">
-							User
+							{{userInfo.wxName}}
 						</view>
-						<view class="fz14" style="margin-top: -20px;">
-							136****0335
+						<view class="fz14" style="margin-top: -20px;color: #666;">
+							{{userInfo.phone}}
 						</view>
 					</block>
 					<block v-else>
@@ -31,12 +32,12 @@
 				<div class="wrapper pl20 pr20">
 					<view class="title fsb pt10">
 						<text class="fz19 fb">我的订单</text>
-						<text class="fz12" style="color:#ccc">查看全部&gt;</text>
+						<text class="fz12" style="color:#ccc" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order?active=0'">查看全部&gt;</text>
 					</view>
 					<view class="box pt10 pb10">
 						<uni-grid :column="5" :show-border="false" :square="false">
 							<uni-grid-item v-for="(item,index) in keys" :key="index">
-								<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
+								<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order?active='+(index+1)">
 									<view style="height: 45px;width: 45px;">
 										<Pic :src="item.src" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 									</view>
@@ -79,7 +80,7 @@
 			return {
 				isLoaded: true,
 				keys: [{
-						status:0,
+						status: 0,
 						text: "待付款",
 						url: "",
 						src: "/static/images/Pending-payment@2x.png",
@@ -87,21 +88,21 @@
 					},
 					{
 						text: "待发货",
-						status:1,
+						status: 1,
 						url: "",
 						src: "/static/images/shipped@2x.png",
 						num: 0
 					},
 					{
 						text: "待收货",
-						status:2,
+						status: 2,
 						url: "",
 						src: "/static/images/Goods-to-be-received@2x.png",
 						num: 0
 					},
 					{
 						text: "已完成",
-						status:3,
+						status: 3,
 						url: "",
 						src: "/static/images/complete@2x.png",
 						num: 0
@@ -124,38 +125,46 @@
 		computed: {
 			isLogin() {
 				return this.$store.state.hasLogin
+			},
+			userInfo() {
+				return this.$store.state.userinfo
 			}
 		},
 		methods: {
 			refresh() {
 				const lastpages = pages[pages.length - 2];
 				lastpages.hook(true);
-
 			},
-			//获取用户信息
-			getUserInfo() {
-
+			//去登录
+			toLogin(e) {
+				if (this.isLogin) return;
+				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//获取订单数量
-			async getOrderCount(){
+			async getOrderCount() {
 				const result = await this.$net.sendRequest("/order/countOrder");
-				for(let v of result){
-					const findIndex = this.keys.findIndex(item=>item.status==v.status)
-					if(findIndex){
+				for (let v of result) {
+					const findIndex = this.keys.findIndex(item => item.status == v.status)
+					if (findIndex != -1) {
 						let item = this.keys[findIndex];
 						item.num = v.value;
-						this.$set(this.keys,findIndex,item);
+						this.$set(this.keys, findIndex, item);
 					}
 				}
-			
+
 			},
 			//页面跳转
 			navigateTo(e, index) {
+				if (!this.$net.checkLogin()) {
+					return;
+				}
 				if (index == 4) {
 					this.$tools.navigateTo("/pages/me/refund/refund");
 					return;
 				}
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
+
+
 			}
 		}
 	}

@@ -13,9 +13,11 @@
 		</view>
 		<view style="height: 39px;"></view>
 		<!-- 内容 -->
-		<div class="container">
-			<view class="item"v-for="(item,index) in pageData[loadIndex].list"  :key="index" :item="item">
-				<my-goods-card :status="'待付款'" :item="item"></my-goods-card>
+		<div class="container"  v-if="isLoaded&&pageData[loadIndex].list.length">
+			<view class="item" v-for="(item,index) in pageData[loadIndex].list"  :key="index" :item="item">
+				<view @click="navigateTo" :data-url="`/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`"> 
+					<my-goods-card :status="'待付款'" :item="item" ></my-goods-card>
+				</view>
 				<view class="pay pl5 pr5">
 					实付款:<text class="theme fz16 fb">￥68.90</text>
 				</view>
@@ -40,17 +42,23 @@
 					</view>
 				</view>
 			</view>
+			<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
 		</div>
+		
+		<view style="height: 100%;" v-if="isLoaded && !pageData[loadIndex].list.length">
+			<Empty :type="'address'" :text="'您暂时没有订单哦,赶紧去首页看看吧！'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'"  />
+		</view>
 	</view>
 </template>
 
 <script>
 	import loadData from "../../../utils/loaddata.js";
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
+	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	const arr =['待付款','待发货','待收货','交易成功','交易关闭','全部'];
 	export default {
 		components:{
-			MyGoodsCard
+			MyGoodsCard,Empty
 		},
 		data() {
 			return {
@@ -68,8 +76,11 @@
 				return index;
 			}
 		},
-		onLoad() {
-			this.selectarea = "全部";
+		onLoad(options) {
+			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
+			
+			this.active = options.active;
+			this.selectarea = arr[options.active-1];
 			this.getData();
 		},
 		onReachBottom(){
@@ -78,6 +89,7 @@
 		methods: {
 			onTabChange(e){
 				this.active = parseInt(e.detail.index);
+				console.log(e);
 				this.selectarea =  this.active==5 ? '全部': arr[this.active-1];
 				this.getData();
 			},

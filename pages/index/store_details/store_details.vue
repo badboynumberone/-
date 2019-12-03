@@ -1,19 +1,19 @@
 <template>
-	<view class="main">
+	<view class="main" v-if="isLoaded">
 		<!-- 店铺信息 -->
 		<view class="store_info">
 			<view class="wrapper pr">
 				<view class="business pr20 pl20 pt10 pb10 pa" style="top: 0px;left: 0px;width: 100%;z-index: 9;">
 					<view class="label f">
 						<view class="store_header mr20">
-							<Pic :src="busLog" :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
+							<Pic :src="businessInfo.busLog" :height="'60px'" :width="'60px'" :mode="'aspectFill'"></Pic>
 						</view>
 						<view class="info fsr">
 							<view class="text-hidden fb fz17" style="width: 230px;">
 								{{businessInfo.name}}
 							</view>
 							<view class="text-hidden" style="width: 230px;color: #666;">
-								
+								{{businessInfo.busDesc}}
 							</view>
 						</view>
 					</view>
@@ -38,9 +38,9 @@
 				商品
 			</view>
 			<!-- 商品列表 -->
-			<MyList :pageData="pageData"></MyList>
+			<MyList :list="pageData[loadIndex].list"></MyList>
 			<!-- 加载更多 -->
-			<load-more :tip="'正在加载中...'" :loading="true" />
+			<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
 		</view>
 	</view>
 </template>
@@ -48,6 +48,7 @@
 <script>
 	import MyList from "../../../mycomponents/my-list/my-list.vue";
 	import Pic from "../../../mycomponents/Pic/Pic.vue";
+	import loadData from "../../../utils/loaddata.js";
 	export default {
 		components:{
 			MyList,Pic
@@ -55,25 +56,61 @@
 		data() {
 			return {
 				isLoadMore:true,//是否加载更多
-				pageData: [
-					"as暗示法大纲打得过大个个都是是的港式大飒飒噶都是嘎我当时嘎嘎挂电视柜d", "asdas",
-					"adsgaassd", "asddsga",
-					"adsgaassd", "asddsga"
-				],
+				isLoaded: false,//是否加载完
+				pageData: [{
+					areaName: "初始化",
+					list: []
+				}],
+				selectarea:'初始化',
 				businessInfo:{},//商家信息
 				
 			}
 		},
-		//
-		onLoad(options) {
+		async onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
 			//获取商户信息
-			this.getData(options)
+			this.selectarea = "店铺";
+			await this.getBussinessInfo(options);
+			this.getData(options);
+			//获取商家信息
+			
+		},
+		computed:{
+			//需要加载的索引
+			loadIndex() {
+				let index = 0;
+				index =parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea)) ;
+				return index;
+			}
+		},
+		onReachBottom(){
+			this.getData(getCurrentPages()[getCurrentPages().length-1].options);
 		},
 		methods:{
+			async getBussinessInfo(options){
+				this.businessInfo = await this.$net.sendRequest(`/home/business/${options.id}`,{},'GET');
+			},
+			//搜索
 			async getData(options){
-				const result = await this.$net.sendRequest(`/home/business/${options.id}`,{},"GET");
-				this.businessInfo = result;
+				loadData.loadMore.call(this, async (reslove, reject) => {
+					await new Promise(async (res, rej) => {
+						//获取需要加载的选项
+						const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
+						// 获取需要加载的那一项
+						let v = this.pageData[index];
+						//发送请求了
+						const result = await this.$net.sendRequest('/home/getProductList', {
+							brandId:options.brandId,
+							pageNum: v.pageNum,
+							pageSize: 20
+						},"GET")
+						v.list = [...v.list, ...result]
+						this.$set(this.pageData, index, v);
+						this.isLoaded = true;
+						reslove(result);
+						res();
+					})
+				});
 			},
 			loadMoreInfo(){
 				this.isLoadMore = !this.isLoadMore;
