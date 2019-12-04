@@ -32,11 +32,13 @@
 
 				</view>
 				<uni-grid :column="5" :show-border="false" :square="false">
-					<uni-grid-item v-for="(item,index) in keys" :key="index">
-						<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order'">
-							<Pic :src="item.icon" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+					<uni-grid-item v-for="(item,index) in keys" :key="index" v-if="index<5">
+						<view class="fm" style="flex-flow: column wrap;" @click="navigateTo" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
+							<view class="pic_item">
+								<Pic :src="item.icon" :height="'30px'" :width="'30px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+							</view>
+							<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.name}}</text>
 						</view>
-						<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.text}}</text>
 					</uni-grid-item>
 				</uni-grid>
 				<div class="menu  fsb p10">
@@ -193,7 +195,7 @@
 				}
 			},
 			async getSwiperCate(){
-				const result =await this.$net.sendRequest("/home/content",{},"GET");
+				const result =await this.$net.sendRequest("/home/content",{appSource:'weixin'},"GET");
 				this.swiperList = result.advertiseList,this.keys=result.catList;
 			},
 			//获取数据

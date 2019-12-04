@@ -53,6 +53,7 @@
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Pic from "../../../mycomponents/Pic/Pic.vue";
+	let isOrdering=false;
 	let lastPage = null;
 	export default {
 		components: {
@@ -116,6 +117,7 @@
 			},
 			//获取订单详情
 			async getOrderDetail() {
+				
 				let result = null;
 				//通过购物车下单
 				if (lastPage.route == 'pages/cart/cart/cart') {
@@ -134,6 +136,7 @@
 					});
 					this.freight = result.freight;
 				}
+				
 			},
 			//页面跳转
 			navigateTo(e) {
@@ -150,6 +153,7 @@
 			},
 			// 下单
 			async generateOrder() {
+				
 				let result = null;
 				//下单
 				if (lastPage.route == 'pages/index/product/product') {
@@ -183,7 +187,9 @@
 
 			//提交订单
 			async onSub() {
-
+				// 如果正在下单停止下单
+				if(isOrdering) return;
+				isOrdering = true;
 				//检验表单
 				if (!this.checkForm()) {
 					return
@@ -209,6 +215,7 @@
 						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
 								(this.totalPrice / 100 + this.freight));
 						this.$store.dispatch("getCart");
+						isOrdering = false;
 
 					},
 					fail: (res) => {
@@ -221,10 +228,10 @@
 							this.$store.dispatch("getCart");
 							this.$tools.redirectTo(`/pages/me/order/order?active=0`)
 						}
-
+						isOrdering = false;
 					}
 				})
-
+				
 			},
 			//检验表单
 			checkForm() {

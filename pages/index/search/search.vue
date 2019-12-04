@@ -51,7 +51,7 @@
 			</view>
 			
 			<view class="fm" v-if="!pageData[loadIndex].list.length" style="height: 100%;">
-				<Empty :text="'没有找到商品,请更换条件在试试哦'" :src="'/static/images/ddwsj@2x.png'" style="height: 100%;" />
+				<Empty :text="'没有找到商品,请更换条件再试试哦'" :src="'/static/images/ddwsj@2x.png'" style="height: 100%;" />
 			</view>
 		</view>
 
@@ -160,7 +160,7 @@
 							name:this.$refs.search.searchValue.trim(),
 							...this.$refs.cate.active!=1 ?{
 								listOrder:(()=>{const arr = ['price','sale'];return arr[this.$refs.cate.active-2]})(),
-								listOrderSort:(()=>{const arr = [this.$refs.cate.priceSort,this.$refs.cate.saleSort];return arr[this.$refs.cate.active-1]?1:0})(),
+								listOrderSort:(()=>{const arr = [this.$refs.cate.priceSort,this.$refs.cate.saleSort];return arr[this.$refs.cate.active-2]?1:0})(),
 							}:{},
 							pageNum: v.pageNum,
 							pageSize: 20

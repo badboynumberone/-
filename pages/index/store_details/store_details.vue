@@ -13,7 +13,7 @@
 								{{businessInfo.name}}
 							</view>
 							<view class="text-hidden" style="width: 230px;color: #666;">
-								{{businessInfo.busDesc}}
+								{{businessInfo.detailAddress}}
 							</view>
 						</view>
 					</view>

@@ -6,8 +6,8 @@
 			<view class="content fsb pr">
 				<view class="fz15 fb text-hidden">{{item.name}}</view>
 				<view class="tag"><my-tag :text="item.tagName" :type="'second'"></my-tag></view>
-				<view class="price fb theme">￥51.90</view>
-				<view class="tag fb theme"><my-tag :text="item.brandName":type="'first'"></my-tag></view>
+				<view class="price fb theme">￥{{item.price}}</view>
+				<view class="tag fb theme"><my-tag :text="item.brandName" :type="'first'"></my-tag></view>
 				<image class="pa" style="right: 0px;bottom: 0px;" src="../../static/images/shopping-Cart-Selection@2x.png" mode="aspectFit"></image>
 			</view>
 	</view>

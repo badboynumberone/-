@@ -34,7 +34,7 @@
 		<view style="height: 46px;"></view>
 
 		<view class="bottom_bar p10 f pf">
-			<view class="ml10" v-if="pageData.status==0">
+			<view class="ml10" v-if="pageData.status==0" @click="cancelOrder">
 				<van-tag :color="'#38A472'" plain round size="medium">取消订单</van-tag>
 			</view>
 			<view class="ml10" v-if="pageData.status==0" @click="comfirmPay">
@@ -47,11 +47,13 @@
 				<van-tag :color="'#38A472'" plain round size="medium">查看物流</van-tag>
 			</view>
 		</view>
+		<van-dialog id="van-dialog" />
 	</view>
 </template>
 
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
+	import Dialog from "../../../wxcomponents/vant/dialog/dialog.js";
 	export default {
 		components: {
 			MyGoodsCard
@@ -80,13 +82,15 @@
 				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭'];
 				res.state = arr[res.status], res.address = res.receiverProvince + res.receiverCity + res.receiverRegion + res.receiverDetailAddress;
 				res.items = res.orderItemList;
+				// 更改producId为 id-----------------------------------------------------
+				res.items = res.items.map(item=>{item.id=item.productId;return item})
 				delete res.orderItemList;
 				return res;
 			},
 			// 立即支付
 			async comfirmPay() {
 				const res = await this.$net.sendRequest("/order/miniAppPay", {
-					orderNo: pageData.orderNo.toString()
+					orderNo: this.pageData.orderNo.toString()
 				});
 				console.log('支付接口信息', res);
 				//调用支付接口
@@ -112,6 +116,20 @@
 
 					}
 				})
+			},
+			//取消订单
+			cancelOrder() {
+				Dialog.confirm({
+				  title: '标题',
+				  message: '您确认需要取消该订单吗?'
+				}).then(async () => {
+					await this.$net.sendRequest("/order/cancelOrder",{orderId:this.pageData.orderNo.toString()});
+					getCurrentPages()[getCurrentPages().length-2].hook();
+					wx.navigateBack()
+				  // on confirm
+				}).catch(() => {
+				  // on cancel
+				});
 			},
 			//申请退款
 			async applyRefund() {

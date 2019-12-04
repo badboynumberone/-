@@ -4,7 +4,7 @@
 		<view v-if="step==1" class="container ct" style="width: 100%;margin-top: -130px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">欢迎登录！</view>
 			<view class="wx_header ">
-				<Pic :height="'100px'" :width="'100px'" :mode="'aspectFill'" :round="true"></Pic>
+				<Pic :src="'/static/images/logo.png'" :height="'100%'" :width="'100%'" :mode="'scaleToFill'" :round="true" :back="'#fff'"></Pic>
 			</view>
 			<view class="button p10">
 				<my-button :text="'登录'" :type="3"></my-button>
@@ -47,11 +47,13 @@
 		<view class="notice cl">
 			温馨提示：未注册用户，初次登录时将完成注册
 		</view>
+		<van-dialog id="van-dialog" />
 	</view>
 </template>
 
 <script>
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
+	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	let timer = null;
 	export default {
 		components: {
@@ -87,6 +89,12 @@
 				}
 				const result  =await this.$net.sendRequest("/sso/getAuthCode",{telephone:this.phone},"GET");
 				this.$tools.Toast("验证码发送成功!")
+				Dialog.alert({
+				  title: '验证码(演示专用)',
+				  message: result
+				}).then(() => {
+				  // on close
+				});
 				timer = setInterval(() => {
 					this.seconds--;
 					(this.seconds<=0)&&(this.seconds=0)
@@ -146,7 +154,6 @@
 		@include wh(100px, 100px);
 		@include borderRadius(100px);
 		margin: 20px auto;
-		box-shadow: -2px 3px 5px #DBDBDB;
 	}
 
 	.wrapper {

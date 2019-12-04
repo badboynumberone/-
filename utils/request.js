@@ -94,14 +94,8 @@ function checkLoginStatus() {
 		uni.checkSession({
 			success: async () => {
 				console.log("code&&session:未过期");
-
-				uni.showLoading({
-					mask: true
-				});
 				//自动登录
 				await Store.dispatch("autoLoginIn");
-
-				wx.hideLoading();
 				resolve();
 			},
 			fail: () => {

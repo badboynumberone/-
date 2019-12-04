@@ -60,9 +60,9 @@
 			<load-more :tip="'到底了'" :loading="false" />
 			<view style="height: 50px;"></view>
 		</view>
-		<view :style="{height: contentHeight}" v-if="!cartData.length">
-			<Empty  :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
-		</view>	
+		<view :style="{height: contentHeight}" v-if="!cartData.length&&isLoaded">
+			<Empty :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
+		</view>
 		<!-- 底部结算条 -->
 		<view class="submit_bar pf">
 			<van-submit-bar :price="totalPrice" :button-text="isEdit?`删除`:`结算(${selectedCount})`" @submit="onClickButton" :tip="true">
@@ -87,7 +87,7 @@
 		data() {
 			return {
 				ispf: false,
-				contentHeight:0,
+				contentHeight: 0,
 				isLoaded: false,
 				allRadio: '1',
 				isEdit: false, //顶部文案
@@ -189,9 +189,12 @@
 			}
 		},
 		async onLoad() {
-			this.getContentHeight();
+			wx.showLoading({title:"加载中...",mask:true})
+			await this.getContentHeight();
 			await this.refreshlocalCart();
 			this.getCartData();
+			this.isLoaded=true;
+			wx.hideLoading()
 		},
 		onShow() {
 			//获取购物车数据
@@ -199,8 +202,8 @@
 		},
 		onPageScroll: function(e) {
 			this.scrollTop = e.scrollTop;
-			this.ispf = !this.cartData.length ? false:(this.scrollTop > 0);
-			
+			this.ispf = !this.cartData.length ? false : (this.scrollTop > 0);
+
 		},
 		async onPullDownRefresh() {
 			await this.refreshlocalCart();
@@ -209,12 +212,14 @@
 			this.$tools.Toast("刷新成功");
 		},
 		methods: {
-			getContentHeight(){
-				this.$nextTick(()=>{
-					wx.createSelectorQuery().select('.top_bar').boundingClientRect(rect=>{
-						this.contentHeight = (uni.getSystemInfoSync().windowHeight-rect.height)+'px'
+			async getContentHeight() {
+				await new Promise((res,rej)=>{
+					wx.createSelectorQuery().select('.top_bar').boundingClientRect(rect => {
+						this.contentHeight = (uni.getSystemInfoSync().windowHeight - rect.height) + 'px';
+						res();
 					}).exec()
 				})
+				
 			},
 			// 更新本地购物车
 			async refreshlocalCart() {
@@ -232,12 +237,12 @@
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//改变数量
-			async onCountChange(e, idx, index,item) {
+			async onCountChange(e, idx, index, item) {
 				this.$set(this.cartData[idx].items[index], 'quantity', e.detail);
-				await this.$net.sendRequest("/cart/update/quantity",{
-					id:item.id,
-					quantity:e.detail,
-				},"GET")
+				await this.$net.sendRequest("/cart/update/quantity", {
+					id: item.id,
+					quantity: e.detail,
+				}, "GET")
 			},
 			//当所有选项发生变化
 			onAllChange(e) {
@@ -273,8 +278,10 @@
 					}).then(async () => {
 						// on confirm
 						//获得所有商品
-						const checkedProducts = this.$tools.deepFlatten(this.cartData.map(item=>item.items)).filter(item=>item.ischecked);
-						const result = await this.$net.sendRequest("/cart/delete",{ids:checkedProducts.reduce((all,next)=>all+=`,${next.id}`,'').slice(1)});
+						const checkedProducts = this.$tools.deepFlatten(this.cartData.map(item => item.items)).filter(item => item.ischecked);
+						const result = await this.$net.sendRequest("/cart/delete", {
+							ids: checkedProducts.reduce((all, next) => all += `,${next.id}`, '').slice(1)
+						});
 						this.$tools.Toast("删除成功");
 						await this.refreshlocalCart();
 						this.getCartData();
@@ -301,9 +308,12 @@
 						}
 						return filterResult != false
 					});
-					checkedResult = checkedResult.map(item=>{item.note="";return item});
-					
-					this.$tools.navigateTo("/pages/cart/submit_order/submit_order?items="+JSON.stringify(checkedResult));
+					checkedResult = checkedResult.map(item => {
+						item.note = "";
+						return item
+					});
+
+					this.$tools.navigateTo("/pages/cart/submit_order/submit_order?items=" + JSON.stringify(checkedResult));
 				}
 
 			},

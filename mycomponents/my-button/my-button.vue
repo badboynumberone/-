@@ -81,7 +81,7 @@
 						this.$store.dispatch("autoLoginIn");
 						// 提示登录成功
 						wx.showToast({
-							title: "登陆成功",
+							title: "登录成功",
 							duration: 1500,
 							icon: "success",
 							success: () => {

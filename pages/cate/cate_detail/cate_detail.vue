@@ -1,7 +1,7 @@
 <template>
 	<view class="main">
 		<!-- 内容 -->
-		<view class=" fsb bt">
+		<view class="fsb bt">
 			<scroll-view class="br" scroll-y="true" :style="{height: scrollHeight,width: '170rpx',background:'#F8F8F8'}">
 				<van-sidebar :active="active" @change="onChange">
 					<van-sidebar-item v-for="(item,index) in cates" :key="index" :title="item.name" />
@@ -88,6 +88,12 @@
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
+			//重新加载
+			reload(){
+				loadData.clear.call(this);
+				this.getData();
+			},
+			//获取数据
 			getData() {
 				loadData.loadMore.call(this, async (reslove, reject) => {
 					await new Promise(async (res, rej) => {
@@ -100,7 +106,7 @@
 							productCategoryId:this.cates[this.active].id,
 							...this.$refs.cate.active!=1 ?{
 								listOrder:(()=>{const arr = ['price','sale'];return arr[this.$refs.cate.active-2]})(),
-								listOrderSort:(()=>{const arr = [this.$refs.cate.priceSort,this.$refs.cate.saleSort];return arr[this.$refs.cate.active-1]?1:0})(),
+								listOrderSort:(()=>{const arr = [this.$refs.cate.priceSort,this.$refs.cate.saleSort];return arr[this.$refs.cate.active-2]?1:0})(),
 							}:{},
 							pageNum: v.pageNum,
 							pageSize: 20

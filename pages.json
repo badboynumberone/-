@@ -95,7 +95,8 @@
             "style" : {
 				"navigationBarTitleText": "",
 				"usingComponents": {
-					"van-icon": "/wxcomponents/vant/icon/index"
+					"van-icon": "/wxcomponents/vant/icon/index",
+					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
         }
@@ -179,7 +180,8 @@
 				"navigationBarTitleText": "订单详情",
 				"usingComponents":{
 					"van-field": "/wxcomponents/vant/field/index",
-					"van-tag": "/wxcomponents/vant/tag/index"
+					"van-tag": "/wxcomponents/vant/tag/index",
+					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
         }
@@ -219,6 +221,16 @@
 				"navigationBarTitleText": "支付成功",
 				"usingComponents":{
 					"van-field": "/wxcomponents/vant/field/index"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/cate/intro_cate_detail/intro_cate_detail",
+            "style" : {
+				"usingComponents":{
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
+					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
         }

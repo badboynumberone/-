@@ -28,17 +28,14 @@
 		methods:{
 			//按什么排序
 			sortBy(type){
+				this.active = type;
 				if(this.active==2 && this.active==type){
 					this.priceSort = !this.priceSort;
 				}
 				if(this.active==3 && this.active==type){
 					this.saleSort = !this.saleSort;
 				}
-				if(!(this.active==1 && type==1)){
-					this.$emit("get")
-				}
-				this.active = type;
-				
+				this.$emit("get")
 			}
 		}
 	}
