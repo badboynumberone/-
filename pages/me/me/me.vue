@@ -119,8 +119,11 @@
 			}
 		},
 		onLoad() {
-			this.getOrderCount();
+			
 
+		},
+		onShow() {
+			this.getOrderCount();
 		},
 		computed: {
 			isLogin() {

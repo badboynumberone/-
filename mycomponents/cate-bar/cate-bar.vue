@@ -34,7 +34,7 @@
 				if(this.active==3 && this.active==type){
 					this.saleSort = !this.saleSort;
 				}
-				if(this.active!=type){
+				if(!(this.active==1 && type==1)){
 					this.$emit("get")
 				}
 				this.active = type;

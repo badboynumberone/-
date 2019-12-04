@@ -121,8 +121,8 @@
 					"van-tab": "/wxcomponents/vant/tab/index",
 					"van-tabs": "/wxcomponents/vant/tabs/index",
 					"van-tag": "/wxcomponents/vant/tag/index",
-					"load-more": "/wxcomponents/load-more/index"
-					
+					"load-more": "/wxcomponents/load-more/index",
+					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
 		}
@@ -194,12 +194,33 @@
 			}
         }
         ,{
-            "path" : "mycomponents/Imgs/Imgs",
-            "style" : {}
+            "path" : "pages/index/brand_product/brand_product",
+            "style" : {
+				"navigationBarTitleText": "",
+				"usingComponents":{
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
+				}
+			}
         }
         ,{
-            "path" : "pages/index/brand_product/brand_product",
-            "style" : {}
+            "path" : "pages/cate/cate_detail/cate_detail",
+            "style" : {
+				"usingComponents":{
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
+					"load-more": "/wxcomponents/load-more/index"
+				}
+			}
+        }
+        ,{
+            "path" : "pages/cart/pay_success/pay_success",
+            "style" : {
+				"navigationBarTitleText": "支付成功",
+				"usingComponents":{
+					"van-field": "/wxcomponents/vant/field/index"
+				}
+			}
         }
     ],
 	"globalStyle": {
@@ -223,6 +244,11 @@
 			"iconPath": "static/images/home@2x.png",
 			"selectedIconPath": "static/images/home-Selection@2x.png",
 			"text": "首页"
+		}, {
+			"pagePath": "pages/cate/cate/cate",
+			"iconPath": "static/images/classify@2x.png",
+			"selectedIconPath": "static/images/classify-Selection@2x.png",
+			"text": "分类"
 		},  {
 			"pagePath": "pages/cart/cart/cart",
 			"iconPath": "static/images/shopping-Cart@2x.png",

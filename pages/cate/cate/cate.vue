@@ -10,22 +10,16 @@
 		<view style="height: 45px;">
 		</view>
 		<view class=" fsb">
-			<scroll-view scroll-y="true" :style="{height: scrollHeight,width: '85px'}" >
-				<van-sidebar :active="active" @change="onChange">
-				  <van-sidebar-item v-for="(item,index) in 20" :key="index" title="标签名称" />
-				</van-sidebar>
-			</scroll-view>
-			<scroll-view scroll-y="true" style="height: 100%;width: 290px;" >
-				<view class="top">
-					
-				</view>
+			<scroll-view scroll-y="true" style="height: 100%;height: 100%;" >
 				<view class="bottom">
 					<uni-grid :column="3" :show-border="false" :square="false">
-						<uni-grid-item v-for="(item,index) in keys" :key="index">
-							<view class="pic_item pr">
-								<Pic :src="item.src" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+						<uni-grid-item v-for="(item,index) in keys" :key="index" v-if="item.showStatus==1" >
+							<view  @click="navigateTo" :data-url="'/pages/cate/cate_detail/cate_detail?id='+item.id+'&cate='+item.name">
+								<view class="pic_item pr" >
+									<Pic :src="item.icon" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+								</view>
+								<text class="text fz12" style="color: #222;">{{item.name}}</text>
 							</view>
-							<text class="text fz12" style="color: #222;">{{item.text}}</text>
 						</uni-grid-item>
 					</uni-grid>
 				</view>
@@ -81,12 +75,15 @@
 				]
 			}
 		},
-		onLoad() {
+		async onLoad() {
 			uni.showLoading({
 				title:"加载中",
 				mask: false
 			});
-			setTimeout(()=>{this.computeScrollHeight();uni.hideLoading();this.isLoaded=true},1000)
+			await this.getCate();
+			this.isLoaded = true;
+			wx.hideLoading();
+			
 			
 		},
 		methods: {
@@ -94,14 +91,10 @@
 			navigateTo(e) {
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
-			//计算滚动条长度
-			computeScrollHeight(){
-				const systemInfo = uni.getSystemInfoSync().windowHeight-45;
-				this.scrollHeight = systemInfo+"px";
-			},
-			onChange(e){
-				console.log(e)
-				
+			//获取分类
+			async getCate(){
+				const result = await this.$net.sendRequest("/home/productCateList/0",{},"GET");
+				this.keys = result;
 			}
 		}
 	}

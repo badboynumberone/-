@@ -68,7 +68,7 @@
 				let readData = {
 					name:this.name,
 					phoneNumber:this.phone,
-					defaultStatus:!this.id ? this.status : !this.$store.state.addressList.length ? 1 :0,
+					defaultStatus:this.id ? this.status : !this.$store.state.addressList.length ? 1 :0,
 					postCode:this.postcode,
 					province:this.area[0],
 					city:this.area[1],

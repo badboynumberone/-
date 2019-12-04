@@ -291,7 +291,7 @@
 						return;
 					}
 					const cartData = JSON.parse(JSON.stringify(this.cartData));
-					const checkedResult = cartData.filter(item => {
+					let checkedResult = cartData.filter(item => {
 						const filterResult = item.items.reduce((arr, single) => {
 							const flag = !(single.publishStatus == 1 && single.stockNum <= 0 || single.publishStatus == 2) && single.ischecked;
 							return flag ? [...arr, single] : arr
@@ -301,7 +301,9 @@
 						}
 						return filterResult != false
 					});
-					this.$tools.navigateTo("/pages/cart/submit_order/submit_order");
+					checkedResult = checkedResult.map(item=>{item.note="";return item});
+					
+					this.$tools.navigateTo("/pages/cart/submit_order/submit_order?items="+JSON.stringify(checkedResult));
 				}
 
 			},

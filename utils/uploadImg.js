@@ -1,6 +1,12 @@
 //上传文件（filePath是个数组）
 import base from "./../utils/base.js";
+import Request from './../utils/request.js';
+let oss = {};
 export async function upLoadFile(file = []) {
+	//获取上传接口信息
+	console.log("oss信息:", oss);
+	oss = await Request.sendRequest(`/common/policy`,{},"GET");
+	
 	try {
 		let filePathArr = file;
 		for (var i = 0; i < filePathArr.length; i++) {
@@ -20,19 +26,17 @@ export async function upLoadFile(file = []) {
 function upload(filePath) {
 	return new Promise((resolve, reject) => {
 		//图片路径
-		let imageUrl = "user-dir-prefix/" + parseInt(Math.random() * 100) + new Date().getTime() + filePath
+		let imageUrl = oss.dir + "/" + parseInt(Math.random() * 100) + new Date().getTime() + filePath
 			.substr(filePath.lastIndexOf("."), filePath.length - 1);
-
 		uni.uploadFile({
-			url: base.uploadurl, // 仅为示例，非真实的接口地址
+			url: oss.host, // 仅为示例，非真实的接口地址
 			filePath: filePath,
 			name: 'file',
-			
 			formData: {
-				'policy': "eyJleHBpcmF0aW9uIjoiMjAxOS0xMC0yOFQwODowMzowMC41NDNaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF0sWyJzdGFydHMtd2l0aCIsIiRrZXkiLCJ1c2VyLWRpci1wcmVmaXgvIl1dfQ",
-				'OSSAccessKeyId': 'LTAIJAgDcX5kzR5c',
+				'policy': oss.policy,
+				'OSSAccessKeyId': oss.accessKeyId,
 				'sucess_action_status': "200",
-				"signature": "xJ9pXJ69sn2jSQ8q7U8lXZ6r+s8=",
+				"signature": oss.signature,
 				"key": imageUrl
 			},
 			success(res) {

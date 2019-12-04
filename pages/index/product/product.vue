@@ -318,9 +318,8 @@
 				this.action = action;  
 				this.toggleSpec();
 			},
+			//提交订单
 			async subOrder(){
-				
-				//判断商家是否登录
 				
 				//判断是否已经选中商品
 				if(this.selectedItem=={name:"",price:0,stockNum:0}){

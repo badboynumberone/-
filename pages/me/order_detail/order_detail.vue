@@ -18,12 +18,12 @@
 		</view>
 		<view class="body">
 			<my-goods-card :item="pageData" :isClick="true"></my-goods-card>
-			<van-field :value="'微信支付'" readonly label="支付方式"  input-align="right" />
-			<van-field :value="'普通快递'" readonly label="配送方式"  input-align="right" />
-			<van-field :value="pageData.freightAmount || 0.00 " readonly label="快递费"  input-align="right" />
-			<van-field type="textarea"   readonly label="订单备注"  input-align="left">
+			<van-field :value="'微信支付'" readonly label="支付方式" input-align="right" />
+			<van-field :value="'普通快递'" readonly label="配送方式" input-align="right" />
+			<van-field :value="'￥'+pageData.freightAmount || '￥'+0.00 " readonly label="运费" input-align="right" />
+			<van-field type="textarea" readonly label="订单备注" input-align="left">
 				<view slot="right-icon" style="width: 250px;height: 50px;text-align: left;">
-					{{pageData.note}}
+					{{pageData.note || ''}}
 				</view>
 			</van-field>
 			<view class="pt10 pb10 pl15 pr15" style="text-align: right;">
@@ -32,9 +32,20 @@
 			</view>
 		</view>
 		<view style="height: 46px;"></view>
-		
+
 		<view class="bottom_bar p10 f pf">
-			<van-tag :color="'#38A472'" plain round size="medium">查看物流</van-tag>
+			<view class="ml10" v-if="pageData.status==0">
+				<van-tag :color="'#38A472'" plain round size="medium">取消订单</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==0" @click="comfirmPay">
+				<van-tag :color="'#38A472'" plain round size="medium">立即支付</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==1" @click="applyRefund">
+				<van-tag :color="'#666'" plain round size="medium">申请退款</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==2">
+				<van-tag :color="'#38A472'" plain round size="medium">查看物流</van-tag>
+			</view>
 		</view>
 	</view>
 </template>
@@ -47,27 +58,64 @@
 		},
 		data() {
 			return {
-				isLoaded:false,
-				pageData:{},//页面数据
+				isLoaded: false,
+				pageData: {}, //页面数据
 			};
 		},
 		onLoad(options) {
-			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
+			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
 			//获取地址
 			this.getOrderDetail(options.orderNo);
 		},
-		methods:{
+		methods: {
 			//获取订单详情
-			async getOrderDetail(orderNo){
-				const result = await this.$net.sendRequest("/order/info",{orderNo});
-				this.pageData=this.mapResult(result);
+			async getOrderDetail(orderNo) {
+				const result = await this.$net.sendRequest("/order/info", {
+					orderNo
+				});
+				this.pageData = this.mapResult(result);
 			},
 			//处理结果
-			mapResult(res){
-				const arr=['待付款','待发货','待收货','交易成功','交易关闭'];
-				res.state = arr[res.status] ,res.address = res.receiverProvince+res.receiverCity+res.receiverRegion+res.receiverDetailAddress;
-				res.items = res.orderItemList;delete res.orderItemList;
+			mapResult(res) {
+				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭'];
+				res.state = arr[res.status], res.address = res.receiverProvince + res.receiverCity + res.receiverRegion + res.receiverDetailAddress;
+				res.items = res.orderItemList;
+				delete res.orderItemList;
 				return res;
+			},
+			// 立即支付
+			async comfirmPay() {
+				const res = await this.$net.sendRequest("/order/miniAppPay", {
+					orderNo: pageData.orderNo.toString()
+				});
+				console.log('支付接口信息', res);
+				//调用支付接口
+				uni.requestPayment({
+					timeStamp: res.timeStamp,
+					nonceStr: res.nonceStr,
+					package: res.package,
+					signType: 'MD5',
+					paySign: res.paySign,
+					success: (res) => {
+						this.$tools.Toast("支付成功", "success");
+						wx.navigateTo({
+							url: `/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`,
+							success: () => {
+								let timer = setTimeout(() => {
+									this.refresh();
+									clearTimeout(timer)
+								}, 1000);
+							}
+						});
+					},
+					fail: (res) => {
+
+					}
+				})
+			},
+			//申请退款
+			async applyRefund() {
+				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type='refund_money'&pageData=" + JSON.stringify(this.pageData))
 			}
 		}
 	}
@@ -99,7 +147,8 @@
 			}
 		}
 	}
-	.bottom_bar{
+
+	.bottom_bar {
 		justify-content: flex-end;
 		bottom: 0rpx;
 		left: 0px;

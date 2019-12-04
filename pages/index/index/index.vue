@@ -21,7 +21,7 @@
 						</view>
 						优质优品
 					</view>
-					<view class="fz14 f">
+					<view class="fz14 f" v-if="false">
 						<text style="color: #666;">查看更多</text>
 						<view style="transform: translateY(2px);">
 							<van-icon name="arrow" color="#666" />

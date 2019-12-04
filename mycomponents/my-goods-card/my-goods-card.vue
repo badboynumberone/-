@@ -10,13 +10,13 @@
 					<van-icon name="arrow" :color="'#ccc'" />
 				</view>
 			</view>
-			<text class="status theme fz14" v-if="item.status">
+			<text class="status theme fz14" v-if="isShow && (item.status || item.status==0)">
 				{{arr[item.status]}}
 			</text>
 		</view>
 		<view class="container f pb5 pt5" v-for="(single,index) in item.items" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+single.id">
 			<view class="pic">
-				<Pic :src="'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'" :height="'90px'" :width="'90px'" :mode="'aspectFill'"></Pic>
+				<Pic :src="single.productPic" :height="'90px'" :width="'90px'" :mode="'aspectFill'"></Pic>
 			</view>
 			<view class="info fsr ml10">
 				<text class="text-hidden" style="width: 230px;">{{single.productName}}</text>
@@ -45,6 +45,10 @@
 			},
 			item:{
 				type:Object
+			},
+			isShow:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data() {
