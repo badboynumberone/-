@@ -15,6 +15,7 @@ export async function upLoadFile(file = []) {
 				filePathArr[i] = await upload(v);
 			}
 		}
+		console.log("上传完的图片",filePathArr)
 		return filePathArr;
 	} catch (err) {
 		//TODO handle the exception
@@ -42,9 +43,9 @@ function upload(filePath) {
 			success(res) {
 				if (res.statusCode == 204) {
 					try {
-						resolve(result.host + "/" + imageUrl.trim())
+						resolve(oss.host + "/" + imageUrl.trim())
 					} catch (err) {
-						resolve("上传失败")
+						reject("上传失败")
 					}
 				}
 			},

@@ -6,6 +6,7 @@ const applicationJSON = ['/order/generateOrder'];
 //发送数据
 export function sendRequest(url, params = {}, method = "POST") {
 	//将方法转为小写
+	console.log(`接口:${url},参数:`, params)
 	method = method.toUpperCase();
 	let addurl = '';
 	let baseUrl = url;
@@ -71,6 +72,7 @@ export function getAccessToken(callback = () => {}) {
 				dataType: 'json',
 				success(res) {
 					console.log("accessToken:", res.data.data.token);
+					
 					if (res.data.data.token) {
 						uni.setStorageSync("accessToken", `Bearer ${res.data.data.token}`);
 					}
@@ -95,7 +97,9 @@ function checkLoginStatus() {
 			success: async () => {
 				console.log("code&&session:未过期");
 				//自动登录
-				await Store.dispatch("autoLoginIn");
+				if(uni.getStorageSync('accessToken')){
+					await Store.dispatch("autoLoginIn");
+				}
 				resolve();
 			},
 			fail: () => {

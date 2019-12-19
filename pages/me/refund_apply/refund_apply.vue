@@ -2,7 +2,7 @@
 	<view class="main bt">
 		<!-- 头部 -->
 		<view class="header p10">
-			<view class="fz14">订单号: {{pageData.orderNo}}</view>
+			<view class="fz14">订单号: {{pageData.orderNoString}}</view>
 			<view class="fz14">订单金额: <text class="theme">¥{{pageData.totalAmount}}</text></view>
 			<!-- <Header></Header> -->
 		</view>
@@ -43,7 +43,7 @@
 	import Header from "../../../mycomponents/refund-components/header/header.vue";
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
-	let reasons = [];
+	let reasons = [],isSub = false;
 	export default {
 		components: {
 			UploadImg,
@@ -56,13 +56,13 @@
 				pageData:{},
 				refund_type:"refund_money",//两种值 refund_money,refund_money_goods
 				reason:"",//退款原因
-				reasons:[{name:""}],
+				// reasons:[{name:""}],
 				proof:"",
-				proofs:[1,0],
-				// reasons:{
-				// 	"refund_money":["不喜欢/不想要","拍错/多拍","地址电话信息填写错误","缺货","未及时发货"],
-				// 	"refund_money_goods":["颜色/图案/尺寸不符","质量问题","缺少配件","材质与商品描述不符","收到货有破损/污迹/变形","卖家发错货","其他"]
-				// },//退款原因
+				proofs:['无凭证','有质检报告'],
+				reasons:{
+					"refund_money":["不喜欢/不想要","拍错/多拍","地址电话信息填写错误","缺货","未及时发货"],
+					"refund_money_goods":["颜色/图案/尺寸不符","质量问题","缺少配件","材质与商品描述不符","收到货有破损/污迹/变形","卖家发错货","其他"]
+				},//退款原因
 				problem:"" //退款问题
 			};
 		},
@@ -71,11 +71,12 @@
 			//设置页面内容
 			this.setPageContent(options);
 			//获取退款原因
-			this.getRefundReason();
+			// this.getRefundReason();
 		},
 		computed:{
 			mapReasons(){
-				return this.reasons.map(item=>item.name)
+				// return this.reasons.map(item=>item.name)
+				return this.reasons[this.refund_type]
 			}
 		},
 		methods:{
@@ -102,11 +103,41 @@
 			},
 			//提交退款
 			async onSub(){
+				if(!this.checkForm() && isSub){
+					return
+				}
+				wx.showLoading({
+					title:"提交中...",
+					mask:true
+				})
+				isSub = true;
 				await this.$refs.upload.uploadFiles();
+				const result  = await this.$net.sendRequest("/returnApply/create",{
+					orderId:this.pageData.orderNoString,
+					type:6,
+					reason:	this.reason,
+					description	: this.problem,
+					proof: this.proof=='无凭证' ? 0:1,
+					proofPics:this.$refs.upload.imageList.join(","),
+				})
+				wx.hideLoading();
+				isSub = false
 			},
 			//检验表单
 			checkForm(){
+				const arr = [
+					[!this.reason,"请选择退款原因"],
+					[!this.proof,'请选择申请凭证'],
+					[!this.problem,'请说明商品问题']
+				]
 				
+				for (let [rule,message] of arr) {
+					if(rule){
+						this.$tools.Toast(message);
+						return false;
+					}
+				}
+				return true;
 			}
 		}
 	}

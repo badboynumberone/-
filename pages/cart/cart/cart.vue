@@ -60,7 +60,7 @@
 			<load-more :tip="'到底了'" :loading="false" />
 			<view style="height: 50px;"></view>
 		</view>
-		<view :style="{height: contentHeight}" v-if="!cartData.length&&isLoaded">
+		<view :style="{height: contentHeight}" v-if="!cartData.length">
 			<Empty :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
 		</view>
 		<!-- 底部结算条 -->
@@ -88,7 +88,6 @@
 			return {
 				ispf: false,
 				contentHeight: 0,
-				isLoaded: false,
 				allRadio: '1',
 				isEdit: false, //顶部文案
 				cartData: [{
@@ -189,12 +188,9 @@
 			}
 		},
 		async onLoad() {
-			wx.showLoading({title:"加载中...",mask:true})
 			await this.getContentHeight();
 			await this.refreshlocalCart();
 			this.getCartData();
-			this.isLoaded=true;
-			wx.hideLoading()
 		},
 		onShow() {
 			//获取购物车数据
@@ -227,10 +223,7 @@
 			},
 			//获取数据
 			async getCartData() {
-				this.cartData = this.$store.state.cart.map(item => {
-					item.ischecked = false;
-					return item;
-				})
+				this.cartData = this.$store.state.cart
 			},
 			//页面跳转
 			navigateTo(e) {
@@ -255,9 +248,10 @@
 			},
 			// 当店铺复选框改变的时候
 			onStoreChange(idx) {
+				console.log(idx)
 				const flag = this.cartData[idx].items.every((item) => item.ischecked == true);
 				this.cartData[idx].items.forEach((item, index) => {
-					item.ischecked = !flag
+					this.$set(this.cartData[idx].items[index], 'ischecked', !flag);
 				});
 			},
 			clickCheckHandle(e, idx, index) {

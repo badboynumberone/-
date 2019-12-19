@@ -18,8 +18,8 @@
 		</view>
 
 		<view v-if="type==5" class="sp fsb" style="width: 100%">
-			<button class="fz16 bn" type="primary">{{textFirst}}</button>
-			<button class="fz16 bn" type="primary">{{textSecond}}</button>
+			<button class="fz16 bn" type="primary" @click="firstClick">{{textFirst}}</button>
+			<button class="fz16 bn" type="primary"  @click="secondClick">{{textSecond}}</button>
 		</view>
 	</view>
 </template>
@@ -65,11 +65,22 @@
 			}
 		},
 		methods: {
+			//点击第一个
+			firstClick(){
+				this.$emit("firstClick")
+			},
+			//点击第二个
+			secondClick(){
+				this.$emit("secondClick")
+			},
 			//获取用户信息
 			async getUserInfo(e) {
 				console.log(e)
 				//获取openid或者token
+				if(e.target.errMsg!='getUserInfo:ok')return;
+				wx.showLoading({title:"登录中...",mask:true});
 				await this.$net.getAccessToken((res) => {
+					wx.hideLoading();
 					//未绑定手机号,去绑定手机
 					if (res.openid) { //
 						this.$parent.$data.step = 2, this.$parent.$data.openid = res.openid;
@@ -94,12 +105,49 @@
 							}
 						})
 					}
-
 				});
+			},
+			//显示动画
+			showToast(){
+				
 			},
 			//获取用户手机号
 			async getphonenumber(e) {
 				console.log(e)
+				if(e.detail.errMsg!='getPhoneNumber:ok')return
+				wx.showLoading({title:"绑定中...",mask:true});
+				const data = {
+					openid:this.$parent.$data.openid,
+					enyDate:e.detail.encryptedData,
+					iv:e.detail.iv,
+					wxPic:this.$parent.$data.userinfo.avatarUrl,
+					wxName:this.$parent.$data.userinfo.nickName
+				}
+				//绑定手机号
+				const result = await this.$net.sendRequest("/sso/wx/wxOneReg",data);
+				const res = await this.$net.sendRequest("/sso/wx/wxOneReg",data);
+					//已经绑定手机号,直接登录
+					if (result.token) {
+						uni.setStorageSync("accessToken", `Bearer ${result.token}`);
+						//用户相关地址和信息
+						this.$store.dispatch("autoLoginIn");
+						// 提示登录成功
+						wx.showToast({
+							title: "登录成功",
+							duration: 1500,
+							icon: "success",
+							success: () => {
+								let timer = setTimeout(function() {
+									wx.switchTab({
+										url: "/pages/me/me/me"
+									})
+									clearTimeout(timer)
+								}, 1500)
+							}
+						})
+					}
+				
+				wx.hideLoading();
 
 			}
 		}

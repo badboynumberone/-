@@ -17,6 +17,7 @@ export default {
 			return true;
 		}
 	},
+	
 	//加载更多
 	loadMore: async function loadMore(a) {
 		-1 == this.pageData.findIndex(a => a.areaName == this.selectarea) && (this.pageData = [...this.pageData, {
@@ -59,7 +60,6 @@ async function fn(a) {
 	g.isLoading = !1, this.$set(this.pageData, t, g);
 
 	let h = "";
-
 	h = 1 == this.pageData[t].pageNum && 0 == i.length ? "没有数据" : this.pageData[t].pageNum >= 1 && 10 == i.length ?
 		"上拉加载更多" : "到底了";
 

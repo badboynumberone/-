@@ -234,6 +234,23 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/me/refund_detail/refund_detail",
+            "style" : {
+				"navigationBarTitleText":"退款详情"
+			}
+        }
+        ,{
+            "path" : "pages/me/add_logistics/add_logistics",
+            "style" : {
+				"navigationBarTitleText":"填写物流信息",
+				"usingComponents":{
+					"van-field": "/wxcomponents/vant/field/index",
+					"van-cell-group": "/wxcomponents/vant/cell-group/index"
+				}
+				
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

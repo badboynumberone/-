@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-show="isLoaded">
 		<!-- 左上角返回按钮 -->
 		<view class="back pf pr" @click="back">
 			<van-icon class="center" style="margin-top: 2px;" name="arrow-left" color="#fff" />
@@ -16,6 +16,7 @@
 		</view>
 		
 		<view class="wrapper">
+			
 			<!-- 商品信息 -->
 			<view class="info_wrapper p10">
 				<view class="detail fsb ">
@@ -147,7 +148,7 @@
 				<view style="height: 50px;">
 					
 				</view>
-				<view class="pa pt10 pb10" style="width: 348px;bottom: 0px;" @click="subOrder">
+				<view class="cl pt10 pb10" style="width: 348px;bottom: 0px;" @click="subOrder">
 					<van-button :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" block round :size="'small'"><text style="color: #fff;">完成</text></van-button>
 				</view>
 				
@@ -161,6 +162,7 @@
 </template>
 
 <script>
+	
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
 	import MyTag from "../../../mycomponents/my-tag/my-tag.vue";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
@@ -170,11 +172,10 @@
 		},
 		data() {
 			return {
+				isLoaded:false,
 				action:true,//当前操作 true代表立即购买 false 代表加入购物车
 				count:1,//商品数量
-				imgList: ['https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg',
-						'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg',
-						'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
+				imgList: [
 				],//轮播图
 				selectItems:[],//所有商品尺寸
 				selectedItem:{
@@ -184,62 +185,9 @@
 				},//已选商品尺寸
 				specClass:"none",
 				specSelected:[],
-				specList: [
-					{
-						id: 1,
-						name: '尺寸',
-					},
-					{	
-						id: 2,
-						name: '颜色',
-					},
-				],
+				specList: [],
 				pageData:null,
-				specChildList: [{
-						id: 1,
-						pid: 1,
-						name: 'XS',
-					},
-					{
-						id: 2,
-						pid: 1,
-						name: 'S',
-					},
-					{
-						id: 3,
-						pid: 1,
-						name: 'M',
-					},
-					{
-						id: 4,
-						pid: 1,
-						name: 'L',
-					},
-					{
-						id: 5,
-						pid: 1,
-						name: 'XL',
-					},
-					{
-						id: 6,
-						pid: 1,
-						name: 'XXL',
-					},
-					{
-						id: 7,
-						pid: 2,
-						name: '白色',
-					},
-					{
-						id: 8,
-						pid: 2,
-						name: '珊瑚粉',
-					},
-					{
-						id: 9,
-						pid: 2,
-						name: '草木绿',
-					},
+				specChildList: [
 				]
 			};
 		},
@@ -256,13 +204,15 @@
 		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
+			wx.showLoading({title:"加载中",mask:true});
 			this.getData(options)
 		},
 		methods:{
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
 				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
-				this.pageData = result;this.selectItems = result.attrs;
+				this.pageData = result;this.selectItems = result.attrs;this.isLoaded = true;
+				wx.hideLoading();this.isLoaded = true;
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")
@@ -322,7 +272,7 @@
 			async subOrder(){
 				
 				//判断是否已经选中商品
-				if(this.selectedItem=={name:"",price:0,stockNum:0}){
+				if(JSON.stringify(this.selectedItem)==JSON.stringify({name:"",price:0,stockNum:0})){
 					this.$tools.Toast("请选择商品种类");return;
 				}
 				//判断是否已经选中商品

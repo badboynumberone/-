@@ -5,12 +5,11 @@
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 			<Ser :back="'#fff'"></Ser>	
 		</view>
-		
 		<!-- 内容 -->
 		<view style="height: 45px;">
 		</view>
 		<view class=" fsb">
-			<scroll-view scroll-y="true" style="height: 100%;height: 100%;" >
+			<scroll-view scroll-y="true" style="height: 100%;" >
 				<view class="bottom">
 					<uni-grid :column="3" :show-border="false" :square="false">
 						<uni-grid-item v-for="(item,index) in keys" :key="index" v-if="item.showStatus==1" >

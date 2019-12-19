@@ -12,6 +12,7 @@
 			</van-tabs>
 		</view>
 		<view style="height: 39px;"></view>
+		
 		<!-- 内容 -->
 		<div class="container" v-if="isLoaded&&pageData[loadIndex].list.length">
 			<view class="item" v-for="(item,index) in pageData[loadIndex].list" :key="index" :item="item">
@@ -19,7 +20,7 @@
 					<my-goods-card :item="item" :isShow="true"></my-goods-card>
 				</view>
 				<view class="pay pl5 pr5">
-					商品总价:<text class="theme fz16 fb">￥{{item.total}}</text>
+					(不含运费)商品总价:<text class="theme fz16 fb">￥{{item.total}}</text>
 				</view>
 				<view class="action f p5">
 					<view class="ml5" v-if="item.status==0" @click="cancelOrder(item)">
@@ -28,16 +29,13 @@
 					<view class="ml5" v-if="item.status==0" @click="comfirmPayOrder" :data-item="item">
 						<van-tag type="success" plain round size="medium" :color="'#38A472'">立即支付</van-tag>
 					</view>
-					<view class="ml5" v-if="false">
-						<van-tag plain round size="medium">申请退货退款</van-tag>
-					</view>
 					<view class="ml5" v-if="item.status==4 || item.status==3" @click="deleteOrder" :data-item="item">
 						<van-tag plain round size="medium">删除订单</van-tag>
 					</view>
 					<view class="ml5" v-if="item.status==2">
-						<van-tag plain round size="medium">查看物流</van-tag>
+						<van-tag plain round size="medium" :color="'#38A472'">查看物流</van-tag>
 					</view>
-					<view class="ml5" v-if="item.status==2">
+					<view class="ml5" v-if="item.status==2" @click="comfirmReceipt" :data-item="item">
 						<van-tag type="success" round size="medium" :color="'#38A472'">确认收货</van-tag>
 					</view>
 				</view>
@@ -95,6 +93,26 @@
 			this.getData();
 		},
 		methods: {
+			//申请退款
+			applyRefund(e) {
+				const item =e.currentTarget.dataset.item;
+				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type='refund_money'&pageData=" + JSON.stringify(item))
+			},
+			//确认收货
+			comfirmReceipt(e){
+				const item =e.currentTarget.dataset.item;
+				Dialog.confirm({
+				  title: '提示',
+				  message: '您确认收到货了吗?'
+				}).then(async () => {
+					await this.$net.sendRequest("/order/receive",{orderNo:item.orderNoString});
+					this.refresh();
+				  // on confirm
+				}).catch(() => {
+				  // on cancel
+				});
+				console.log(e)
+			},
 			onTabChange(e) {
 				this.active = parseInt(e.detail.index);
 				console.log(e);
@@ -119,7 +137,7 @@
 			async comfirmPayOrder(e){
 				const item =e.currentTarget.dataset.item;
 				// 支付
-				const res = await this.$net.sendRequest("/order/miniAppPay",{orderNo:item.orderNoString});	
+				const res = await this.$net.sendRequest("/pay/miniAppPay",{orderNo:item.orderNoString});	
 				console.log('支付接口信息',res);
 				//调用支付接口
 				uni.requestPayment({
@@ -130,12 +148,7 @@
 					  paySign: res.paySign,
 					  success:(res)=>{
 						  this.$tools.Toast("支付成功","success");
-						  wx.navigateTo({
-							  url:`/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`,
-							  success:()=>{
-								  let timer = setTimeout(()=>{this.refresh();clearTimeout(timer)}, 1000);
-							  }
-						  });
+						  this.refresh();
 					  },
 					  fail:(res)=>{ 
 						  
@@ -156,7 +169,7 @@
 						// 获取需要加载的那一项
 						let v = this.pageData[index];
 						//发送请求了
-						const result = await this.$net.sendRequest('/order/list', {
+						let  result = await this.$net.sendRequest('/order/list', {
 							pageNo: v.pageNum,
 							pageSize: 20,
 							...this.active == 0 ? {} : {
@@ -164,6 +177,7 @@
 							}
 						});
 						console.log(result)
+						result = result.map(item=>{item.status = arr[item.status];return item}).filter(item=>item.status)
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						this.isLoaded = true;

@@ -18,30 +18,37 @@
 		</view>
 		<view class="body">
 			<my-goods-card :item="pageData" :isClick="true"></my-goods-card>
+			<view class="pt10 pb10 pl15 pr15" style="text-align: right;">
+				<text class="fz14" style="color: #333;">商品总金额:</text>
+				<text class="fz16 fb theme">¥{{pageData.totalAmount}}</text>
+			</view>
 			<van-field :value="'微信支付'" readonly label="支付方式" input-align="right" />
 			<van-field :value="'普通快递'" readonly label="配送方式" input-align="right" />
 			<van-field :value="'￥'+pageData.freightAmount || '￥'+0.00 " readonly label="运费" input-align="right" />
 			<van-field type="textarea" readonly label="订单备注" input-align="left">
 				<view slot="right-icon" style="width: 250px;height: 50px;text-align: left;">
-					{{pageData.note || ''}}
+					{{pageData.note || '空空如也~'}}
 				</view>
 			</van-field>
 			<view class="pt10 pb10 pl15 pr15" style="text-align: right;">
-				<text class="fz14" style="color: #333;">合计:</text>
-				<text class="fz16 fb theme">¥{{pageData.totalAmount}}</text>
+				<text class="fz16 theme">合计:</text>
+				<text class="fz20 fb theme">¥{{pageData.payAmount}}</text>
 			</view>
 		</view>
 		<view style="height: 46px;"></view>
 
 		<view class="bottom_bar p10 f pf">
 			<view class="ml10" v-if="pageData.status==0" @click="cancelOrder">
-				<van-tag :color="'#38A472'" plain round size="medium">取消订单</van-tag>
+				<van-tag :color="'#666'" plain round size="medium">取消订单</van-tag>
 			</view>
 			<view class="ml10" v-if="pageData.status==0" @click="comfirmPay">
 				<van-tag :color="'#38A472'" plain round size="medium">立即支付</van-tag>
 			</view>
 			<view class="ml10" v-if="pageData.status==1" @click="applyRefund">
 				<van-tag :color="'#666'" plain round size="medium">申请退款</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==2" @click="applyRefund">
+				<van-tag :color="'#666'" plain round size="medium">申请退货退款</van-tag>
 			</view>
 			<view class="ml10" v-if="pageData.status==2">
 				<van-tag :color="'#38A472'" plain round size="medium">查看物流</van-tag>
@@ -90,7 +97,7 @@
 			// 立即支付
 			async comfirmPay() {
 				const res = await this.$net.sendRequest("/order/miniAppPay", {
-					orderNo: this.pageData.orderNo.toString()
+					orderNo: this.pageData.orderNo+""
 				});
 				console.log('支付接口信息', res);
 				//调用支付接口
@@ -103,7 +110,7 @@
 					success: (res) => {
 						this.$tools.Toast("支付成功", "success");
 						wx.navigateTo({
-							url: `/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`,
+							url: `/pages/me/order_detail/order_detail?orderNo=${this.pageData.orderNo}`,
 							success: () => {
 								let timer = setTimeout(() => {
 									this.refresh();
@@ -123,7 +130,7 @@
 				  title: '标题',
 				  message: '您确认需要取消该订单吗?'
 				}).then(async () => {
-					await this.$net.sendRequest("/order/cancelOrder",{orderId:this.pageData.orderNo.toString()});
+					await this.$net.sendRequest("/order/cancelOrder",{orderId:this.pageData.orderNo+""});
 					getCurrentPages()[getCurrentPages().length-2].hook();
 					wx.navigateBack()
 				  // on confirm
@@ -132,7 +139,7 @@
 				});
 			},
 			//申请退款
-			async applyRefund() {
+			applyRefund() {
 				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type='refund_money'&pageData=" + JSON.stringify(this.pageData))
 			}
 		}

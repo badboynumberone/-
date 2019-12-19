@@ -63,7 +63,10 @@
 		data() {
 			return {
 				message: "",
-				address: {}, //地址
+				item:{},
+				address: {
+					id:0
+				}, //地址
 				orders: [{
 					businessId: "",
 					businessName: "",
@@ -111,31 +114,36 @@
 			//获取提交的订单
 			getSubmitProducts(options) {
 				this.orders = JSON.parse(options.items);
-				if (this.address.id) {
+				if (this.address!={}) {
 					this.getOrderDetail();
 				}
 			},
 			//获取订单详情
 			async getOrderDetail() {
-				
 				let result = null;
-				//通过购物车下单
-				if (lastPage.route == 'pages/cart/cart/cart') {
-					let cartIds = this.$tools.deepFlatten(this.orders.map(item => item.items)).map(item => item.id).join(",");
-					result = await this.$net.sendRequest("/order/getPrice", {
-						addressId: this.address.id,
-						cartIds
-					});
-					this.freight = result.freight;
+				try{
+					//通过购物车下单
+					if (lastPage.route == 'pages/cart/cart/cart'&&JSON.stringify(this.address) != '{}') {
+						let cartIds = this.$tools.deepFlatten(this.orders.map(item => item.items)).map(item => item.id).join(",");
+						result = await this.$net.sendRequest("/order/getPrice", {
+							addressId: this.address.id,
+							cartIds
+						});
+						this.freight = result.freight;
+					}
+					// 单独下单
+					if (lastPage.route == 'pages/index/product/product'&&JSON.stringify(this.address) != '{}') {
+						result = await this.$net.sendRequest("/order/getPrice", {
+							addressId: this.address.id,
+							attrId: this.orders[0].items[0].attrId
+						});
+						this.freight = result.freight;
+					}
+				}catch(e){
+					//TODO handle the exception
+					console.log(e)
 				}
-				// 单独下单
-				if (lastPage.route == 'pages/index/product/product') {
-					result = await this.$net.sendRequest("/order/getPrice", {
-						addressId: this.address.id,
-						attrId: this.orders[0].items[0].attrId
-					});
-					this.freight = result.freight;
-				}
+				
 				
 			},
 			//页面跳转
@@ -144,7 +152,7 @@
 			},
 			//获取地址
 			getAddress() {
-				this.address = this.$store.state.defaultAddress;
+				this.address = this.$store.state.defaultAddress==undefined ? {}:this.$store.state.defaultAddress;
 			},
 			//设置地址
 			setAddress(item) {
@@ -187,22 +195,26 @@
 
 			//提交订单
 			async onSub() {
-				// 如果正在下单停止下单
-				if(isOrdering) return;
-				isOrdering = true;
+				
 				//检验表单
 				if (!this.checkForm()) {
 					return
 				}
+				// 如果正在下单停止下单
+				if(isOrdering) return;
+				
+				isOrdering = true;
+				wx.showLoading({mask:true});
 				//生成订单
 				const result = await this.generateOrder();
 
 
 				// 支付
-				const res = await this.$net.sendRequest("/order/miniAppPay", {
+				const res = await this.$net.sendRequest("/pay/miniAppPay", {
 					orderNo: result.orderNo
 				});
 				console.log('支付接口信息', res);
+				wx.hideLoading();
 				//调用支付接口
 				uni.requestPayment({
 					timeStamp: res.timeStamp,
@@ -211,15 +223,16 @@
 					signType: 'MD5',
 					paySign: res.paySign,
 					success: (res) => {
+						wx.showLoading({mask:true});
 						let type = lastPage.route == 'pages/index/product/product' ? 'product' : 'cart';
 						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
 								(this.totalPrice / 100 + this.freight));
 						this.$store.dispatch("getCart");
 						isOrdering = false;
-
+						wx.hideLoading();
 					},
 					fail: (res) => {
-
+						wx.showLoading({mask:true});
 						if (lastPage.route == 'pages/index/product/product') {
 							this.$tools.redirectTo(`/pages/me/order_detail/order_detail?orderNo=${result.orderNo}`)
 						}
@@ -229,13 +242,14 @@
 							this.$tools.redirectTo(`/pages/me/order/order?active=0`)
 						}
 						isOrdering = false;
+						wx.hideLoading();
 					}
 				})
 				
 			},
 			//检验表单
 			checkForm() {
-				if (!this.address.id) {
+				if (JSON.stringify(this.address) == '{}') {
 					this.$tools.Toast("请选择收货地址!");
 					return false;
 				}

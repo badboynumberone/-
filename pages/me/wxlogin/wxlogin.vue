@@ -111,13 +111,18 @@
 					title:"绑定成功",
 					duration:1500,
 					icon:"success",
-					success:()=>{
+					success:async ()=>{
+						wx.showLoading({
+							title:"请稍后..."
+						})
+						await this.$store.dispatch("autoLoginIn");
 						let timer = setTimeout(function(){
 							wx.switchTab({
 								url:"/pages/me/me/me"
 							})
+							wx.hideLoading();
 							clearTimeout(timer)
-						},1500)
+						},1500);
 					}
 				})
 			},

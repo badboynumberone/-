@@ -1,7 +1,7 @@
 <template>
 	<view class="box p10">
-		<view class="header pb5 fsb bb" style="align-items: center;" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+item.businessId" >
-			<view class="store ftm">
+		<view v-if="isHeader" class="header pb5 fsb bb" style="align-items: center;" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+item.businessId" >
+			<view class="store ftm" v-if="!isOrder">
 				<view class="icon mr5">
 					<van-icon name="shop-o" :size="'20x'" />
 				</view>
@@ -10,8 +10,11 @@
 					<van-icon name="arrow" :color="'#ccc'" />
 				</view>
 			</view>
+			<view class="store ftm" v-if="isOrder">
+				<text class="fb" :decode="true">退单号: {{item.refundNum}}</text>
+			</view>
 			<text class="status theme fz14" v-if="isShow && (item.status || item.status==0)">
-				{{arr[item.status]}}
+				{{item.status}}
 			</text>
 		</view>
 		<view class="container f pb5 pt5" v-for="(single,index) in item.items" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+single.id">
@@ -49,6 +52,14 @@
 			isShow:{
 				type:Boolean,
 				default:false
+			},
+			isOrder:{
+				type:Boolean,
+				default:false
+			},
+			isHeader:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data() {
@@ -56,7 +67,9 @@
 				arr:['待付款','待发货','待收货','交易成功','交易关闭']
 			};
 		},
-		
+		mounted() {
+			console.log(this.item)
+		},
 		methods:{
 			//页面跳转
 			navigateTo(e) {
