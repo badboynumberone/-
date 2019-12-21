@@ -6,7 +6,7 @@
 		</view>
 		<!-- 轮播 -->
 		<view class="carousel">
-			<swiper indicator-dots circular=true duration="400">
+			<swiper indicator-dots circular=true duration="400" style="background: #f1f1f1;">
 				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
 					<view class="image-wrapper">
 						<image :src="item" class="loaded" mode="aspectFill" @click="previewImg" :data-imgs="imgList" :data-src="item"></image>
@@ -23,9 +23,9 @@
 					<view class="text more-hidden fz16 fb">
 						{{pageData.name}}
 					</view>
-					<view class="icon fm pr" style="width: 40px;">
-						<van-icon name="share" size="16px" />
-						<text>分享</text>
+					<view class="icon fm pr bl" style="width: 40px;">
+						<van-icon name="share" size="16px" color="#38A472" />
+						<text class="fz10" style="color: #666;">分享</text>
 						<button class="pa fill" style="z-index:9;opacity: 0;" open-type="share" ></button>
 					</view>
 					
@@ -36,7 +36,7 @@
 				</view>
 				<view class="price_box fsb mt20 mb10">
 					<text class="price fb fz18">￥{{pageData.price}}</text>
-					<text class="sal">销量{{pageData.sale}}</text>
+					<text class="sal">销量{{pageData.sale}}件</text>
 				</view>
 			</view>
 
@@ -128,7 +128,7 @@
 					</view>
 				</view>
 				
-				<view  :key="index" class="attr-list"><!-- v-for="(item,index) in specList" -->
+				<view class="attr-list"><!-- v-for="(item,index) in specList" -->
 					<text>{{item.name}}</text>
 					<view class="item-list">
 						<text v-for="(childItem, childIndex) in selectItems"  :key="childIndex" class="tit"
@@ -211,7 +211,7 @@
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
 				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
-				this.pageData = result;this.selectItems = result.attrs;this.isLoaded = true;
+				this.pageData = result;result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0];  this.isLoaded = true;
 				wx.hideLoading();this.isLoaded = true;
 			},
 			toCart(){
@@ -452,6 +452,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			text{
+				border: 1px solid #F2F3F5;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -486,18 +487,18 @@
 		&.show {
 			display: block;
 			.mask{
-				animation: showPopup 0.2s linear both;
+				animation: showPopup 0.25s linear both;
 			}
 			.layer {
-				animation: showLayer 0.2s linear both;
+				animation: showLayer 0.25s linear both;
 			}
 		}
 		&.hide {
 			.mask{
-				animation: hidePopup 0.2s linear both;
+				animation: hidePopup 0.25s linear both;
 			}
 			.layer {
-				animation: hideLayer 0.2s linear both;
+				animation: hideLayer 0.25s linear both;
 			}
 		}
 		&.none {

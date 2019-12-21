@@ -101,7 +101,7 @@
 										url: "/pages/me/me/me"
 									})
 									clearTimeout(timer)
-								}, 1500)
+								}, 500)
 							}
 						})
 					}
@@ -142,7 +142,7 @@
 										url: "/pages/me/me/me"
 									})
 									clearTimeout(timer)
-								}, 1500)
+								}, 500)
 							}
 						})
 					}

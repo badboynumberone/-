@@ -1,15 +1,18 @@
 <template>
-	<view class="main">
+	<view class="main" v-show="isLoaded">
 		<view class="top f p20">
 			<view class="mr20">
-				<Pic :width="'160rpx'" :height="'160rpx'" :mode="'aspectFit'" :src="'/static/images/header.png'"></Pic>
+				<Pic :width="'130rpx'" :height="'130rpx'" :mode="'aspectFit'" :src="pic"></Pic>
 			</view>
-			<view class="fsr" style="flex-flow: column wrap;">
-				<view class="fb fz18" style="color: #222;">
-					已完成
+			<view class="fsb" style="flex-flow: column wrap;">
+				<view class="fb fz14" style="color: #222;">
+					{{title}}
+				</view>
+				<view class="fz13" style="color:#666;margin-top: -12px;">
+					物流状态:<text class="theme" style="text-indent: 5rpx;">{{status}}</text> 
 				</view>
 				<view style="margin-top: -15px;">
-					<text class="fz15" :decode="true" style="color: #666;">中通快递 5393493347766</text>
+					<text class="fz12" :decode="true" style="color: #666;">{{company}} : {{logisticsNum}}</text>
 				</view>
 			</view>
 		</view>
@@ -25,29 +28,73 @@
 </template>
 
 <script>
+	let pages = null,opt = null;
+	import logCompany from '../../../json/logisitic_company.js';
 	export default {
 		data() {
 			return {
+				isLoaded:false,
+				title:"",
+				pic:"",
+				company:'',
+				status:'',
+				logisticsNum:'',//物流单号
 				steps: [
 				      {
-				        text: '步骤一',
-				        desc: '描述信息'
+				        text: '',
+				        desc: ''
 				      },
 				      {
-				        text: '步骤二',
-				        desc: '描述信息'
+				        text: '',
+				        desc: ''
 				      },
 				      {
-				        text: '步骤三',
-				        desc: '描述信息'
+				        text: '',
+				        desc: ''
 				      },
 				      {
-				        text: '步骤四',
-				        desc: '描述信息'
+				        text: '',
+				        desc: ''
 				      }
 				    ],
 				active:""
 			};
+		},
+		onLoad(options) {
+			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
+			pages = getCurrentPages(),opt = options;
+			//获取数据
+			this.getData();
+		},
+		methods:{
+			//获取数据
+			async getData(){
+				wx.showLoading({
+					title:"加载中...",
+					mask:true
+				})
+				const item = JSON.parse(opt.item); 
+				//获取商品信息
+				this.title = item.items[0].productName,
+				this.pic = item.items[0].productPic;
+				
+				//获取物流信息
+				const result = await this.$net.sendRequest("/common/queryExpress",{
+					orderNo:item.orderNoString
+				},"GET");
+				let info = JSON.parse(result);
+				[this.status,this.logisticsNum,this.company] = [info.data[info.data.length-1].status,info.nu,
+				logCompany.RECORDS.find(item=>item.logistics_code==info.com).logistics_name];
+				this.steps = info.data.map(item=>{
+					item.text = item.time + ' (' + item.status + ')' ;
+					item.desc = item.context.slice(1);
+					delete item.time;delete item.areaCode;
+					delete item.status;delete item.ftime;
+					delete item.context;
+					return item;
+				})
+				wx.hideLoading();this.isLoaded = true;
+			}
 		}
 	}
 </script>

@@ -52,10 +52,40 @@
 
 			<!-- 底部菜单栏 -->
 			<div class="bottom">
-				<van-cell-group>
-					<van-cell icon="location-o" title="收货地址管理" is-link @click="navigateTo" data-url="/pages/me/address_list/address_list" />
-				</van-cell-group>
+				<view class="title fz15 fb p20" style="padding-bottom: 0px;padding-top: 0px;">
+					我的服务
+				</view>
+				<view class="nav p10" style="padding-top: 0px;">
+					<van-grid column-num="4" :border="false">
+						<van-grid-item use-slot>
+							<view class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/address_list/address_list">
+								<image src="/static/images/address@2x.png" />
+								<view class="mt5">我的地址</view>
+							</view>
+						</van-grid-item>
+						<van-grid-item use-slot>
+							<view  class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/problem/problem">
+								<image src="/static/images/problem@2x.png" />
+								<view class="mt5">常见问题</view>
+							</view>
 
+						</van-grid-item>
+						<van-grid-item use-slot>
+							<view  class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/feedback/feedback">
+								<image src="/static/images/feedback@2x.png" />
+								<view class="mt5">意见反馈</view>
+							</view>
+
+						</van-grid-item>
+						<van-grid-item use-slot>
+							<view  class="fm" style="flex-flow: column wrap;" @click="callPhone" >
+								<image src="/static/images/service-my@2x.png" />
+								<view class="mt5">官方客服</view>
+							</view>
+
+						</van-grid-item>
+					</van-grid>
+				</view>
 			</div>
 			<!-- 版权所有 -->
 			<div class="copyright">
@@ -119,7 +149,7 @@
 			}
 		},
 		onLoad() {
-			
+
 
 		},
 		onShow() {
@@ -156,6 +186,12 @@
 				}
 
 			},
+			//拨打官方客服电话
+			callPhone(){
+				uni.makePhoneCall({
+					phoneNumber:'(025)83115956'
+				})
+			},
 			//页面跳转
 			navigateTo(e, index) {
 				if (!this.$net.checkLogin()) {
@@ -166,8 +202,6 @@
 					return;
 				}
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
-
-
 			}
 		}
 	}
@@ -187,6 +221,12 @@
 
 		.right {
 			flex-flow: column wrap;
+		}
+	}
+
+	.nav {
+		image {
+			@include wh(50rpx, 50rpx);
 		}
 	}
 

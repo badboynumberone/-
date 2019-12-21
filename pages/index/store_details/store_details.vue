@@ -35,7 +35,7 @@
 		<!-- 店铺商品 -->
 		<view class="store_goods">
 			<view class="h1 fz18 fb p10" style="border-top: 5px solid #f1f1f1;">
-				商品
+				店铺商品
 			</view>
 			<!-- 商品列表 -->
 			<MyList :list="pageData[loadIndex].list"></MyList>

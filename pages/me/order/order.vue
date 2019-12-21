@@ -14,7 +14,7 @@
 		<view style="height: 39px;"></view>
 		
 		<!-- 内容 -->
-		<div class="container" v-if="isLoaded&&pageData[loadIndex].list.length">
+		<scroll-view scroll-y class="container" v-if="isLoaded&&pageData[loadIndex].list.length">
 			<view class="item" v-for="(item,index) in pageData[loadIndex].list" :key="index" :item="item">
 				<view @click="navigateTo" :data-url="`/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`">
 					<my-goods-card :item="item" :isShow="true"></my-goods-card>
@@ -23,25 +23,25 @@
 					(不含运费)商品总价:<text class="theme fz16 fb">￥{{item.total}}</text>
 				</view>
 				<view class="action f p5">
-					<view class="ml5" v-if="item.status==0" @click="cancelOrder(item)">
+					<view class="ml5" v-if="item.status=='待付款'" @click="cancelOrder(item)">
 						<van-tag plain round size="medium">取消订单</van-tag>
 					</view>
-					<view class="ml5" v-if="item.status==0" @click="comfirmPayOrder" :data-item="item">
+					<view class="ml5" v-if="item.status=='待付款'" @click="comfirmPayOrder" :data-item="item">
 						<van-tag type="success" plain round size="medium" :color="'#38A472'">立即支付</van-tag>
 					</view>
-					<view class="ml5" v-if="item.status==4 || item.status==3" @click="deleteOrder" :data-item="item">
+					<view class="ml5" v-if="item.status=='交易关闭' || item.status=='交易成功'" @click="deleteOrder" :data-item="item">
 						<van-tag plain round size="medium">删除订单</van-tag>
 					</view>
-					<view class="ml5" v-if="item.status==2">
+					<view class="ml5" v-if="item.status=='待收货' || item.status=='交易成功'" @click="toLogisics" :data-item="item" >
 						<van-tag plain round size="medium" :color="'#38A472'">查看物流</van-tag>
 					</view>
-					<view class="ml5" v-if="item.status==2" @click="comfirmReceipt" :data-item="item">
+					<view class="ml5" v-if="item.status=='待收货'" @click="comfirmReceipt" :data-item="item">
 						<van-tag type="success" round size="medium" :color="'#38A472'">确认收货</van-tag>
 					</view>
 				</view>
 			</view>
 			<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
-		</div>
+		</scroll-view >
 
 		<view style="height: 100%;" v-if="isLoaded && !pageData[loadIndex].list.length">
 			<Empty :type="'address'" :text="'您暂时没有订单哦,赶紧去首页看看吧！'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
@@ -93,6 +93,11 @@
 			this.getData();
 		},
 		methods: {
+			//查看物流
+			toLogisics(e){
+				const item =e.currentTarget.dataset.item;
+				this.$tools.navigateTo('/pages/me/logistics/logistics?item='+JSON.stringify(item));
+			},
 			//申请退款
 			applyRefund(e) {
 				const item =e.currentTarget.dataset.item;
@@ -115,8 +120,8 @@
 			},
 			onTabChange(e) {
 				this.active = parseInt(e.detail.index);
-				console.log(e);
 				this.selectarea = this.active == 5 ? '全部' : arr[this.active - 1];
+				this.isLoaded = this.pageData.some(item=>item.areaName==this.selectarea);
 				this.getData();
 			},
 			//取消订单
@@ -194,7 +199,7 @@
 			deleteOrder(e){
 				const item =e.currentTarget.dataset.item;
 				Dialog.confirm({
-				  title: '标题',
+				  title: '提示',
 				  message: '您确认需要删除该订单吗?'
 				}).then(async () => {
 					await this.$net.sendRequest("/order/delete",{orderIds:item.orderNoString});
@@ -219,6 +224,7 @@
 	}
 
 	.container {
+		height: 100%;
 		.item {
 			border-top: 5px solid #f1f1f1;
 

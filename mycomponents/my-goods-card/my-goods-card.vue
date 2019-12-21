@@ -3,10 +3,10 @@
 		<view v-if="isHeader" class="header pb5 fsb bb" style="align-items: center;" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+item.businessId" >
 			<view class="store ftm" v-if="!isOrder">
 				<view class="icon mr5">
-					<van-icon name="shop-o" :size="'20x'" />
+					<image style="width: 20px;height: 20px;" src="/static/images/merchant@2x.png" mode="aspectFill"></image>
 				</view>
 				<text class="fb">{{item.businessName}}</text>
-				<view class="icon right">
+				<view class="icon right" v-if="isArrow">
 					<van-icon name="arrow" :color="'#ccc'" />
 				</view>
 			</view>
@@ -60,6 +60,10 @@
 			isHeader:{
 				type:Boolean,
 				default:true
+			},
+			isArrow:{
+				type:Boolean,
+				default:false
 			}
 		},
 		data() {
@@ -91,7 +95,7 @@
 		border-bottom: 1rpx solid #f1f1f1;
 		.header {
 			.icon {
-				transform: translateY(2px);
+				transform: translateY(3px);
 			}
 		}
 		.container:not(:last-child){

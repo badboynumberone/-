@@ -110,6 +110,9 @@
 			//获取提交的商品
 			this.getSubmitProducts(options);
 		},
+		onShow(){
+			console.log("haha")
+		},
 		methods: {
 			//获取提交的订单
 			getSubmitProducts(options) {

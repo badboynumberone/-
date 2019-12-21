@@ -38,7 +38,9 @@
 		
 		<!-- 添加地址按钮 -->
 		<view class="button pf" @click="navigateTo" :data-url="'/pages/me/address/address'">
-			<my-button :type="1" :text="'新增地址'" :round="true" ></my-button>
+			<view  class="pt10 pb10" style="width: 95%;margin: 0 auto;">
+				<van-button :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" block round ><text style="color: #fff;">新增地址</text></van-button>
+			</view>
 		</view>
 	</view>
 </template>

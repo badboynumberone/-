@@ -2,7 +2,7 @@
 	<view class="item p5 fadeIn">
 		<view style="border-radius: 10rpx;overflow: hidden;">
 			<Pic :width="'100%'" :height="'150px'" :src="item.pic"
-			 :mode="'aspectFill'" :back="'#fff'"></Pic>
+			 :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
 		</view>
 		<view class="mt5" style="transform: scale(0.7,0.7);margin-left: -27px;">
 			<my-tag :type="'first'" :text="item.brandName" />

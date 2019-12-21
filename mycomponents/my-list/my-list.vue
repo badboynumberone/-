@@ -2,14 +2,20 @@
 	<view class="container clearfix">
 		<view class="content">
 			<view class="column pr5">
-				<view v-for="(item,index) in list" :key="index" v-if="index%2==0" @click="toProduct" :data-url="'/pages/index/product/product?id='+item.id">
-					<MyItem :item="item"></MyItem>
+				<view v-for="(item,index) in list" :key="index" v-if="index%2==0" @click="toProduct(item)" >
+					<view v-if="item.mobilePhoto" class="mb10">
+						<Pic  :src="item.mobilePhoto" :height="'268px'" :width="'172.5px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+					</view>
+					<MyItem v-else :item="item"></MyItem>
 				</view>
 			</view>
 			
 			<view class="column pl5">
-				<view v-for="(item,index) in list" :key="index" v-if="index%2==1" @click="toProduct" :data-url="'/pages/index/product/product?id='+item.id">
-					<MyItem :item="item"></MyItem>
+				<view v-for="(item,index) in list" :key="index" v-if="index%2==1" @click="toProduct(item)" >
+					<view v-if="item.mobilePhoto" class="mb10">
+						<Pic  :src="item.mobilePhoto" :height="'268px'" :width="'172.5px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+					</view>
+					<MyItem v-else :item="item"></MyItem>
 				</view>
 			</view>
 		</view>
@@ -39,8 +45,10 @@
 			};
 		},
 		methods:{
-			toProduct(e){
-				this.$tools.navigateTo(e.currentTarget.dataset.url)
+			toProduct(item){
+				if(item.pic){
+					this.$tools.navigateTo('/pages/index/product/product?id='+item.id)
+				}
 			},
 		}
 	}

@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-show="isLoaded">
 		<!-- 编辑栏 -->
 		<view class="top_bar fsb p10" :style="{position: ispf ? 'fixed':'static'}">
 			<text class="good_count fz10">已选{{selectedCount}}件商品</text>
@@ -17,8 +17,8 @@
 				<view class="header ftm p10">
 					<van-checkbox :value="isStoreChecked(single.items)" @change="onStoreChange(idx)" />
 					<view class="store ftm ml10" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+single.businessId">
-						<view class="icon mr5">
-							<van-icon name="shop-o" :size="'20x'" />
+						<view class="icon mr5" style="margin-top: 2px;">
+							<image style="width: 20px;height: 20px;" src="/static/images/merchant@2x.png" mode="aspectFill"></image>
 						</view>
 						<text class="fb">{{single.businessName}}</text>
 						<view class="icon right">
@@ -60,7 +60,7 @@
 			<load-more :tip="'到底了'" :loading="false" />
 			<view style="height: 50px;"></view>
 		</view>
-		<view :style="{height: contentHeight}" v-if="!cartData.length">
+		<view :style="{height:	contentHeight}" v-if="!cartData.length">
 			<Empty :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
 		</view>
 		<!-- 底部结算条 -->
@@ -86,6 +86,7 @@
 
 		data() {
 			return {
+				isLoaded:false,
 				ispf: false,
 				contentHeight: 0,
 				allRadio: '1',
@@ -189,6 +190,7 @@
 		},
 		async onLoad() {
 			await this.getContentHeight();
+			this.isLoaded = true;
 			await this.refreshlocalCart();
 			this.getCartData();
 		},

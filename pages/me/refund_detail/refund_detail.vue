@@ -60,6 +60,7 @@
 				<text class="fz13">{{pageData.description}}</text>
 			</view>
 		</view>
+		
 		<view class="proof p20 pt10 pb10" v-if="pageData.proofPics.length">
 			<div class="title fz14 mb5" style="color: #6A6A6A;">
 				凭证
@@ -70,7 +71,7 @@
 		</view>
 		<view style="height: 50px;"></view>
 		<view class="pf" style="bottom: 0px;left:0px; width: 100%;">
-			<my-button :type="5" :textFirst="'填写退货物流信息'" :textSecond="'取消申请'" @firstClick="firstClick" @secondClick="secondClick" />
+			<my-button :type="5" :textFirst="'填写退货物流信息'" :textSecond="'订单详情'" @firstClick="firstClick" @secondClick="secondClick" />
 		</view>
 
 	</view>
@@ -151,7 +152,6 @@
 			getData(options){
 				let item = JSON.parse(options.item);
 				item.proofPics=item.proofPics.split(",");
-				debugger
 				this.pageData = item;this.isLoaded = true;
 			},
 			//预览图片

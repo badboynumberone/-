@@ -22,7 +22,7 @@
 				<van-field required label="申请凭证" placeholder="请选择" :value="proof"  readonly input-align="right" right-icon="arrow" />
 			</picker>
 			<van-field type="textarea" autosize label="问题说明" maxlength="200"  :value="problem" placeholder="最多填写200字" clearable  @change="onChange" data-name="problem" />
-			<view class="voucher">
+			<view class="voucher" v-show="proof =='有质检报告'">
 				<van-field label="上传凭证" :border="false"/>
 				<view class="pb10 pl15 pr15">
 					<UploadImg ref="upload" :url="'sdafdf'" :length="8"></UploadImg>
@@ -57,7 +57,7 @@
 				refund_type:"refund_money",//两种值 refund_money,refund_money_goods
 				reason:"",//退款原因
 				// reasons:[{name:""}],
-				proof:"",
+				proof:'无凭证',
 				proofs:['无凭证','有质检报告'],
 				reasons:{
 					"refund_money":["不喜欢/不想要","拍错/多拍","地址电话信息填写错误","缺货","未及时发货"],
@@ -84,6 +84,9 @@
 			setPageContent(options){
 				this.pageData = JSON.parse(options.pageData);
 				this.refund_type = options.type;
+				wx.setNavigationBarTitle({
+					title:this.refund_type == 'refund_money'? '申请退款' : '申请退款退货'
+				})
 			},
 			//获取退款原因
 			async getRefundReason(){

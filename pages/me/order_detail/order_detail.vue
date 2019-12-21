@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main" v-show="isLoaded">
 		<view class="header">
 			<view class="top pr">
 				<Pic :src="'/static/images/order-background@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
@@ -32,7 +32,7 @@
 			</van-field>
 			<view class="pt10 pb10 pl15 pr15" style="text-align: right;">
 				<text class="fz16 theme">合计:</text>
-				<text class="fz20 fb theme">¥{{pageData.payAmount}}</text>
+				<text class="fz20 fb theme">¥{{pageData.totalAmount}}</text>
 			</view>
 		</view>
 		<view style="height: 46px;"></view>
@@ -50,8 +50,14 @@
 			<view class="ml10" v-if="pageData.status==2" @click="applyRefund">
 				<van-tag :color="'#666'" plain round size="medium">申请退货退款</van-tag>
 			</view>
-			<view class="ml10" v-if="pageData.status==2">
+			<view class="ml10" v-if="pageData.status==2 || pageData.status==3" @click="toLogisics">
 				<van-tag :color="'#38A472'" plain round size="medium">查看物流</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==2" @click="comfirmReceipt">
+				<van-tag :color="'#38A472'" plain round size="medium">确认收货</van-tag>
+			</view>
+			<view class="ml10" v-if="pageData.status==3 || pageData.status==4" @click="delOrder">
+				<van-tag :color="'#666'" plain round size="medium">删除订单</van-tag>
 			</view>
 		</view>
 		<van-dialog id="van-dialog" />
@@ -61,6 +67,7 @@
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Dialog from "../../../wxcomponents/vant/dialog/dialog.js";
+	let pages = null;
 	export default {
 		components: {
 			MyGoodsCard
@@ -71,12 +78,35 @@
 				pageData: {}, //页面数据
 			};
 		},
-		onLoad(options) {
+		async onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
+			pages = getCurrentPages();
 			//获取地址
-			this.getOrderDetail(options.orderNo);
+			await this.getOrderDetail(options.orderNo);
+			this.isLoaded = true;
 		},
 		methods: {
+			//删除订单
+			delOrder(){
+				Dialog.confirm({
+				  title: '提示',
+				  message: '您确认需要删除该订单吗?'
+				}).then(async () => {
+					wx.showLoading();
+					await this.$net.sendRequest("/order/delete",{orderIds:this.pageData.orderNoString});
+					pages[pages.length-2].hook();
+					this.$tools.Toast("删除成功");
+					wx.hideLoading();
+					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},500);
+				  // on confirm
+				}).catch(() => {
+				  // on cancel
+				});
+			},
+			//去查看物流
+			toLogisics(){
+				this.$tools.navigateTo('/pages/me/logistics/logistics?item='+JSON.stringify(this.pageData));
+			},
 			//获取订单详情
 			async getOrderDetail(orderNo) {
 				const result = await this.$net.sendRequest("/order/info", {
@@ -94,9 +124,25 @@
 				delete res.orderItemList;
 				return res;
 			},
+			//确认收货
+			comfirmReceipt(){
+				Dialog.confirm({
+				  title: '提示',
+				  message: '您确认收到货了吗?'
+				}).then(async () => {
+					await this.$net.sendRequest("/order/receive",{orderNo:item.orderNoString});
+					this.$tools.Toast("收货成功","success");
+					pages[pages.length-2].hook();
+					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},1500);
+				  // on confirm
+				}).catch(() => {
+				  // on cancel
+				});
+				console.log(e)
+			},
 			// 立即支付
 			async comfirmPay() {
-				const res = await this.$net.sendRequest("/order/miniAppPay", {
+				const res = await this.$net.sendRequest("/pay/miniAppPay", {
 					orderNo: this.pageData.orderNo+""
 				});
 				console.log('支付接口信息', res);
@@ -140,7 +186,7 @@
 			},
 			//申请退款
 			applyRefund() {
-				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type='refund_money'&pageData=" + JSON.stringify(this.pageData))
+				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type=refund_money&pageData=" + JSON.stringify(this.pageData))
 			}
 		}
 	}
