@@ -20,12 +20,17 @@ function switchTab(url) {
 }
 
 //轻提示
-function Toast(title, icon = "none", duration = 1500) {
-	uni.showToast({
-		title,
-		icon,
-		duration,
-		mask: true
+async function Toast(title, icon = "none", duration = 1500) {
+	return new Promise((resolve,reject)=>{
+		uni.showToast({
+			title,
+			icon,
+			duration,
+			mask: true
+		});
+		let timer = setTimeout(()=>{
+			resolve();
+		},duration);
 	})
 }
 

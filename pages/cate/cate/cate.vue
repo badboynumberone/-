@@ -3,24 +3,32 @@
 		
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
-			<Ser :back="'#fff'"></Ser>	
+			<Ser :color="'#38A472'" :back="'#fff'"></Ser>	
 		</view>
 		<!-- 内容 -->
 		<view style="height: 45px;">
 		</view>
 		<view class=" fsb">
 			<scroll-view scroll-y="true" style="height: 100%;" >
-				<view class="bottom">
-					<uni-grid :column="3" :show-border="false" :square="false">
-						<uni-grid-item v-for="(item,index) in keys" :key="index" v-if="item.showStatus==1" >
+				<view class="bottom pt10">
+					<!-- <uni-grid :column="3" :show-border="false" :square="false">
+						<uni-grid-item v-for="(item,index) in keys" :key="index" v-if="item.showStatus==0" >
 							<view  @click="navigateTo" :data-url="'/pages/cate/cate_detail/cate_detail?id='+item.id+'&cate='+item.name">
 								<view class="pic_item pr" >
-									<Pic :src="item.icon" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
+									<Pic :src="item.mobilePhoto" :height="'45px'" :width="'45px'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 								</view>
 								<text class="text fz12" style="color: #222;">{{item.name}}</text>
 							</view>
 						</uni-grid-item>
-					</uni-grid>
+					</uni-grid> -->
+					<van-grid column-num="4" :border="false">
+						<van-grid-item use-slot  v-for="(item,index) in keys" :key="index" v-if="item.name!='更多'" >
+							<view class="fm" style="flex-flow: column wrap;" @click="navigateTo" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
+								<Pic :src="item.mobilePhoto" :height="'40px'" :width="'40px'" :mode="'aspectFill'" :back="'#f1f1f1'" :round="true"></Pic>
+								<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.name}}</text>
+							</view>
+						</van-grid-item>
+					</van-grid>
 				</view>
 			</scroll-view>
 		</view>
@@ -93,7 +101,7 @@
 			//获取分类
 			async getCate(){
 				const result = await this.$net.sendRequest("/home/productCateList/0",{},"GET");
-				this.keys = result;
+				this.keys = result.reverse();
 			}
 		}
 	}

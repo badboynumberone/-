@@ -1,9 +1,9 @@
 <template>
 	<view class="main pr">
 		<!-- 登录第一步骤 -->
-		<view v-if="step==1" class="container ct" style="width: 100%;margin-top: -130px;">
+		<view v-if="step==1" class="container center" style="width: 100%;margin-top: -60px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">欢迎登录！</view>
-			<view class="wx_header ">
+			<view class="wx_header">
 				<Pic :src="'/static/images/logo.png'" :height="'100%'" :width="'100%'" :mode="'scaleToFill'" :round="true" :back="'#fff'"></Pic>
 			</view>
 			<view class="button p10">
@@ -156,8 +156,7 @@
 	@import './../../../static/styles/mixin.scss';
 
 	.wx_header {
-		@include wh(100px, 100px);
-		@include borderRadius(100px);
+		@include wh(150px, 160px);
 		margin: 20px auto;
 	}
 

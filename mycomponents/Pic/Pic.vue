@@ -1,6 +1,6 @@
 <template>
-	<view class="wrapper" :style="{width:width,height:height,background:back}">
-		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true" :class="{'round':round}"></image>
+	<view class="wrapper" :style="{width:width,height:height,background:back}" :class="{'round':round}">
+		<image v-show="imgLoaded>0" class="fill" @load="imgLoad" :src="src" :mode="mode" :lazy-load="true" :class="{'round':round}" ></image>
 	</view>
 </template>
 
@@ -46,6 +46,7 @@
 
 <style lang="scss">
 	.round{
+		overflow: hidden;
 		border-radius: 50%;
 	}
 </style>

@@ -61,7 +61,7 @@
 			<view style="height: 50px;"></view>
 		</view>
 		<view :style="{height:	contentHeight}" v-if="!cartData.length">
-			<Empty :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
+			<Empty :text="'空空如也~赶紧去首页看看吧'" :src="'/static/images/ddwsj@3x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
 		</view>
 		<!-- 底部结算条 -->
 		<view class="submit_bar pf">

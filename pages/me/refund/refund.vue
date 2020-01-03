@@ -11,7 +11,7 @@
 					<text class="theme">{{item.type==6 ? '仅退款' : '退款退货'}}</text>
 				</view>
 				<view class="action f p5">
-					<view class="ml5" @click="cancelApply(item)">
+					<view class="ml5" v-if="item.status=='待审核'" @click="cancelApply(item)">
 						<van-tag plain round size="medium" >取消申请</van-tag>
 					</view>
 					<view class="ml5" @click="toDetail" :data-item="item">
@@ -30,7 +30,7 @@
 <script>
 	import loadData from "../../../utils/loaddata.js";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
-    const status=['待审核','商家已拒绝','退款中','复核已拒绝','退款成功','已关闭'];
+    const status=[ '','待审核','商家已拒绝','退款中','复核已拒绝','','退款成功','已关闭','待寄回货物','待商家收货','退款失败'];
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	export default {
 		components:{
@@ -67,7 +67,7 @@
 			//跳转到详情
 			toDetail(e){
 				const item = e.currentTarget.dataset.item;
-				this.$tools.navigateTo('/pages/me/refund_detail/refund_detail?item='+JSON.stringify(item));
+				this.$tools.navigateTo('/pages/me/refund_detail/refund_detail?id='+item.id);
 			},
 			//刷新页面
 			async refresh(){
@@ -105,7 +105,7 @@
 							pageSize: 20,
 						});
 						console.log(result)
-						result = result.map(item=>{item.status = status[item.status];return item}).filter(item=>item.status)
+						result = result.filter(item=>item.type==6 || item.type==7).map(item=>{item.status = status[item.status];return item})
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						this.isLoaded = true;

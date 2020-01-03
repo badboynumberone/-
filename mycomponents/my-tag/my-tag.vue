@@ -1,5 +1,5 @@
 <template>
-	<view class="ftm">
+	<view class="ftm" v-if="text!=''&&text!='无'">
 		<view class="ftm di" v-if="type=='first'">
 			<Pic :src="'/static/images/brand_name@2x.png'" :height="'50rpx'" :width="'50rpx'" :mode="'aspectFill'" :back="'#fff'" :round="true"></Pic>
 			<text class="ml5 key">{{text}}</text>

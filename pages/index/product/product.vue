@@ -6,13 +6,15 @@
 		</view>
 		<!-- 轮播 -->
 		<view class="carousel">
-			<swiper indicator-dots circular=true duration="400" style="background: #f1f1f1;">
+			<swiper v-if="!isVideoing" indicator-dots circular=true duration="400" style="background: #f1f1f1;">
 				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
-					<view class="image-wrapper">
-						<image :src="item" class="loaded" mode="aspectFill" @click="previewImg" :data-imgs="imgList" :data-src="item"></image>
+					<view class="image-wrapper pr">
+						<image :src="item" class="loaded" mode="aspectFill" @click="previewImgVideo($event,index)" :data-imgs="imgList" :data-src="item"></image>
+						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" src="/static/images/video.png" mode="aspectFit"></image>
 					</view>
 				</swiper-item>
 			</swiper>
+			<video v-else :src="pageData.albumVideo" autoplay controls style="height: 710upx;width: 100%;" @play="videoStart" @ended="videoEnd" />
 		</view>
 		
 		<view class="wrapper">
@@ -32,11 +34,11 @@
 				</view>
 				<view class="tag ftm mt5">
 						<my-tag :type="'first'" :text="pageData.brandName"/>
-						<my-tag v-if="pageData.tagName" class="ml10" :type="'second'" :text="pageData.tagName"/>
+						<my-tag v-if="pageData.tagName && pageData.tagName!='无'" class="ml10" :type="'second'" :text="pageData.tagName"/>
 				</view>
 				<view class="price_box fsb mt20 mb10">
 					<text class="price fb fz18">￥{{pageData.price}}</text>
-					<text class="sal">销量{{pageData.sale}}件</text>
+					<text class="sal">销量{{pageData.sale}}{{pageData.unit}}</text>
 				</view>
 			</view>
 
@@ -79,8 +81,8 @@
 				<view class="h1 fz18 fb p10">
 					商品详情
 				</view>
-				<view class="container">
-					<Pic v-for="(item,index) in pageData.detailPics" :key="index" :src="item" :width="'100%'" :mode="'widthFix'"></Pic>
+				<view class="container" style="font-size: 0px;line-height: 0px;">
+					<image v-for="(item,index) in pageData.detailPics"  :key="index" :src="item" mode="widthFix" style="width: 100%;display: block;height: auto;background: #f1f1f1;"></image>
 				</view>
 				<!-- 加载更多 -->
 				<load-more :tip="'到底了'" :loading="false" />
@@ -96,7 +98,7 @@
 		<view class="bottom_bar">
 			<view class="bar fz14" v-if="pageData.stock<=5 || !pageData.publishStatus">{{ !pageData.publishStatus ?  '当前商品已下架,快去看看其他商品吧!' :  pageData.stock<=0 ? '当前商品已售罄，可查看更多商品':`当前商品库存仅剩${pageData.stock}件`}}</view>
 			<van-goods-action>
-				<van-goods-action-icon icon="chat-o" text="客服" />
+				<van-goods-action-icon @click="contact" icon="chat-o" text="客服" />
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
@@ -115,7 +117,9 @@
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
-					<image :src="pageData.pic"></image>
+					<view class="image">
+						<Pic :src="pageData.businessPic" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+					</view>
 					<view class="right">
 						<text class="price">¥{{selectedItem.price}}</text>
 						<text class="stock">库存：{{selectedItem.stockNum}}{{pageData.unit}}</text>
@@ -129,7 +133,7 @@
 				</view>
 				
 				<view class="attr-list"><!-- v-for="(item,index) in specList" -->
-					<text>{{item.name}}</text>
+					<text>{{pageData.proAttribute}}</text>
 					<view class="item-list">
 						<text v-for="(childItem, childIndex) in selectItems"  :key="childIndex" class="tit"
 						 :class="{selected: childItem.selected}" @click="selectSpec(childIndex, childItem)">
@@ -141,7 +145,7 @@
 				<view class="attr-list">
 					<text>数量</text>
 					<view class="item-list">
-						<van-stepper :value="count" @change="onCountChange" />
+						<van-stepper :value="count" @change="onCountChange" :max="selectedItem.stockNum" />
 					</view>
 				</view>
 				
@@ -172,6 +176,7 @@
 		},
 		data() {
 			return {
+				isVideoing:false,
 				isLoaded:false,
 				action:true,//当前操作 true代表立即购买 false 代表加入购物车
 				count:1,//商品数量
@@ -204,15 +209,38 @@
 		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
-			wx.showLoading({title:"加载中",mask:true});
-			this.getData(options)
+			wx.showLoading({title:"加载中",mask:true,success: () => {
+				this.getData(options)
+			}});
+			// this.getData(options)
 		},
 		methods:{
+			//联系商家
+			contact(){
+				uni.makePhoneCall({
+					phoneNumber:this.pageData.busPhone
+				})
+			},
+			//视频播放结束
+			videoStart(){
+				this.isVideoing = true;
+			},
+			videoEnd(){
+				this.isVideoing = false;
+			},
+			//获取数据
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
+				this.isLoaded = true;
+				this.$nextTick(()=>{
+					uni.hideLoading();
+				})
 				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
-				this.pageData = result;result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0];  this.isLoaded = true;
-				wx.hideLoading();this.isLoaded = true;
+				this.pageData = result;
+				if(result.attrs.length){
+					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 
+				}
+				
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")
@@ -228,8 +256,13 @@
 				})
 			},
 			//预览图片
-			previewImg(e){
+			previewImgVideo(e,index){
 				console.log(e.currentTarget.dataset.imgs)
+				const video =this.pageData.albumVideo || '';
+				if(index==0&&video.length){
+					this.isVideoing=true;
+					return
+				}
 				uni.previewImage({
 					current:e.currentTarget.dataset.src,
 					urls:e.currentTarget.dataset.imgs
@@ -415,12 +448,13 @@
 		padding: 10upx 30upx;
 		.a-t{
 			display: flex;
-			image{
+			.image{
 				width: 170upx;
 				height: 170upx;
 				flex-shrink: 0;
 				margin-top: -40upx;
 				border-radius: 8upx;;
+				overflow: hidden;
 			}
 			.right{
 				display: flex;

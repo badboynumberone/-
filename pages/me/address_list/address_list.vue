@@ -7,14 +7,14 @@
 				  <van-cell icon="location-o" center>
 				  			  <view slot="title">
 				  			      <view class="van-cell-text"><text class="fb fz16" :decode="true">{{item.name }}     {{item.phoneNumber }}</text></view>
-				  				  <view class="address more-hidden">{{item.province+item.city+item.region+item.detailAddress}}</view>
+				  				  <view class="address ftm"><view v-if="item.defaultStatus" class="fm fz10 mr5" style="color:#fff;background: #38A472;padding: 0 5px;border-radius: 10px;overflow: hidden;">默认</view><text class="more-hidden">{{item.province+item.city+item.region+item.detailAddress}}</text></view>
 				  			  </view>
-				  			  <view slot="right-icon" @click="setDefault(item.id)" v-if="!item.defaultStatus">
+				  			  <view slot="right-icon" @click.stop="setDefault(item.id)" v-if="!item.defaultStatus">
 				  			       <view :class="['van-cell-text','theme'] ">设为默认</view>
 				  			  </view>
 				  </van-cell>
 				  <view class="right" slot="right">
-					  <view class="edit fm" @click="toEdit(item)" :data-url="''">
+					  <view class="edit fm" @click="toEdit(index)" :data-url="''">
 					  	编辑
 					  </view>
 					  <view class="del fm" @click="delAddress(item.id)">
@@ -24,10 +24,6 @@
 				</van-swipe-cell>
 			</van-cell-group>
 			<view style="height: 64px;"></view>
-			
-			
-			
-			
 			<!-- 模态框 -->
 			<van-dialog id="van-dialog" confirm-button-color="#38A472" />
 		</view>
@@ -83,8 +79,8 @@
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//去编辑
-			toEdit(item){
-				this.$tools.navigateTo(`/pages/me/address/address?item=${JSON.stringify(item)}`)
+			toEdit(index){
+				this.$tools.navigateTo(`/pages/me/address/address?index=${index}`)
 			},
 			//设置地址
 			setOrderAddress(item){

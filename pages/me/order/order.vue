@@ -57,7 +57,7 @@
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
-	const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭', '全部'];
+	const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];
 	export default {
 		components: {
 			MyGoodsCard,
@@ -181,8 +181,8 @@
 								status: this.active - 1
 							}
 						});
-						console.log(result)
-						result = result.map(item=>{item.status = arr[item.status];return item}).filter(item=>item.status)
+						// console.log(result)
+						result = result.map(item=>{item.status = arr[item.status];return item})
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						this.isLoaded = true;

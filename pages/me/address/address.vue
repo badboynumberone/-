@@ -45,8 +45,9 @@
 		methods:{
 			//获取数据
 			getData(options){
-				if(options.item){
-					let item = JSON.parse(options.item);
+				if(options.index!=undefined){
+					console.log(getCurrentPages()[getCurrentPages().length-2].data.list)
+					const item = getCurrentPages()[getCurrentPages().length-2].data.list[options.index];
 					[this.id,this.name,this.phone,this.area,this.postcode,this.detail,this.status]=[item.id,item.name,item.phoneNumber,[item.province,item.city,item.region],item.postCode,item.detailAddress,item.defaultStatus];
 				}
 			},

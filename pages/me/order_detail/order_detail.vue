@@ -44,10 +44,10 @@
 			<view class="ml10" v-if="pageData.status==0" @click="comfirmPay">
 				<van-tag :color="'#38A472'" plain round size="medium">立即支付</van-tag>
 			</view>
-			<view class="ml10" v-if="pageData.status==1" @click="applyRefund">
+			<view class="ml10" v-if="pageData.status==1" @click="applyRefund('refund_money')">
 				<van-tag :color="'#666'" plain round size="medium">申请退款</van-tag>
 			</view>
-			<view class="ml10" v-if="pageData.status==2" @click="applyRefund">
+			<view class="ml10" v-if="pageData.status==2" @click="applyRefund('refund_money_goods')">
 				<van-tag :color="'#666'" plain round size="medium">申请退货退款</van-tag>
 			</view>
 			<view class="ml10" v-if="pageData.status==2 || pageData.status==3" @click="toLogisics">
@@ -116,7 +116,7 @@
 			},
 			//处理结果
 			mapResult(res) {
-				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭'];
+				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭','','退款','退款退货'];
 				res.state = arr[res.status], res.address = res.receiverProvince + res.receiverCity + res.receiverRegion + res.receiverDetailAddress;
 				res.items = res.orderItemList;
 				// 更改producId为 id-----------------------------------------------------
@@ -130,15 +130,14 @@
 				  title: '提示',
 				  message: '您确认收到货了吗?'
 				}).then(async () => {
-					await this.$net.sendRequest("/order/receive",{orderNo:item.orderNoString});
-					this.$tools.Toast("收货成功","success");
+					await this.$net.sendRequest("/order/receive",{orderNo:this.pageData.orderNoString});
+					await this.$tools.Toast("收货成功","success",500);
+					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},500);
 					pages[pages.length-2].hook();
-					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},1500);
 				  // on confirm
 				}).catch(() => {
 				  // on cancel
 				});
-				console.log(e)
 			},
 			// 立即支付
 			async comfirmPay() {
@@ -185,8 +184,8 @@
 				});
 			},
 			//申请退款
-			applyRefund() {
-				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type=refund_money&pageData=" + JSON.stringify(this.pageData))
+			applyRefund(name) {
+				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type="+name+"&pageData=" + JSON.stringify(this.pageData))
 			}
 		}
 	}

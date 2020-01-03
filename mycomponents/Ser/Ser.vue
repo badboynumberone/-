@@ -4,7 +4,7 @@
 		<view class="searchTopBox" :style="{'background':back}">
 			<view class="searchBoxRadius" style="box-shadow:0px 0px 5px  rgba(0,0,0,0.1);">
 				<view class="grace-search-icon searchBoxIcon">
-					<van-icon name="search" :color="'#E92C32'" />
+					<van-icon name="search" :color="color" />
 				</view>
 				<input class="searchBoxIpt" type="search" confirm-type="搜索" :value="searchValue" placeholder="搜索商品" :disabled="isDisabled"
 				 maxlength="30" @input="bindValue" @confirm="confirmContent"></input>
@@ -16,6 +16,10 @@
 <script>
 	export default {
 		props: {
+			color:{
+				type:String,
+				default:'#E92C32'
+			},
 			back: {
 				type: String,
 				default: "#38A472"

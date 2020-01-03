@@ -2,7 +2,7 @@
 	<view class="main">
 		<!-- 搜索框 -->
 		<view class="pf" style="width: 100%;top: 0px;left: 0px;">
-			<Ser :isDisabled="false" ref="search" @startSerch='search'></Ser>
+			<Ser :isDisabled="false" ref="search" :color="'#38A472'" @startSerch='search'></Ser>
 		</view>
 		<view style="height: 45px;"></view>
 		<view class="before_search" v-if="isHistory">
@@ -130,7 +130,7 @@
 			clearKey() {
 				Dialog.confirm({
 					title: '提示',
-					message: '确认删除该地址吗?'
+					message: '确认删除该关键词吗?'
 				}).then(() => {
 					// on confirm
 					uni.setStorageSync("searchHistory", JSON.stringify([]));

@@ -53,16 +53,13 @@
 					});
 					isSub = true;
 					await this.$refs.upload.uploadFiles();
-					// const result  = await this.$net.sendRequest("/returnApply/create",{
-					// 	orderId:this.pageData.orderNoString,
-					// 	type:6,
-					// 	reason:	this.reason,
-					// 	description	: this.problem,
-					// 	proof: this.proof=='无凭证' ? 0:1,
-					// 	proofPics:this.$refs.upload.imageList.join(","),
-					// })
+					const result  = await this.$net.sendRequest("/feedback/add",{
+						content:this.content
+					})
 					wx.hideLoading();
 					isSub = false;
+					this.$tools.Toast("反馈成功!","success");
+					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},500)
 			},
 		
 		}

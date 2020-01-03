@@ -1,13 +1,15 @@
 <template>
-	<view class="main" v-show="">
+	<view class="main">
 		<view class="container">
 			<van-cell-group>
-				<van-field label="物流公司" :value="company" placeholder="请输入物流公司" border="false" @change="onChange" :name="'company'"
+				<van-field label="收件人" :value="name" placeholder="请输入收件人姓名" border="false" @change="onChange" :data-name="'name'"
 				 :maxlength="10" />
-				<van-field label="物流单号" :value="logisitics_no" placeholder="请输入物流单号" border="false" @change="onChange" :name="'logisitics_no'"
+				<van-field label="物流公司" :value="company" placeholder="请输入物流公司" border="false" @change="onChange" :data-name="'company'"
+				 :maxlength="10" />
+				<van-field label="物流单号" :value="logisitics_no" placeholder="请输入物流单号" border="false" @change="onChange" :data-name="'logisitics_no'"
 				 :maxlength="50" />
 				<van-field label="手机号码" typp="number" :value="phone" placeholder="请输入手机号号码便于卖家联系您" border="false" @change="onChange"
-				 :name="'phone'" :maxlength="11" />
+				 :data-name="'phone'" :maxlength="11" />
 			</van-cell-group>
 		</view>
 		<view class="pf" style="bottom: 0px;left:0px; width: 100%;" @click="onSub">
@@ -27,6 +29,7 @@
 		},
 		data() {
 			return {
+				name:'',
 				company: "",
 				logisitics_no: "",
 				phone: ''
@@ -52,31 +55,35 @@
 			},
 			//提交数据
 			onSub() {
-				if (!this.checkForm() && isSubing) {
+				if (!this.checkForm() || isSubing) {
 					return
 				}
-				isSub = true;
+				isSubing = true;
 				uni.showLoading({
 					title: "提交中",
 					mask: true
 				})
 				const result = this.$net.sendRequest("/returnApply/updateExp", {
 					id:parseInt(opt.id),
+					receiveMan:this.name,
 					deliveryCompany: this.company,
 					deliverySn: this.logisitics_no,
 					receivePhone: this.phone
 				});
 				//刷新上一个页面
-				pages[pages.length-2].hook();
-				isSub = false;uni.hideLoading();
+				pages[pages.length-3].hook();
+				isSubing = false;uni.hideLoading();
 				this.$tools.Toast("提交成功","success");
 				let timer =setTimeout(()=>{
-					uni.navigateBack();
+					uni.navigateBack({
+						delta:2
+					});
 				},1500);
 			},
 			//检验表单
 			checkForm() {
 				const arr = [
+					[!this.name, '收件人姓名不能为空'],
 					[!this.company, '快递公司不能为空'],
 					[!this.logisitics_no, '快递单号不能为空'],
 					[!this.phone, '手机号码不能为空'],

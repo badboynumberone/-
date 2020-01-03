@@ -3,7 +3,7 @@
 		<!-- 头部 -->
 		<view class="header p10">
 			<view class="fz14">订单号: {{pageData.orderNoString}}</view>
-			<view class="fz14">订单金额: <text class="theme">¥{{pageData.totalAmount}}</text></view>
+			<view class="fz14">订单金额:<text class="theme" decode="true">   ¥{{pageData.totalAmount}}</text></view>
 			<!-- <Header></Header> -->
 		</view>
 
@@ -43,7 +43,7 @@
 	import Header from "../../../mycomponents/refund-components/header/header.vue";
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
-	let reasons = [],isSub = false;
+	let reasons = [],isSub = false,pages=null,opt=null;
 	export default {
 		components: {
 			UploadImg,
@@ -83,6 +83,8 @@
 			//设置页面内容
 			setPageContent(options){
 				this.pageData = JSON.parse(options.pageData);
+				opt = options;
+				pages = getCurrentPages();
 				this.refund_type = options.type;
 				wx.setNavigationBarTitle({
 					title:this.refund_type == 'refund_money'? '申请退款' : '申请退款退货'
@@ -106,7 +108,7 @@
 			},
 			//提交退款
 			async onSub(){
-				if(!this.checkForm() && isSub){
+				if(!this.checkForm() ||  isSub){
 					return
 				}
 				wx.showLoading({
@@ -117,21 +119,26 @@
 				await this.$refs.upload.uploadFiles();
 				const result  = await this.$net.sendRequest("/returnApply/create",{
 					orderId:this.pageData.orderNoString,
-					type:6,
+					type:opt.type=='refund_money'?6:7,
 					reason:	this.reason,
 					description	: this.problem,
 					proof: this.proof=='无凭证' ? 0:1,
 					proofPics:this.$refs.upload.imageList.join(","),
-				})
-				wx.hideLoading();
-				isSub = false
+				});
+				console.log(pages)
+				pages[pages.length-3].hook();
+				wx.hideLoading(),isSub = false;
+				this.$tools.Toast("已提交","success");
+				let timer = setTimeout(function() {wx.navigateBack({
+					delta:2
+				});clearTimeout(timer)}, 500);
 			},
 			//检验表单
 			checkForm(){
 				const arr = [
 					[!this.reason,"请选择退款原因"],
-					[!this.proof,'请选择申请凭证'],
-					[!this.problem,'请说明商品问题']
+					[!this.problem,'请说明商品问题'],
+					[this.proof=='有质检报告' && !this.$refs.upload.imageList.length,'请上传凭证'],
 				]
 				
 				for (let [rule,message] of arr) {

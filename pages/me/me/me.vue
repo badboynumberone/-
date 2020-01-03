@@ -1,6 +1,5 @@
 <template>
 	<view class="main" v-if="isLoaded">
-		<Imgs :images="keys">
 			<!-- 头部 -->
 			<div class="top f p20 pr" @click="toLogin" :data-url="'/pages/me/wxlogin/wxlogin'">
 				<!-- <button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
@@ -36,12 +35,14 @@
 					</view>
 					<view class="box pt10 pb10">
 						<uni-grid :column="5" :show-border="false" :square="false">
-							<uni-grid-item v-for="(item,index) in keys" :key="index">
+							<uni-grid-item v-for="(item,index) in keys" :key="index" style="height: 86px;">
 								<view class="pic_item pr" @click="navigateTo($event,index)" :data-url="'/pages/me/order/order?active='+(index+1)">
 									<view style="height: 45px;width: 45px;">
 										<Pic :src="item.src" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#fff'"></Pic>
 									</view>
-									<view v-if="item.num" class="pa num">{{item.num}}</view>
+									<view v-if="item.num" class="pa num">
+										<tag :num="item.num" />
+									</view>
 								</view>
 								<text class="text fz12" style="color: #222;">{{item.text}}</text>
 							</uni-grid-item>
@@ -91,19 +92,20 @@
 			<div class="copyright">
 				@copyright 2019 All Rights Reserverd
 			</div>
-		</Imgs>
+			
 	</view>
 </template>
 
 <script>
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue"
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
+	import tag from "../../../mycomponents/num-tag/num-tag.vue";
 	let pages = null;
 	let pageNum = 0;
 	export default {
 		components: {
 			uniGrid,
-			uniGridItem
+			uniGridItem,tag
 		},
 
 		data() {
@@ -175,6 +177,9 @@
 			},
 			//获取订单数量
 			async getOrderCount() {
+				this.keys.forEach((item,index)=>{
+					this.$set(this.keys[index],'num', 0);
+				})
 				const result = await this.$net.sendRequest("/order/countOrder");
 				for (let v of result) {
 					const findIndex = this.keys.findIndex(item => item.status == v.status)
@@ -246,10 +251,6 @@
 		.box {
 			.pic_item {
 				.num {
-					padding: 0px 14rpx;
-					background: red;
-					@include sc(12px, #fff);
-					border-radius: 25px;
 					top: -10px;
 					right: -10px;
 				}

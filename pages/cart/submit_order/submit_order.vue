@@ -27,7 +27,7 @@
 		<view class="container" v-for="(item,index) in orders" :key="index">
 			<my-goods-card :isClick="false" :item="item"></my-goods-card>
 			<van-cell title="配送方式" value="普通快递" />
-			<van-field :value="message" label="备注" type="textarea" placeholder="请输入备注(50字以内)" autosize maxlength="50" />
+			<van-field :value="item.note" label="备注" type="textarea" placeholder="请输入备注(50字以内)" autosize maxlength="50" @change="bindNote($event,index)" />
 			<view class="pt10 pb10 pl15 pr15 f" style="justify-content: flex-end;align-items: center;background: #fff;">
 				<text style="color: #222;">合计:</text>
 				<text class="price fb fz20">￥{{itemTotalPrice(item.items)}}</text>
@@ -114,6 +114,11 @@
 			console.log("haha")
 		},
 		methods: {
+			//绑定备注
+			bindNote(e,index){
+				console.log(e)
+				this.$set(this.orders[index],"note",e.detail);
+			},
 			//获取提交的订单
 			getSubmitProducts(options) {
 				this.orders = JSON.parse(options.items);

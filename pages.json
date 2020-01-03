@@ -2,9 +2,9 @@
 	"pages": [{
 			"path": "pages/index/index/index",
 			"style": {
-				"navigationBarTitleText": "食里秦淮",
-				"navigationBarBackgroundColor": "#DB0D21",
-				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "食礼秦淮",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
 				"backgroundColor": "#fff",
 				"enablePullDownRefresh":true,
 				"usingComponents": {
@@ -35,7 +35,9 @@
 				"disableScroll": true,
 				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
-					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
+					"van-grid": "/wxcomponents/vant/grid/index",
+					"van-grid-item": "/wxcomponents/vant/grid-item/index"
 				}
 				
 			}
@@ -242,9 +244,20 @@
 			}
         }
         ,{
+            "path" : "pages/index/list/list",
+            "style" : {
+				"usingComponents":{
+					"van-sidebar": "/wxcomponents/vant/sidebar/index",
+					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
+					"load-more": "/wxcomponents/load-more/index"
+				}
+			}
+        }
+        ,{
             "path" : "pages/me/refund_detail/refund_detail",
             "style" : {
-				"navigationBarTitleText":"退款详情"
+				"navigationBarTitleText":"退款详情",
+				"backgroundColor":"#f1f1f1"
 			}
         }
         ,{

@@ -100,10 +100,10 @@
 						let v = this.pageData[index];
 						//发送请求了
 						const result = await this.$net.sendRequest('/home/getProductList', {
-							brandId:options.brandId,
+							businessId:options.id,
 							pageNum: v.pageNum,
 							pageSize: 20
-						},"GET")
+						},"GET");
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						this.isLoaded = true;

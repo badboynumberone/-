@@ -1,8 +1,9 @@
 <template>
-	<view class="main">
-		<van-cell-group>
-			<van-cell is-link title="已确认收货的订单失效" link-type="navigateTo" url="/pages/me/problem_detail/problem_detail" />
-		</van-cell-group>
+	<view class="main" v-show="isLoaded">
+		<!-- <van-cell-group>
+			<van-cell v-for="(item,index) in problems" :key="index" is-link :title="item.paramKey" link-type="navigateTo" url="/pages/me/problem_detail/problem_detail" />
+		</van-cell-group> -->
+		<rich-text :nodes="problems" space="nbsp" style="max-width: 100%;"></rich-text>
 	</view>
 </template>
 
@@ -15,7 +16,8 @@
 		},
 		data() {
 			return {
-
+				isLoaded:false,
+				problems:""
 			};
 		},
 		computed: {
@@ -24,13 +26,27 @@
 		onLoad(options) {
 			//页面信息答应
 			this.setPage(options);
+			//获取数据
+			this.getData()
 		},
 		methods: {
 			setPage(options) {
 				console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
-				opt = options;
-				pages = getCurrentPages();
-			}
+				opt = options;pages = getCurrentPages();
+			},
+			//获取数据
+			async getData(){
+				wx.showLoading({
+					title:"请稍候",
+					mask:true
+				})
+				const result =  await this.$net.sendRequest("/common/queryText",{
+					type:3
+				});
+				this.problems = result.paramValue;
+				// this.problems = "<div>hello,world</div>";
+				wx.hideLoading();this.isLoaded = true;
+			},
 		}
 	}
 </script>

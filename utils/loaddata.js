@@ -60,7 +60,7 @@ async function fn(a) {
 	g.isLoading = !1, this.$set(this.pageData, t, g);
 
 	let h = "";
-	h = 1 == this.pageData[t].pageNum && 0 == i.length ? "没有数据" : this.pageData[t].pageNum >= 1 && 10 == i.length ?
+	h = 1 == this.pageData[t].pageNum && 0 == i.length ? "没有数据" : this.pageData[t].pageNum >= 1 && 20 == i.length ?
 		"上拉加载更多" : "到底了";
 
 	let p = this.pageData[t];

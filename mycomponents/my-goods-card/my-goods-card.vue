@@ -18,7 +18,7 @@
 			</text>
 		</view>
 		<view class="container f pb5 pt5" v-for="(single,index) in item.items" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+single.id">
-			<view class="pic">
+			<view class="pic pr">
 				<Pic :src="single.productPic" :height="'90px'" :width="'90px'" :mode="'aspectFill'"></Pic>
 			</view>
 			<view class="info fsr ml10">
@@ -70,9 +70,6 @@
 			return {
 				arr:['待付款','待发货','待收货','交易成功','交易关闭']
 			};
-		},
-		mounted() {
-			console.log(this.item)
 		},
 		methods:{
 			//页面跳转
