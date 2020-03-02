@@ -39,7 +39,7 @@
 						 :data-url="'/pages/index/product/product?id='+item.productId"></view>
 						<view class="pr">
 							<Pic :src="item.productPic" :height="'150rpx'" :width="'150rpx'" :mode="'aspectFill'"></Pic>
-							<view class="publishStatus center" v-if="item.publishStatus==1&&item.stockNum<=0">已售罄</view>
+							<view class="publishStatus center" v-if="item.stockNum<=0">已售罄</view>
 							<view class="publishStatus center" v-if="item.publishStatus==2">已下架</view>
 							<view class="left pa" v-if="item.publishStatus==1&&item.stockNum<=5&&item.stockNum>0">仅剩{{item.stockNum}}件</view>
 						</view>
@@ -49,7 +49,7 @@
 							<view class="price fz16 fb fsb">
 								<text>￥{{item.price}}</text>
 								<view style="transform: scale(0.8,0.8);">
-									<van-stepper :value="item.quantity" @change="onCountChange($event,idx,index,item)" />
+									<van-stepper :value="item.quantity" @change="onCountChange($event,idx,index,item)" :max="item.stockNum" />
 								</view>
 							</view>
 						</view>
@@ -73,6 +73,7 @@
 		</view>
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" confirm-button-color="#38A472" :z-index="999" />
+		<van-toast id="custom-selector" />
 	</view>
 </template>
 
@@ -189,10 +190,15 @@
 			}
 		},
 		async onLoad() {
+			this.$toast.loading({
+				message:"加载中",
+				mask: true
+			});
 			await this.getContentHeight();
 			this.isLoaded = true;
 			await this.refreshlocalCart();
 			this.getCartData();
+			this.$toast.clear();
 		},
 		onShow() {
 			//获取购物车数据

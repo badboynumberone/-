@@ -45,6 +45,7 @@
 				});
 				this.problems = result.paramValue;
 				// this.problems = "<div>hello,world</div>";
+				await this.$tools.sleep(100)
 				wx.hideLoading();this.isLoaded = true;
 			},
 		}

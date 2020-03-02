@@ -106,6 +106,7 @@
 		computed:{
 			createTime(){
 				return function(time){
+					
 					return  this.$tools.dateFormat("YYYY-mm-dd HH:MM:SS", new Date(time))
 				}
 			}

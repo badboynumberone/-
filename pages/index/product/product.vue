@@ -7,10 +7,22 @@
 		<!-- 轮播 -->
 		<view class="carousel">
 			<swiper v-if="!isVideoing" indicator-dots circular=true duration="400" style="background: #f1f1f1;">
-				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
+				
+				<!-- 未售空 -->
+				<swiper-item v-if="pageData.stock>0" class="swiper-item" v-for="(item,index) in imgList" :key="index">
 					<view class="image-wrapper pr">
 						<image :src="item" class="loaded" mode="aspectFill" @click="previewImgVideo($event,index)" :data-imgs="imgList" :data-src="item"></image>
 						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" src="/static/images/video.png" mode="aspectFit"></image>
+					</view>
+				</swiper-item>
+				<!-- 售空 -->
+				<swiper-item v-else class="swiper-item">
+					<view class="image-wrapper pr">
+						<image :src="imgList[0]" class="loaded" mode="aspectFill"></image>
+						<view class="pa fill" style="background-color: rgba(0,0,0,0.5);top: 0px;left: 0rpx;"></view>
+						<image class="center" style="width: 400rpx;height: 400rpx;" src="../../../static/images/empty.png" mode="aspectFill"></image>
+						<!-- <view class=""></view> -->
+						<!-- <image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" src="/static/images/video.png" mode="aspectFit"></image> -->
 					</view>
 				</swiper-item>
 			</swiper>
@@ -82,10 +94,10 @@
 					商品详情
 				</view>
 				<view class="container" style="font-size: 0px;line-height: 0px;">
-					<image v-for="(item,index) in pageData.detailPics"  :key="index" :src="item" mode="widthFix" style="width: 100%;display: block;height: auto;background: #f1f1f1;"></image>
+					<image v-for="(item,index) in pageData.detailPics"  :key="index" :src="item" @load="loadImg" mode="widthFix" style="width: 100%;display: block;height: auto;background: #f1f1f1;"></image>
 				</view>
 				<!-- 加载更多 -->
-				<load-more :tip="'到底了'" :loading="false" />
+				<load-more :tip="loadImgNum==pageData.detailPics.length ? '到底了':'加载中'" :loading="loadImgNum!=pageData.detailPics.length" />
 
 				<view style="height: 50px;">
 
@@ -118,7 +130,7 @@
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
 					<view class="image">
-						<Pic :src="pageData.businessPic" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+						<Pic :src="imgList[0]" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 					</view>
 					<view class="right">
 						<text class="price">¥{{selectedItem.price}}</text>
@@ -161,7 +173,7 @@
 				</view>
 			</view>
 		</view>
-		<van-dialog id="van-dialog" />
+		<van-toast id="van-toast" />
 	</view>
 </template>
 
@@ -170,12 +182,15 @@
 	import MyButton from "../../../mycomponents/my-button/my-button.vue";
 	import MyTag from "../../../mycomponents/my-tag/my-tag.vue";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
+	import Toast from "../../../wxcomponents/vant/toast/toast.js";
+	
 	export default {
 		components: {
 			MyButton,MyTag
 		},
 		data() {
 			return {
+				loadImgNum:0,
 				isVideoing:false,
 				isLoaded:false,
 				action:true,//当前操作 true代表立即购买 false 代表加入购物车
@@ -209,12 +224,17 @@
 		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
-			wx.showLoading({title:"加载中",mask:true,success: () => {
-				this.getData(options)
-			}});
-			// this.getData(options)
+			this.$toast.loading({
+			  message: '加载中...'
+			});
+			this.getData(options);
 		},
 		methods:{
+			//加载图片
+			loadImg(){
+				console.log("haha")
+				this.loadImgNum++;
+			},
 			//联系商家
 			contact(){
 				uni.makePhoneCall({
@@ -231,11 +251,10 @@
 			//获取数据
 			async getData(options){
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
-				this.isLoaded = true;
-				this.$nextTick(()=>{
-					uni.hideLoading();
-				})
-				this.imgList = result.albumPics.split(",");result.detailPics = result.detailPics.split(",");
+				this.isLoaded=true;this.$toast.clear();
+				this.imgList = result.albumPics.split(",");
+				result.detailPics = result.detailPics.length>0 ? result.detailPics.split(",") : [];
+				
 				this.pageData = result;
 				if(result.attrs.length){
 					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 

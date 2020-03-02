@@ -80,12 +80,12 @@
 				  title: '取消退款申请?',
 				  message: '撤销退款申请后，本次退款申请将 关闭，如果后续仍有问题，您可继 续发起退款申请。'
 				}).then(async () => {
-					uni.showLoading({
+					this.$toast.loading({
 						mask: true
 					});
 					await this.$net.sendRequest("/returnApply/cancelApply",{id:item.id});
 					await this.refresh();
-					uni.hideLoading();
+					this.$toast.clear();
 				  // on confirm
 				}).catch(() => {
 				  // on cancel

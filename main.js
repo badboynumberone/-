@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import App from './App'
+import Toast from './wxcomponents/vant/toast/toast.js';
 Vue.config.productionTip = false
 App.mpType = 'app'
 
 const app = new Vue({
-    ...App
+	...App
 })
 app.$mount()
+
+Vue.prototype.$toast = Toast;
 
 /* ------------------------------------------------------------------------挂载常用工具-----------------------------------------------------------------*/
 
@@ -38,6 +41,3 @@ import Pic from './mycomponents/Pic/Pic.vue'
 Vue.component('Pic', Pic)
 import Imgs from './mycomponents/Imgs/Imgs.vue'
 Vue.component('Imgs', Imgs)
-
-
-

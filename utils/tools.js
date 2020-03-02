@@ -84,6 +84,8 @@ function dateFormat(fmt, date) {
 //平铺数组
 const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v)));
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 export default {
 	navigateTo,
 	redirectTo,
@@ -92,5 +94,6 @@ export default {
 	showLoading,
 	getImages,
 	dateFormat,
-	deepFlatten
+	deepFlatten,
+	sleep
 }

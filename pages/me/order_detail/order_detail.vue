@@ -5,7 +5,7 @@
 				<Pic :src="'/static/images/order-background@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 				<view class="pa box fill fsr p20">
 					<view class="fz18 fb" style="color: #fff;">{{pageData.state}}</view>
-					<view style="color: #fff;">订单号：{{pageData.orderNo}}</view>
+					<view style="color: #fff;">订单号：{{pageData.orderNoString}}</view>
 				</view>
 			</view>
 			<view class="bottom ftm pl10 pr10 ">
@@ -94,7 +94,12 @@
 				}).then(async () => {
 					wx.showLoading();
 					await this.$net.sendRequest("/order/delete",{orderIds:this.pageData.orderNoString});
-					pages[pages.length-2].hook();
+					try{
+						pages[pages.length-2].hook();
+					}catch(e){
+						//TODO handle the exception
+					}
+					
 					this.$tools.Toast("删除成功");
 					wx.hideLoading();
 					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},500);
@@ -105,7 +110,11 @@
 			},
 			//去查看物流
 			toLogisics(){
-				this.$tools.navigateTo('/pages/me/logistics/logistics?item='+JSON.stringify(this.pageData));
+				let pageData = JSON.parse(JSON.stringify(this.pageData));
+				delete pageData.receiverName;
+				delete pageData.receiverDetailAddress;
+				delete pageData.address;
+				this.$tools.navigateTo("/pages/me/logistics/logistics?item="+JSON.stringify(pageData));
 			},
 			//获取订单详情
 			async getOrderDetail(orderNo) {
@@ -133,7 +142,12 @@
 					await this.$net.sendRequest("/order/receive",{orderNo:this.pageData.orderNoString});
 					await this.$tools.Toast("收货成功","success",500);
 					let timer = setTimeout(()=>{uni.navigateBack();clearTimeout(timer)},500);
-					pages[pages.length-2].hook();
+					try{
+						pages[pages.length-2].hook();
+					}catch(e){
+						//TODO handle the exception
+					}
+					
 				  // on confirm
 				}).catch(() => {
 				  // on cancel
@@ -142,7 +156,7 @@
 			// 立即支付
 			async comfirmPay() {
 				const res = await this.$net.sendRequest("/pay/miniAppPay", {
-					orderNo: this.pageData.orderNo+""
+					orderNo: this.pageData.orderNoString
 				});
 				console.log('支付接口信息', res);
 				//调用支付接口
@@ -154,15 +168,15 @@
 					paySign: res.paySign,
 					success: (res) => {
 						this.$tools.Toast("支付成功", "success");
-						wx.navigateTo({
-							url: `/pages/me/order_detail/order_detail?orderNo=${this.pageData.orderNo}`,
-							success: () => {
-								let timer = setTimeout(() => {
-									this.refresh();
-									clearTimeout(timer)
-								}, 1000);
-							}
-						});
+						try{
+							pages[pages.length-2].hook();
+						}catch(e){
+							//TODO handle the exception
+						}
+						let timer = setTimeout(() => {
+							wx.navigateBack();
+							clearTimeout(timer)
+						}, 1000);
 					},
 					fail: (res) => {
 
@@ -176,8 +190,13 @@
 				  message: '您确认需要取消该订单吗?'
 				}).then(async () => {
 					await this.$net.sendRequest("/order/cancelOrder",{orderId:this.pageData.orderNo+""});
-					getCurrentPages()[getCurrentPages().length-2].hook();
-					wx.navigateBack()
+					this.$tools.Toast("取消成功","success");
+					try{
+						getCurrentPages()[getCurrentPages().length-2].hook();
+					}catch(e){
+						//TODO handle the exception
+					}
+					wx.navigateBack();
 				  // on confirm
 				}).catch(() => {
 				  // on cancel
@@ -185,7 +204,11 @@
 			},
 			//申请退款
 			applyRefund(name) {
-				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type="+name+"&pageData=" + JSON.stringify(this.pageData))
+				let pageData = JSON.parse(JSON.stringify(this.pageData));
+				delete pageData.receiverName;
+				delete pageData.receiverDetailAddress;
+				delete pageData.address;
+				this.$tools.navigateTo("/pages/me/refund_apply/refund_apply?type="+name+"&pageData=" + JSON.stringify(pageData))
 			}
 		}
 	}

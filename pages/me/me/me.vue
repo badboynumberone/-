@@ -194,7 +194,7 @@
 			//拨打官方客服电话
 			callPhone(){
 				uni.makePhoneCall({
-					phoneNumber:'(025)83115956'
+					phoneNumber:'17205122188'
 				})
 			},
 			//页面跳转

@@ -41,6 +41,16 @@ export function sendRequest(url, params = {}, method = "POST") {
 					if (result.code == 200) { //正常返回
 						resolve(result.data)
 					}
+					
+					if(result.code==500&&result.message=='缺货'){
+						uni.hideLoading();
+						uni.showToast({
+							title:'该商品处于缺货状态',
+							icon:"none",
+							mask:true,
+							duration:1500
+						})
+					}
 
 					//各页面返回数据异常处理
 

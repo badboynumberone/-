@@ -49,6 +49,7 @@
 
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" />
+		<van-toast id="van-toast" />
 	</view>
 </template>
 
@@ -68,7 +69,7 @@
 				isLoaded: false,
 				pageData: [{
 					areaName: "初始化",
-					list: []
+					list: [] 
 				}],
 				selectarea: "初始化",
 				active: 0

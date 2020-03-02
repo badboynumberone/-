@@ -1,5 +1,6 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main">
+
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 			<Ser :back="'linear-gradient(-52deg,rgba(242,63,61,1),rgba(218,11,32,1)) 100%'"></Ser>
@@ -69,7 +70,7 @@
 			<view class="navbar pr">
 				<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
 					<text class="fb fz14">今日推荐</text>
-					<view class="more fz10" style="color: #666;border-color: #666;" @click="toList('recommandList')">更多新品</view>
+					<view class="more fz10" style="color: #666;border-color: #666;" @click="toList('recommandList')">更多推荐</view>
 				</view>
 				<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/recommend_bg@2x.png" mode="widthFix"></image>
 			</view>
@@ -116,9 +117,13 @@
 						 mode="aspectFill"></image>
 					</view>
 					<div class="container fsb" style="flex: 1;flex-flow: column wrap;">
-						<view class="title fb fz16">
-							{{item.name}}
+						<view class="fsb" style="align-items: center;">
+							<view class="title fb fz16">
+								{{item.name}}
+							</view>
+							<view class="fz11" style="color: #666;">销量 {{item.sale}}</view>
 						</view>
+						
 						<view class="mt5 mb5">
 							<my-tag :type="'second'" :text="item.tagName" />
 						</view>
@@ -148,7 +153,13 @@
 		<!-- 加载更多 -->
 		<load-more v-if="pageData[loadIndex].list.length" :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].text=='加载中...'" />
 		<view v-if="pageData[loadIndex].text=='加载中...' && pageData[loadIndex].pageNum==1" style="height: 1000rpx;"></view>
-
+		
+		<!-- 客服图标 -->
+		
+		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
+			<image class="fill pa" style="bottom: 0px;left: 0px;" src="../../../static/images/contact.png" mode="aspectFill" ></image>
+		</button>
+		
 	</view>
 </template>
 
@@ -271,11 +282,12 @@
 						pageNum: v.pageNum,
 						pageSize: 3,
 					}, "GET");
+					
+					
 					const arr =  this.$tools.deepFlatten(result.filter(item=>!item.deleteStatus).map(item=>{
-						const products = item.products;
-						delete item.products;
-						return [item,...products]
+						return  item.products
 					}))	
+	
 					v.list = [...v.list, ...arr];
 					this.$set(this.pageData, index, v);
 					reslove(result);
@@ -288,7 +300,9 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
-
+	.contact::after{
+		border: none;
+	}
 	.van-grid-item__content {
 		padding-bottom: 0px;
 	}

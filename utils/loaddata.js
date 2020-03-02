@@ -35,12 +35,11 @@ export default {
 
 async function fn(a) {
 	const t = parseInt(this.pageData.findIndex(a => a.areaName == this.selectarea));
-
 	if (["到底了", "没有数据"].includes(this.pageData[t].text)) return;
 
 	let e = this.pageData[t];
 
-	e.pageNum = ++e.pageNum, this.$set(this.pageData, t, e), 1 == this.pageData[t].pageNum && wx.showLoading({
+	e.pageNum = ++e.pageNum, this.$set(this.pageData, t, e); 1 == this.pageData[t].pageNum && wx.showLoading({
 		title: "加载中",
 		mask: !0
 	});
@@ -52,8 +51,12 @@ async function fn(a) {
 	const i = await new Promise((t, e) => {
 		a(t, e)
 	});
-
+	
+	const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+	
+	await sleep(100);
 	wx.hideLoading();
+	
 
 	let g = this.pageData[t];
 

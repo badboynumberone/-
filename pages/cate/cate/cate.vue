@@ -32,7 +32,6 @@
 				</view>
 			</scroll-view>
 		</view>
-		
 	</view>
 </template>
 
@@ -83,15 +82,8 @@
 			}
 		},
 		async onLoad() {
-			uni.showLoading({
-				title:"加载中",
-				mask: false
-			});
 			await this.getCate();
-			this.isLoaded = true;
-			wx.hideLoading();
-			
-			
+			this.isLoaded = true;	
 		},
 		methods: {
 			//页面跳转

@@ -276,7 +276,6 @@
             "style" : {
 				"navigationBarTitleText":"常见问题",
 				"usingComponents":{
-					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-cell-group": "/wxcomponents/vant/cell-group/index"
 				}
 			}
@@ -303,7 +302,8 @@
 		"usingComponents": {
 			"van-icon": "/wxcomponents/vant/icon/index",
 			"van-button": "/wxcomponents/vant/button/index",
-			"van-image": "/wxcomponents/vant/image/index"
+			"van-image": "/wxcomponents/vant/image/index",
+			"van-toast": "/wxcomponents/vant/toast/index"
 		}
 	},
 	"tabBar": {

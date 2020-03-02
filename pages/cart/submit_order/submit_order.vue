@@ -53,7 +53,6 @@
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Pic from "../../../mycomponents/Pic/Pic.vue";
-	let isOrdering=false;
 	let lastPage = null;
 	export default {
 		components: {
@@ -209,9 +208,7 @@
 					return
 				}
 				// 如果正在下单停止下单
-				if(isOrdering) return;
 				
-				isOrdering = true;
 				wx.showLoading({mask:true});
 				//生成订单
 				const result = await this.generateOrder();
@@ -249,7 +246,6 @@
 							this.$store.dispatch("getCart");
 							this.$tools.redirectTo(`/pages/me/order/order?active=0`)
 						}
-						isOrdering = false;
 						wx.hideLoading();
 					}
 				})

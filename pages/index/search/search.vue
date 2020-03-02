@@ -101,12 +101,13 @@
 		},
 		async onLoad() {
 			wx.showLoading({
-				title: "请稍后..."
+				title: "加载中..."
 			})
 			//获取历史搜索
 			this.getKeyHistory();
 			//获取热门搜索
 			await this.getHotKey();
+			await this.$tools.sleep(100)
 			wx.hideLoading();
 		},
 		methods: {
@@ -125,7 +126,6 @@
 					//TODO handle the exception
 					uni.setStorageSync("searchHistory", JSON.stringify([]))
 				}
-
 			},
 			clearKey() {
 				Dialog.confirm({

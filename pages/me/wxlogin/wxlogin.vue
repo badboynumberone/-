@@ -89,12 +89,12 @@
 				}
 				const result  =await this.$net.sendRequest("/sso/getAuthCode",{telephone:this.phone},"GET");
 				this.$tools.Toast("验证码发送成功!")
-				Dialog.alert({
-				  title: '验证码(演示专用)',
-				  message: result
-				}).then(() => {
-				  // on close
-				});
+				// Dialog.alert({
+				//   title: '验证码(演示专用)',
+				//   message: result
+				// }).then(() => {
+				//   // on close
+				// });
 				timer = setInterval(() => {
 					this.seconds--;
 					(this.seconds<=0)&&(this.seconds=0)

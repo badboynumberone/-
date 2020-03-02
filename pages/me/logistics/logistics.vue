@@ -5,7 +5,7 @@
 				<Pic :width="'130rpx'" :height="'130rpx'" :mode="'aspectFit'" :src="pic"></Pic>
 			</view>
 			<view class="fsb" style="flex-flow: column wrap;">
-				<view class="fb fz14" style="color: #222;">
+				<view class="fb fz14 text-hidden" style="color: #222;width: 230px;">
 					{{title}}
 				</view>
 				<view class="fz13" style="color:#666;margin-top: -12px;">
@@ -64,16 +64,16 @@
 			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
 			pages = getCurrentPages(),opt = options;
 			//获取数据
-			this.getData();
+			this.getData(options);
 		},
 		methods:{
 			//获取数据
-			async getData(){
+			async getData(options){
 				wx.showLoading({
 					title:"加载中...",
 					mask:true
 				})
-				const item = JSON.parse(opt.item); 
+				const item = JSON.parse(options.item); 
 				//获取商品信息
 				this.title = item.items[0].productName,
 				this.pic = item.items[0].productPic;
@@ -93,6 +93,7 @@
 					delete item.context;
 					return item;
 				})
+				await this.$tools.sleep(100);
 				wx.hideLoading();this.isLoaded = true;
 			}
 		}
