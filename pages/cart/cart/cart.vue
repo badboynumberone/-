@@ -273,6 +273,18 @@
 			},
 			//点击底部按钮
 			onClickButton() {
+				let that = this;
+				//批量校验商品
+				function batchCheckLimit(arr=[]){
+					let flag = true;
+					arr.forEach(item=>{
+						if(item.xiangou&&item.xiangouNumber>0&&item.quantity>item.xiangouNumber){
+							that.$tools.Toast(`${item.productName}商品限购${item.xiangouNumber}${item.unit},请重新选择数量哦!`);
+							flag=false;
+						}
+					})
+					return flag;
+				}
 				if (this.isEdit && this.cartData.length) {
 					Dialog.confirm({
 						title: '提示',
@@ -314,7 +326,10 @@
 						item.note = "";
 						return item
 					});
-
+					console.log(checkedResult)
+					if(!batchCheckLimit(checkedResult.reduce((all,next)=>{return [...all,...next.items]},[]))){
+						return;
+					}
 					this.$tools.navigateTo("/pages/cart/submit_order/submit_order?items=" + JSON.stringify(checkedResult));
 				}
 

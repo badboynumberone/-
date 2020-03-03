@@ -47,6 +47,7 @@
 				<view class="tag ftm mt5">
 						<my-tag :type="'first'" :text="pageData.brandName"/>
 						<my-tag v-if="pageData.tagName && pageData.tagName!='无'" class="ml10" :type="'second'" :text="pageData.tagName"/>
+						<my-tag v-if="pageData.xiangou==1" class="ml10" :type="'three'" :text="pageData.xiangouNumber"/>
 				</view>
 				<view class="price_box fsb mt20 mb10">
 					<text class="price fb fz18">￥{{pageData.price}}</text>
@@ -183,7 +184,7 @@
 	import MyTag from "../../../mycomponents/my-tag/my-tag.vue";
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
-	
+	import Api from "../../../utils/api.js";
 	export default {
 		components: {
 			MyButton,MyTag
@@ -232,7 +233,6 @@
 		methods:{
 			//加载图片
 			loadImg(){
-				console.log("haha")
 				this.loadImgNum++;
 			},
 			//联系商家
@@ -323,13 +323,24 @@
 			//提交订单
 			async subOrder(){
 				
+				
 				//判断是否已经选中商品
 				if(JSON.stringify(this.selectedItem)==JSON.stringify({name:"",price:0,stockNum:0})){
 					this.$tools.Toast("请选择商品种类");return;
 				}
 				//判断是否已经选中商品
 				if(!this.selectedItem.stockNum){
-					this.$tools.Toast("商品库存不足,请重新选择!");return;
+					this.$tools.Toast("商品库存不足,请重新选择数量!");return;
+				}
+				
+				//判断用户是否购买过商品
+				const islimit = await Api.isLimitBuy(this.pageData.id);
+				if(!islimit){
+					return;
+				}
+				
+				if(this.pageData.xiangou&&this.pageData.xiangouNumber>0&&this.count>this.pageData.xiangouNumber){
+					this.$tools.Toast(`该商品限购${this.pageData.xiangouNumber}${this.pageData.unit},请重新选择数量!`);return;
 				}
 				//关闭弹窗
 				this.toggleSpec();

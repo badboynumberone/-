@@ -8,6 +8,10 @@
 		<view class="fm pl10 pr10 text-tag di fz12" v-if="type=='second'">
 			{{text}}
 		</view>
+		
+		<view class="fm pl10 pr10 fz12 limit ml5"  v-if="type=='three'">
+			限购{{text}}件
+		</view>
 	</view>
 </template>
 
@@ -46,5 +50,12 @@
 		overflow: hidden;
 		color: $theme;
 		background: #E6F5EE;
+	}
+	.limit{
+		line-height: 30rpx;
+		background: #F97F44;
+		border-radius: 3px;
+		overflow: hidden;
+		color:#FFFFFF;
 	}
 </style>

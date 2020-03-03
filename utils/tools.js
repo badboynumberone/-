@@ -20,7 +20,7 @@ function switchTab(url) {
 }
 
 //轻提示
-async function Toast(title, icon = "none", duration = 1500) {
+export async function Toast(title, icon = "none", duration = 1500) {
 	return new Promise((resolve,reject)=>{
 		uni.showToast({
 			title,
@@ -86,6 +86,20 @@ const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFla
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+const shuffle = ([...arr]) => {
+  let m = arr.length;
+  while (m) {
+    const i = Math.floor(Math.random() * m--);
+    [arr[m], arr[i]] = [arr[i], arr[m]];
+  }
+  return arr;
+};
+
+const chunk = (arr, size) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
+
 export default {
 	navigateTo,
 	redirectTo,
@@ -95,5 +109,7 @@ export default {
 	getImages,
 	dateFormat,
 	deepFlatten,
-	sleep
+	sleep,
+	shuffle,
+	chunk
 }

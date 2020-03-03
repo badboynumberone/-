@@ -3,11 +3,11 @@
 
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
-			<Ser :back="'linear-gradient(-52deg,rgba(242,63,61,1),rgba(218,11,32,1)) 100%'"></Ser>
+			<Ser :back="'#24B3D5'"></Ser>
 		</view>
 		<!-- 新品速递 -->
 		<view class="new_goods pr">
-			<image class="back pa" src="/static/images/home_bg@2x.png" mode="widthFix"></image>
+			<image class="back pa" src="/static/images/home-bg@2x.png" mode="widthFix"></image>
 			<view class="new_content cl">
 				<image class="pa fill" src="/static/images/new_bg@2x.png" mode="scaleToFill"></image>
 				<view class="content pa fill p10">
@@ -69,8 +69,8 @@
 		<view class="intro p10" style="padding-top: 0px;">
 			<view class="navbar pr">
 				<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
-					<text class="fb fz14">今日推荐</text>
-					<view class="more fz10" style="color: #666;border-color: #666;" @click="toList('recommandList')">更多推荐</view>
+					<text class="fb fz14">优品推荐</text>
+					<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 				</view>
 				<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/recommend_bg@2x.png" mode="widthFix"></image>
 			</view>
@@ -98,11 +98,11 @@
 		</view>
 
 		<!-- 热销榜 -->
-		<view class="intro p10" style="padding-top: 0px;">
+		<view class="intro p10" style="padding-top: 0px;padding-bottom: 0px;">
 			<view class="navbar pr">
 				<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
 					<text class="fb fz14">热销榜</text>
-					<view class="more fz10" style="color: #666;border-color: #666;" @click="toList('hotList')">更多热销</view>
+					<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 				</view>
 				<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/ranking_bg@2x.png" mode="widthFix"></image>
 			</view>
@@ -141,18 +141,42 @@
 
 		<!-- 商品列表 -->
 		<view class="goods">
-			<view class="fm  mb15">
-				<image class="small mr5" src="/static/images/icon_4@2x.png" mode="aspectFill"></image>
-				<image class="big mr5" src="/static/images/icon-7@2x.png" mode="aspectFill"></image>
-				猜你喜欢
-				<image class="big mr5 ml5" src="/static/images/icon_4@2x.png" mode="aspectFill"></image>
-				<image class="small" src="/static/images/icon-7@2x.png" mode="aspectFill"></image>
+			<view class="fm pr">
+				<image class="small mr5" src="/static/images/title_bg@2x.png" mode="aspectFill" style="width: 160px;height: 50px;"></image>
+				<text class="center fb">猜你喜欢</text>
 			</view>
-			<MyList :list="pageData[loadIndex].list"></MyList>
+			<swiper  :indicator-dots="false"  :interval="3000" :duration="1000" @change="onSwiperChange" >
+				<swiper-item class="p10" style="box-sizing: border-box;" v-for="(single,idx) in pageData[0].list" :key="idx" >
+					<view class="swiper-item">
+						<view class="fsb" v-for="(s,i) in single" :key="i" >
+							<view class="item p5  pr"  v-for="(item,index) in s" :key="index"  @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id" style="box-shadow:2px 2px 5px #C4C4C4;">
+								<view class="tag pa">
+									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
+									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
+								</view>
+								<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+								<view class="text-hidden  fz14" style="width: 100px;" >{{item.name}}</view>
+								<view class="fsb" style="align-items: center;margin-top: -2px;">
+									<text class="price theme fz13">
+										￥{{item.price}}
+									</text>
+								</view>
+								<view><text class="fz12" style="color: 666;">销量:12</text></view>
+								<image class="pa" style="width: 15px;height: 36rpx;transform: translateY(-2px);bottom: 8px;right: 5px;" src="/static/images/tab-shoppingchart-pre@2x.png"
+								 mode="aspectFit"></image>
+							</view>
+						</view>
+					</view>
+				</swiper-item>
+			</swiper>
+			<view class="dots frm pb15">
+				<view class="dots_wrapper f ">
+					<view  v-for="(item,index) in length" :key="index" :class="['dot','mr5',activeIndex==index?'active':''] "></view>
+				</view>
+			</view>
 		</view>
-		<!-- 加载更多 -->
-		<load-more v-if="pageData[loadIndex].list.length" :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].text=='加载中...'" />
-		<view v-if="pageData[loadIndex].text=='加载中...' && pageData[loadIndex].pageNum==1" style="height: 1000rpx;"></view>
+		
+
 		
 		<!-- 客服图标 -->
 		
@@ -187,7 +211,8 @@
 				cateList: [],
 				pageData: [],
 				selectarea: "全部",
-				isLoaded: false
+				isLoaded: false,
+				activeIndex:0
 			}
 		},
 		async onLoad() {
@@ -216,9 +241,20 @@
 		computed: {
 			loadIndex() {
 				return parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea)) || 0;
+			},
+			length(){
+				if(this.pageData[0]==undefined){
+					return 0
+				}else{
+					return Math.floor(this.pageData[0].list.length)
+				}
+				
 			}
 		},
 		methods: {
+			onSwiperChange(e){
+				this.activeIndex = e.detail.current
+			},
 			toCateDetail(e, item) {
 				if (item.name == '更多') {
 					uni.switchTab({
@@ -280,7 +316,7 @@
 					const result = await this.$net.sendRequest("/home/guessLike", {
 						recommandStatus: 1,
 						pageNum: v.pageNum,
-						pageSize: 3,
+						pageSize: 20,
 					}, "GET");
 					
 					
@@ -291,6 +327,8 @@
 					v.list = [...v.list, ...arr];
 					this.$set(this.pageData, index, v);
 					reslove(result);
+					// 打乱数组
+					this.pageData[0].list = this.$tools.chunk(this.$tools.shuffle(this.pageData[0].list),6).map(item=>this.$tools.chunk(item,3));
 					this.isLoaded = true;
 				});
 			}
@@ -384,40 +422,32 @@
 		}
 	}
 
-	// .goods {
-	// 	.menu {
-	// 		.item {
-	// 			@include wh(214rpx, 256rpx);
-
-	// 			.wrapper {
-	// 				top: 0rpx;
-	// 				left: 0rpx;
-	// 				@include wh(214rpx, 256rpx);
-	// 				flex-flow: column wrap;
-	// 				z-index: 9;
-	// 			}
-	// 		}
-	// 	}
-
-	// 	.container {
-	// 		.item {
-	// 			display: inline-block;
-	// 			border: 1rpx solid #CFCFCF;
-	// 			border-radius: 30px;
-	// 			overflow: hidden;
-	// 			padding: 3rpx 25rpx;
-	// 			line-height: 45rpx;
-	// 			color: #666;
-	// 		}
-
-	// 		.active {
-	// 			background: linear-gradient(142deg, rgba(26, 174, 104, 1) 0%, rgba(124, 206, 89, 1) 100%);
-	// 			color: #fff !important;
-	// 			box-shadow: 0px 4px 9px 0px rgba(125, 238, 99, 0.53);
-	// 			border-color: $theme;
-	// 		}
-	// 	}
-	// }
+	.goods {
+		swiper{
+			height: 400px;
+			.fsb:nth-child(odd){
+				margin-bottom: 15px;
+			}
+		}
+		.dots{
+			width: 100%;
+			
+			.dots_wrapper{
+				.dot{
+					width: 15rpx;
+					height: 15rpx;
+					background: #666666;
+					border-radius: 18rpx;
+					overflow: hidden;
+					transition: all 0.5s;
+				}
+				.active{
+					background: linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%);
+					width: 40rpx;
+				}
+			}
+		}
+	}
 
 	.swiper {
 		.swiper-item {
