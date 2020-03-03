@@ -274,7 +274,7 @@
 			//点击底部按钮
 			onClickButton() {
 				let that = this;
-				//批量校验商品
+				//批量校验商品的个数再加上是否购买过次商品
 				function batchCheckLimit(arr=[]){
 					let flag = true;
 					arr.forEach(item=>{
@@ -282,6 +282,7 @@
 							that.$tools.Toast(`${item.productName}商品限购${item.xiangouNumber}${item.unit},请重新选择数量哦!`);
 							flag=false;
 						}
+
 					})
 					return flag;
 				}

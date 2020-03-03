@@ -2,7 +2,7 @@ import base from './base'
 
 import Store from './../store/index.js'
 
-const applicationJSON = ['/order/generateOrder'];
+const applicationJSON = ['/order/generateOrder','/xianGou/insertOmsOrderXiangou'];
 //发送数据
 export function sendRequest(url, params = {}, method = "POST") {
 	//将方法转为小写

@@ -3,13 +3,13 @@
 
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
-			<Ser :back="'#24B3D5'"></Ser>
+			<Ser :back="'#24B3D5'" :color="'#24B3D5'"></Ser>
 		</view>
 		<!-- 新品速递 -->
 		<view class="new_goods pr">
-			<image class="back pa" src="/static/images/home-bg@2x.png" mode="widthFix"></image>
+			<image class="back pa" src="/static/images/home-bg@2x.jpg" mode="widthFix"></image>
 			<view class="new_content cl">
-				<image class="pa fill" src="/static/images/new_bg@2x.png" mode="scaleToFill"></image>
+				<!-- <image class="pa fill" src="/static/images/new_bg@2x.png" mode="scaleToFill"></image>
 				<view class="content pa fill p10">
 					<view class="header fsb mb5" style="align-items: center;">
 						<view class="fz16 fb" style="color: #fff;">新品速递</view>
@@ -32,28 +32,40 @@
 							</view>
 						</scroll-view>
 					</view>
+				</view> -->
+				<view class="pr">
+					<swiper :autoplay="true" :circular="true" :interval="3000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
+						<swiper-item v-for="(item,index) in banners" :key="index">
+							<view class="swiper-item fill">
+								<image class="fill" :src="item.url" mode="scaleToFill"></image>
+							</view>
+						</swiper-item>
+					</swiper>
+					<view class="count_tag pa fz11 fm" style="bottom: 15rpx;right: 15rpx;color: #fff;">{{activeIndex}}/4</view>
 				</view>
-			</view>
+				
+				
+			</view> 
 		</view>
 		<!-- 保证 -->
 		<view class="promise p10 pt5 pb5 fsb">
 			<view class="ftm">
 				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
-				<text class="fz11" style="color: #DB0D21;">产地直供，品质保证</text>
+				<text class="fz11" style="color: #666;">产地直供，品质保证</text>
 			</view>
 			<view class="ftm">
 				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
-				<text class="fz11" style="color: #DB0D21;">7天无忧退货</text>
+				<text class="fz11" style="color: #666;">7天无忧退货</text>
 			</view>
 			<view class="ftm">
 				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
-				<text class="fz11" style="color: #DB0D21;">认证厂商，品牌商品</text>
+				<text class="fz11" style="color: #666;">认证厂商，品牌商品</text>
 			</view>
 		</view>
 
 		<!-- 分类列表 -->
 		<view class="goodss">
-			<view class="nav p10" style="padding-top: 0px;">
+			<view class="nav p10" style="padding-top: 0px;padding-bottom: 0px;">
 				<van-grid column-num="5" :border="false">
 					<van-grid-item use-slot v-for="(item,index) in cateList" :key="index" v-if="index<8">
 						<view class="fm" style="flex-flow: column wrap;" @click="toCateDetail($event,item)" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
@@ -64,79 +76,134 @@
 				</van-grid>
 			</view>
 		</view>
+		
+		<!-- 专项栏目 -->
+		<view class="navs f p10">
+			<view class="left p10">
+				<view class="ftm mb5">
+					<image class="mr5" src="../../../static/images/clock.png" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
+					<text class="fb fz15">限时秒杀</text>
+				</view>
+				<view class="fz12" style="color: #666;">新鲜好物特惠抢购</view>
+				<view class="time fsb mb10 mt5">
+					<view class="hour fm">01</view>
+					<text>:</text>
+					<view class="minute fm">20</view>
+					<text>:</text>
+					<view class="second fm">50</view>
+				</view>
+				<image src="../../../static/images/yumi.jpg" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
+			</view>
+			<view style="width: 20px;"></view>
+			<view class="right fsb" style="flex-direction: column;">
+				<view class="top p10">
+					<view class="ftm">
+						<text class="fb fz15">预售好货</text>
+						<image class="ml5" src="../../../static/images/czhh.jpg" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+					</view>
+					<view class="" style="margin-top: -5px;">
+						<text class="fz12" style="color: #666;" :decode="true">精选好货  超前首发</text>
+					</view>
+					<view class="f">
+						<image src="../../../static/images/fanshu.png" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image src="../../../static/images/jidan.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+					</view>
+				</view>
+				<view class="bottom p10">
+					<view class="ftm">
+						<text class="fb fz15">超值拼团</text>
+						<image class="ml5" src="../../../static/images/jghml.jpg" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+					</view>
+					<view class="" style="margin-top: -5px;">
+						<text class="fz12" style="color: #666;" :decode="true">应季美食 潮流护理</text>
+					</view>
+					<view class="f">
+						<image src="../../../static/images/fanqie.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image src="../../../static/images/mihoutao.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+					</view>
+					
+				</view>
+			</view>
+		</view>
+		
 
 		<!-- 今日推荐 -->
 		<view class="intro p10" style="padding-top: 0px;">
-			<view class="navbar pr">
-				<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
-					<text class="fb fz14">优品推荐</text>
-					<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
+			<view class="shadow">
+				<view class="navbar pr">
+					<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
+						<text class="fb fz14" style="text-indent: 50rpx;">优品推荐</text>
+						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
+					</view>
+					<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/bg-bar.png" mode="widthFix"></image>
 				</view>
-				<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/recommend_bg@2x.png" mode="widthFix"></image>
-			</view>
-			<view class="content ftm">
-				<scroll-view class="f" scroll-x style="height: 180px;">
-					<view class="wrapper f">
-						<view class="item p10 ml10 pr" v-for="(item,index) in recommandList" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id">
-							<view class="tag pa">
-								<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
-								<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
-							</view>
-							<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
-							<view class="text-hidden  fz14" style="width: 100%;">{{item.name}}</view>
-							<view class="fsb" style="align-items: center;margin-top: -2px;">
-								<text class="price theme fz13">
-									￥{{item.price}}
-								</text>
-								<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
-								 mode="aspectFit"></image>
+				<view class="content ftm">
+					<scroll-view class="f" scroll-x style="height: 180px;">
+						<view class="wrapper f">
+							<view class="item p10 ml10 pr" v-for="(item,index) in recommandList" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id">
+								<view class="tag pa">
+									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
+									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
+								</view>
+								<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+								<view class="text-hidden  fz14" style="width: 100%;">{{item.name}}</view>
+								<view class="fsb" style="align-items: center;margin-top: -2px;">
+									<text class="price theme fz13">
+										￥{{item.price}}
+									</text>
+									<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
+									 mode="aspectFit"></image>
+								</view>
 							</view>
 						</view>
-					</view>
-				</scroll-view>
+					</scroll-view>
+				</view>
 			</view>
 		</view>
 
 		<!-- 热销榜 -->
 		<view class="intro p10" style="padding-top: 0px;padding-bottom: 0px;">
-			<view class="navbar pr">
-				<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
-					<text class="fb fz14">热销榜</text>
-					<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
-				</view>
-				<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/ranking_bg@2x.png" mode="widthFix"></image>
-			</view>
-			<view class="content p5">
-				<div class="single f p10 mb5" v-for="(item,index) in hotList" :key="index" v-if="index<3" @click="navigateTo"
-				 :data-url="'/pages/index/product/product?id='+item.id">
-					<view class="mr10 pr" style="width: 180rpx;height:180rpx">
-						<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
-						<image class="pa" style="top: 0px;left: 0px;width: 60rpx;height: 60rpx;" :src="
-						index==0? '../../../static/images/ranking1@2x.png' : index==1? '../../../static/images/ranking2@2x.png' : '../../../static/images/ranking3@2x.png'
-						"
-						 mode="aspectFill"></image>
+			<view class="shadow">
+				<view class="navbar pr">
+					<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
+						<text class="fb fz14" style="text-indent: 50rpx;" >热销榜</text>
+						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 					</view>
-					<div class="container fsb" style="flex: 1;flex-flow: column wrap;">
-						<view class="fsb" style="align-items: center;">
-							<view class="title fb fz16">
-								{{item.name}}
+					<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/bg-bar.png" mode="widthFix"></image>
+				</view>
+				<view class="content p5">
+					<div class="single f p10 mb5" v-for="(item,index) in hotList" :key="index" v-if="index<3" @click="navigateTo"
+					 :data-url="'/pages/index/product/product?id='+item.id">
+						<view class="mr10 pr" style="width: 180rpx;height:180rpx">
+							<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+							<image class="pa" style="top: 0px;left: 0px;width: 60rpx;height: 60rpx;" :src="
+							index==0? '../../../static/images/ranking1@2x.png' : index==1? '../../../static/images/ranking2@2x.png' : '../../../static/images/ranking3@2x.png'
+							"
+							 mode="aspectFill"></image>
+						</view>
+						<div class="container fsb" style="flex: 1;flex-flow: column wrap;">
+							<view class="fsb" style="align-items: center;">
+								<view class="title fb fz16">
+									{{item.name}}
+								</view>
+								<view class="fz11" style="color: #666;">销量 {{item.sale}}</view>
 							</view>
-							<view class="fz11" style="color: #666;">销量 {{item.sale}}</view>
-						</view>
-						
-						<view class="mt5 mb5">
-							<my-tag :type="'second'" :text="item.tagName" />
-						</view>
-						<view class="fsb" style="align-items: center;margin-top: -2px;">
-							<text class="price theme fz16 fb">
-								￥{{item.price}}
-							</text>
-							<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
-							 mode="aspectFit"></image>
-						</view>
+							
+							<view class="mt5 mb5">
+								<my-tag :type="'second'" :text="item.tagName" />
+							</view>
+							<view class="fsb" style="align-items: center;margin-top: -2px;">
+								<text class="price theme fz16 fb">
+									￥{{item.price}}
+								</text>
+								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
+								 mode="aspectFit"></image>
+							</view>
+						</div>
 					</div>
-				</div>
+				</view>
 			</view>
+			
 		</view>
 
 		<!-- 商品列表 -->
@@ -149,7 +216,7 @@
 				<swiper-item class="p10" style="box-sizing: border-box;" v-for="(single,idx) in pageData[0].list" :key="idx" >
 					<view class="swiper-item">
 						<view class="fsb" v-for="(s,i) in single" :key="i" >
-							<view class="item p5  pr"  v-for="(item,index) in s" :key="index"  @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id" style="box-shadow:2px 2px 5px #C4C4C4;">
+							<view class="item p5  pr shadow"  v-for="(item,index) in s" :key="index"  @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id" >
 								<view class="tag pa">
 									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
 									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
@@ -161,7 +228,7 @@
 										￥{{item.price}}
 									</text>
 								</view>
-								<view><text class="fz12" style="color: 666;">销量:12</text></view>
+								<view><text class="fz11" style="color: 666;">销量:12</text></view>
 								<image class="pa" style="width: 15px;height: 36rpx;transform: translateY(-2px);bottom: 8px;right: 5px;" src="/static/images/tab-shoppingchart-pre@2x.png"
 								 mode="aspectFit"></image>
 							</view>
@@ -175,8 +242,6 @@
 				</view>
 			</view>
 		</view>
-		
-
 		
 		<!-- 客服图标 -->
 		
@@ -205,6 +270,13 @@
 		},
 		data() {
 			return {
+				activeIndex:0,
+				banners:[
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:""},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:""},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner03.jpg",id:""},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner04.jpg",id:""}
+				],
 				hotList: [],
 				newList: [],
 				recommandList: [],
@@ -212,7 +284,7 @@
 				pageData: [],
 				selectarea: "全部",
 				isLoaded: false,
-				activeIndex:0
+				activeIndex:1
 			}
 		},
 		async onLoad() {
@@ -252,6 +324,9 @@
 			}
 		},
 		methods: {
+			indexChange(e){
+				this.activeIndex = e.detail.current+1;
+			},
 			onSwiperChange(e){
 				this.activeIndex = e.detail.current
 			},
@@ -338,6 +413,55 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+	.shadow{
+		box-shadow: 1rpx 9rpx 34rpx 0rpx 
+				rgba(118, 127, 123, 0.16);
+	}
+	
+	.navs{
+		>.left,.right{
+			flex: 1;
+			height: 200rpx;
+		}
+		.left{
+			width: 310rpx;
+			height: 470rpx;
+			background-color: #ffffff;
+			box-shadow: 1px 9px 34px 0px 
+				rgba(118, 127, 123, 0.16);
+			border-radius: 10px;
+			.time{
+				width: 170rpx;
+				>view{
+					width: 40rpx;
+					height: 46rpx;
+					background-color: #222222;
+					border-radius: 4rpx;
+					color: #fff;
+					font-size: 26rpx;
+				}
+			}
+		}
+		.right{
+			height: 470rpx;
+			.top{
+				width: 380rpx;
+				height: 226rpx;
+				background-color: #ffffff;
+				box-shadow: 1px 9px 34px 0px 
+					rgba(118, 127, 123, 0.16);
+				border-radius: 10px;
+			}
+			.bottom{
+				width: 380rpx;
+				height: 226rpx;
+				background-color: #ffffff;
+				box-shadow: 1px 9px 34px 0px 
+					rgba(118, 127, 123, 0.16);
+				border-radius: 10px;
+			}
+		}
+	}
 	.contact::after{
 		border: none;
 	}
@@ -392,9 +516,20 @@
 	}
 
 	.new_goods {
-		@include wh(100%, 380rpx);
+		@include wh(100%, 340rpx);
 
 		.new_content {
+			.count_tag{
+					width: 81rpx;
+					height: 40rpx;
+					background-color: #000000;
+					border-radius: 20rpx;
+					opacity: 0.5;
+			}
+			swiper-item{
+				background: #f1f1f1;
+				overflow: hidden;
+			}
 			@include wh(710rpx, 380rpx);
 			border-radius: 15px;
 			overflow: hidden;
@@ -449,11 +584,7 @@
 		}
 	}
 
-	.swiper {
-		.swiper-item {
-			height: 100%;
-		}
-	}
+	
 
 	.login_button {
 		background: #fff !important;

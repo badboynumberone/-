@@ -67,6 +67,7 @@
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Dialog from "../../../wxcomponents/vant/dialog/dialog.js";
+	import Api from "../../../utils/api.js";
 	let pages = null;
 	export default {
 		components: {
@@ -155,6 +156,12 @@
 			},
 			// 立即支付
 			async comfirmPay() {
+				//限制购买
+				const islimit = await Api.isLimitBuy(this.pageData.items.map(item=>item.id));
+				if(!islimit){
+					return;
+				}
+				
 				const res = await this.$net.sendRequest("/pay/miniAppPay", {
 					orderNo: this.pageData.orderNoString
 				});
@@ -166,8 +173,11 @@
 					package: res.package,
 					signType: 'MD5',
 					paySign: res.paySign,
-					success: (res) => {
+					success: async (res) => {
 						this.$tools.Toast("支付成功", "success");
+						//获取需要添加限制的数据
+						const addData = this.pageData.items.filter(i=>i.xiangou>0)
+						await Api.addLimit(addData);
 						try{
 							pages[pages.length-2].hook();
 						}catch(e){

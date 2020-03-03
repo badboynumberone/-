@@ -331,14 +331,14 @@
 				//判断是否已经选中商品
 				if(!this.selectedItem.stockNum){
 					this.$tools.Toast("商品库存不足,请重新选择数量!");return;
-				}
+				} 
 				
-				//判断用户是否购买过商品
-				const islimit = await Api.isLimitBuy(this.pageData.id);
+				//限制购买
+				const islimit = await Api.isLimitBuy([this.pageData.id]);
 				if(!islimit){
 					return;
 				}
-				
+				//限购数量
 				if(this.pageData.xiangou&&this.pageData.xiangouNumber>0&&this.count>this.pageData.xiangouNumber){
 					this.$tools.Toast(`该商品限购${this.pageData.xiangouNumber}${this.pageData.unit},请重新选择数量!`);return;
 				}
@@ -356,7 +356,10 @@
 								productName:this.pageData.name,
 								productPic:this.pageData.pic,
 								price:this.selectedItem.price,
-								quantity:this.count
+								quantity:this.count,
+								xiangou:this.pageData.xiangou,
+								xiangouNumber:this.pageData.xiangouNumber,
+								productId:this.pageData.id
 							}
 						],
 						note:""

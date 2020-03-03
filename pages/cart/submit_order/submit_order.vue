@@ -53,6 +53,7 @@
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Pic from "../../../mycomponents/Pic/Pic.vue";
+	import Api from "../../../utils/api.js";
 	let lastPage = null;
 	export default {
 		components: {
@@ -152,6 +153,9 @@
 				}
 				
 				
+				
+				
+				
 			},
 			//页面跳转
 			navigateTo(e) {
@@ -169,6 +173,7 @@
 			// 下单
 			async generateOrder() {
 				
+
 				let result = null;
 				//下单
 				if (lastPage.route == 'pages/index/product/product') {
@@ -203,6 +208,7 @@
 			//提交订单
 			async onSub() {
 				
+				
 				//检验表单
 				if (!this.checkForm()) {
 					return
@@ -213,6 +219,7 @@
 				//生成订单
 				const result = await this.generateOrder();
 
+				
 
 				// 支付
 				const res = await this.$net.sendRequest("/pay/miniAppPay", {
@@ -227,13 +234,16 @@
 					package: res.package,
 					signType: 'MD5',
 					paySign: res.paySign,
-					success: (res) => {
+					success: async (res) => {
 						wx.showLoading({mask:true});
 						let type = lastPage.route == 'pages/index/product/product' ? 'product' : 'cart';
 						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
 								(this.totalPrice / 100 + this.freight));
 						this.$store.dispatch("getCart");
 						isOrdering = false;
+						//获取需要添加限制的数据
+						const addData = this.$tools.deepFlatten(this.orders.map(item => item.items)).filter(item=>item.xiangou>0)
+						await Api.addLimit(addData);
 						wx.hideLoading();
 					},
 					fail: (res) => {

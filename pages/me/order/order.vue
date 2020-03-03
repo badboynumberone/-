@@ -58,6 +58,7 @@
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
+	import Api from "../../../utils/api.js";
 	const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];
 	export default {
 		components: {
@@ -142,6 +143,13 @@
 			//立即支付
 			async comfirmPayOrder(e){
 				const item =e.currentTarget.dataset.item;
+				
+				//限制购买
+				const islimit = await Api.isLimitBuy(item.items.map(item=>item.productId));
+				if(!islimit){
+					return;
+				}
+				
 				// 支付
 				const res = await this.$net.sendRequest("/pay/miniAppPay",{orderNo:item.orderNoString});	
 				console.log('支付接口信息',res);
@@ -152,7 +160,10 @@
 					  package: res.package,
 					  signType: 'MD5',
 					  paySign: res.paySign,
-					  success:(res)=>{
+					  success:async (res)=>{
+						  //获取需要添加限制的数据
+						  const addData = item.items.filter(i=>i.xiangou>0)
+						  await Api.addLimit(addData);
 						  this.$tools.Toast("支付成功","success");
 						  this.refresh();
 					  },
