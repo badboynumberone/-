@@ -41,7 +41,7 @@
 							</view>
 						</swiper-item>
 					</swiper>
-					<view class="count_tag pa fz11 fm" style="bottom: 15rpx;right: 15rpx;color: #fff;">{{activeIndex}}/4</view>
+					<view class="count_tag pa fz11 fm" style="bottom: 15rpx;right: 15rpx;color: #fff;">{{bannerIndex}}/4</view>
 				</view>
 				
 				
@@ -270,7 +270,7 @@
 		},
 		data() {
 			return {
-				activeIndex:0,
+				bannerIndex:1,
 				banners:[
 					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:"445"},
 					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:"373"},
@@ -284,16 +284,14 @@
 				pageData: [],
 				selectarea: "全部",
 				isLoaded: false,
-				activeIndex:1
+				activeIndex:0
 			}
 		},
 		async onLoad() {
-
 			await this.getAllData();
 			//第一次加载获取数据
 			this.selectarea = "全部";
 			this.getData();
-
 			//提供钩子
 			this.$mp.page.hook = this.getData;
 
@@ -328,9 +326,10 @@
 				this.$tools.navigateTo(`/pages/index/product/product?id=${id}`)
 			},
 			indexChange(e){
-				this.activeIndex = e.detail.current+1;
+				this.bannerIndex = e.detail.current+1;
 			},
 			onSwiperChange(e){
+				console.log(e)
 				this.activeIndex = e.detail.current
 			},
 			toCateDetail(e, item) {
