@@ -35,7 +35,7 @@
 				</view> -->
 				<view class="pr">
 					<swiper :autoplay="true" :circular="true" :interval="3000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
-						<swiper-item v-for="(item,index) in banners" :key="index">
+						<swiper-item v-for="(item,index) in banners" :key="index" @click="toProductDetail(item.id)">
 							<view class="swiper-item fill">
 								<image class="fill" :src="item.url" mode="scaleToFill"></image>
 							</view>
@@ -272,10 +272,10 @@
 			return {
 				activeIndex:0,
 				banners:[
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:""},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:""},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner03.jpg",id:""},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner04.jpg",id:""}
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:"445"},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:"373"},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner03.jpg",id:"401"},
+					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner04.jpg",id:"409"}
 				],
 				hotList: [],
 				newList: [],
@@ -324,6 +324,9 @@
 			}
 		},
 		methods: {
+			toProductDetail(id){
+				this.$tools.navigateTo(`/pages/index/product/product?id=${id}`)
+			},
 			indexChange(e){
 				this.activeIndex = e.detail.current+1;
 			},
