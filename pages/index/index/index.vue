@@ -533,8 +533,6 @@
 				overflow: hidden;
 			}
 			@include wh(710rpx, 380rpx);
-			border-radius: 15px;
-			overflow: hidden;
 
 			.content {
 				top: 0rpx;
