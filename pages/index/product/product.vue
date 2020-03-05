@@ -156,13 +156,17 @@
 				</view>
 				
 				<view class="attr-list">
-					<text>数量</text>
+					<view class="ftm">
+						<text>数量</text>
+						<text class="fz12 ml5" style="color: #38A472;" v-if="pageData.xiangou==1">(每人限购{{pageData.xiangouNumber}}件)</text>
+					</view>
+					
 					<view class="item-list">
 						<van-stepper :value="count" @change="onCountChange" :max="selectedItem.stockNum" />
 					</view>
 				</view>
 				
-				<view style="height: 50px;">
+				<view style="height: 100rpx;">
 					
 				</view>
 				<view class="cl pt10 pb10" style="width: 348px;bottom: 0px;" @click="subOrder">

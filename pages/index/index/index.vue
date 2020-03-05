@@ -34,7 +34,7 @@
 					</view>
 				</view> -->
 				<view class="pr">
-					<swiper :autoplay="true" :circular="true" :interval="3000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
+					<swiper :autoplay="true" :circular="true" :interval="4000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
 						<swiper-item v-for="(item,index) in banners" :key="index" @click="toProductDetail(item.id)">
 							<view class="swiper-item fill">
 								<image class="fill" :src="item.url" mode="scaleToFill"></image>
@@ -209,10 +209,10 @@
 		<!-- 商品列表 -->
 		<view class="goods">
 			<view class="fm pr">
-				<image class="small mr5" src="/static/images/title_bg@2x.png" mode="aspectFill" style="width: 160px;height: 50px;"></image>
+				<image class="small mr5" src="/static/images/title_bg@2x.png" mode="aspectFill" style="width: 320rpx;height: 100rpx;"></image>
 				<text class="center fb">猜你喜欢</text>
 			</view>
-			<swiper  :indicator-dots="false"  :interval="3000" :duration="1000" @change="onSwiperChange" >
+			<swiper  :indicator-dots="false"  :interval="2000" :duration="1000" @change="onSwiperChange" >
 				<swiper-item class="p10" style="box-sizing: border-box;" v-for="(single,idx) in pageData[0].list" :key="idx" >
 					<view class="swiper-item">
 						<view class="fsb" v-for="(s,i) in single" :key="i" >
@@ -221,15 +221,15 @@
 									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
 									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
 								</view>
-								<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
-								<view class="text-hidden  fz14" style="width: 100px;" >{{item.name}}</view>
+								<Pic :src="item.pic" :height="'200rpx'" :width="'200rpx'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
+								<view class="text-hidden  fz14" style="width: 200rpx;" >{{item.name}}</view>
 								<view class="fsb" style="align-items: center;margin-top: -2px;">
 									<text class="price theme fz13">
 										￥{{item.price}}
 									</text>
 								</view>
-								<view><text class="fz11" style="color: 666;">销量:{{item.sale}}</text></view>
-								<image class="pa" style="width: 15px;height: 36rpx;transform: translateY(-2px);bottom: 8px;right: 5px;" src="/static/images/tab-shoppingchart-pre@2x.png"
+								<view><text class="fz11" style="color: #666;">销量:{{item.sale}}</text></view>
+								<image class="pa" style="width: 30rpx;height: 72rpx;transform: translateY(-2rpx);bottom: 0rpx;right: 15rpx;" src="/static/images/tab-shoppingchart-pre@2x.png"
 								 mode="aspectFit"></image>
 							</view>
 						</view>
@@ -559,7 +559,7 @@
 
 	.goods {
 		swiper{
-			height: 400px;
+			height: 800rpx;
 			.fsb:nth-child(odd){
 				margin-bottom: 15px;
 			}
