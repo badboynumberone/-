@@ -1,5 +1,7 @@
+
 <template>
 	<view class="main">
+		<view>{{'asdasd'}}</view>
 		<!-- 地址选择 -->
 		<view class="address p10">
 			<view class="wrapper pr">
@@ -237,14 +239,14 @@
 					success: async (res) => {
 						wx.showLoading({mask:true});
 						let type = lastPage.route == 'pages/index/product/product' ? 'product' : 'cart';
-						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
-								(this.totalPrice / 100 + this.freight));
 						this.$store.dispatch("getCart");
-						isOrdering = false;
 						//获取需要添加限制的数据
 						const addData = this.$tools.deepFlatten(this.orders.map(item => item.items)).filter(item=>item.xiangou>0)
 						await Api.addLimit(addData);
 						wx.hideLoading();
+						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
+								(this.totalPrice / 100 + this.freight));
+						
 					},
 					fail: (res) => {
 						wx.showLoading({mask:true});

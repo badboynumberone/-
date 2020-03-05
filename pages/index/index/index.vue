@@ -78,7 +78,7 @@
 		</view>
 		
 		<!-- 专项栏目 -->
-		<view class="navs f p10">
+		<!-- <view class="navs f p10">
 			<view class="left p10">
 				<view class="ftm mb5">
 					<image class="mr5" src="../../../static/images/clock.png" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
@@ -124,7 +124,7 @@
 					
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 
 		<!-- 今日推荐 -->
@@ -228,7 +228,7 @@
 										￥{{item.price}}
 									</text>
 								</view>
-								<view><text class="fz11" style="color: 666;">销量:12</text></view>
+								<view><text class="fz11" style="color: 666;">销量:{{item.sale}}</text></view>
 								<image class="pa" style="width: 15px;height: 36rpx;transform: translateY(-2px);bottom: 8px;right: 5px;" src="/static/images/tab-shoppingchart-pre@2x.png"
 								 mode="aspectFit"></image>
 							</view>
