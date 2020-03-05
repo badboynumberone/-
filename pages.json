@@ -293,6 +293,13 @@
 				"backgroundColor":"#F0F0F0"
 			}
         }
+        ,{
+            "path" : "pages/index/seckill/seckill",
+            "style" : {
+				"navigationBarTitleText":"限时秒杀",
+				"backgroundColor":"#FEFBFF"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

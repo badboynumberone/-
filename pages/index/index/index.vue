@@ -196,7 +196,7 @@
 								<text class="price theme fz16 fb">
 									￥{{item.price}}
 								</text>
-								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
+								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" :src="`${baseImageUrl}shopping-Cart-Selection@2x.png`"  
 								 mode="aspectFit"></image>
 							</view>
 						</div>
@@ -543,7 +543,7 @@
 					height: 80%;
 
 					.item {
-						width: 111px;
+						width: 222rpx;
 					}
 				}
 			}

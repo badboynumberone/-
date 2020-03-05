@@ -221,17 +221,37 @@
   .pr30{padding-right: 30px;}
   .pr50{padding-right: 50px;}
   .pr100{padding-right: 100px;}
-  .fz10{font-size: 20upx;}
-  .fz11{font-size: 22upx;}
-  .fz12{font-size: 24upx;}
-  .fz13{font-size: 26upx;}
-  .fz14{font-size: 28upx;}
-  .fz15{font-size: 30upx;}
-  .fz16{font-size: 32upx;}
-  .fz17{font-size: 34upx;}
-  .fz18{font-size: 36upx;}
-  .fz19{font-size: 38upx;}
-  .fz20{font-size: 40upx;}
+  .fz10{font-size: 20upx !important;}
+  .fz11{font-size: 22upx !important;}
+  .fz12{font-size: 24upx !important;}
+  .fz13{font-size: 26upx !important;}
+  .fz14{font-size: 28upx !important;}
+  .fz15{font-size: 30upx !important;}
+  .fz16{font-size: 32upx !important;}
+  .fz17{font-size: 34upx !important;}
+  .fz18{font-size: 36upx !important;}
+  .fz19{font-size: 38upx !important;}
+  .fz20{font-size: 40upx !important;}
+  .fz21{font-size: 42upx !important;}
+  .fz22{font-size: 44upx !important;}
+  .fz23{font-size: 46upx !important;}
+  
+  .fs8{font-size: 16upx;}
+  .fs9{font-size: 18upx;}
+  .fs10{font-size: 20upx;}
+  .fs11{font-size: 22upx;}
+  .fs12{font-size: 24upx;}
+  .fs13{font-size: 26upx;}
+  .fs14{font-size: 28upx;}
+  .fs15{font-size: 30upx;}
+  .fs18{font-size: 36upx;}
+  .fs19{font-size: 38upx;}
+  .fs20{font-size: 40upx;}
+  .fs17{font-size: 34upx;}
+  .fs16{font-size: 32upx;}
+  .fs21{font-size: 42upx;}
+  .fs22{font-size: 44upx;}
+  .fs23{font-size: 46upx;}
   @keyframes fadeIn {
     0% {
       opacity: 0;
@@ -239,5 +259,21 @@
     100% {
       opacity: 1;
     }
+  }
+  
+  .bgfff{
+	  background-color: #fff;
+  }
+  .bgf1{
+	  background-color: #f1f1f1;
+  }
+  .cfff{
+	  color: #fff !important;
+  }
+  .cccc{
+	  color: #ccc;
+  }
+  .c666{
+	  color: #666;
   }
   

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 import Toast from './wxcomponents/vant/toast/toast.js';
+import Base from './utils/base.js';
+
 Vue.config.productionTip = false
 App.mpType = 'app'
 
@@ -41,3 +43,12 @@ import Pic from './mycomponents/Pic/Pic.vue'
 Vue.component('Pic', Pic)
 import Imgs from './mycomponents/Imgs/Imgs.vue'
 Vue.component('Imgs', Imgs)
+
+Vue.mixin({
+	data(){
+		return{
+			baseImageUrl:Base.localYunImageUrl
+		}
+	}
+})
+
