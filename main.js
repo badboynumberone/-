@@ -47,8 +47,11 @@ Vue.component('Imgs', Imgs)
 Vue.mixin({
 	data(){
 		return{
-			baseImageUrl:Base.localYunImageUrl
+			baseImageUrl:getApp().globalData.text || '1234564',
 		}
+	},
+	onLoad(){
+		this.baseImageUrl=Base.localYunImageUrl
 	}
 })
 

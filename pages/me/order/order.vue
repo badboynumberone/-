@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 状态栏 -->
 		<view class="header">
 			<van-tabs :active="active" @change="onTabChange" :line-width="'20'">
@@ -67,6 +67,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded: false,
 				pageData: [{
 					areaName: "初始化",

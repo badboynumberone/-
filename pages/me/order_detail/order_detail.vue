@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="header">
 			<view class="top pr">
 				<Pic :src="`${baseImageUrl}/order-background@2x.png`" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
@@ -75,6 +75,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded: false,
 				pageData: {}, //页面数据
 			};

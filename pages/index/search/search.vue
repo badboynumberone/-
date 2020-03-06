@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 搜索框 -->
 		<view class="pf" style="width: 100%;top: 0px;left: 0px;">
 			<Ser :isDisabled="false" ref="search" :color="'#38A472'" @startSerch='search'></Ser>
@@ -77,6 +77,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				searchKey: [],
 				hotKey: [],
 				isHistory: true,

@@ -1,5 +1,5 @@
 <template>
-	<view class="item p5 fadeIn" v-if="baseImageUrl">
+	<view class="item p5 fadeIn" >
 		<view class="pr" style="border-radius: 10rpx;overflow: hidden;">
 			<Pic  :width="'100%'" :height="'325rpx'" :src="item.pic"
 			 :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
@@ -45,7 +45,7 @@
 		},
 		data() {
 			return {
-
+				baseImageUrl:getApp().globalData.baseImageUrl,
 			};
 		}
 	}

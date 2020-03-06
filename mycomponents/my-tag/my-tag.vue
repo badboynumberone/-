@@ -33,7 +33,7 @@
 		},
 		data() {
 			return {
-				
+				baseImageUrl:getApp().globalData.baseImageUrl,
 			};
 		}
 	}

@@ -1,5 +1,5 @@
 <template>
-	<view class="main bt"  v-if="baseImageUrl">
+	<view class="main bt"  >
 		<view class=" fsb">
 			<scroll-view scroll-y="true" :style="{height: scrollHeight,width: '85px'}" >
 				<van-sidebar :active="active" @change="onChange">
@@ -35,6 +35,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				keys: [{
 						text: "待付款",
 						url: "",

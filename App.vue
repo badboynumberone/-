@@ -1,6 +1,7 @@
 <script>
 	import Vue from 'vue'
 	import Request from 'utils/request.js'
+	import Base from './utils/base.js';
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
@@ -39,6 +40,9 @@
 		},
 		onError:function(err){
 			console.log(err)
+		},
+		globalData:{
+			baseImageUrl:Base.localYunImageUrl
 		}
 	}
 </script>

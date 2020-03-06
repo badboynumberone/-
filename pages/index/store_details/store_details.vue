@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 店铺信息 -->
 		<view class="store_info">
 			<view class="wrapper pr">

@@ -1,5 +1,5 @@
 <template>
-	<view v-if="baseImageUrl">
+	<view >
 		<view class="header pr">
 			<image :src="`${baseImageUrl}/mb.jpg`" mode="widthFix" style="width: 100%;"></image>
 			<view class="content f pa ">
@@ -22,6 +22,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				arr:[{
 					title:"今日",
 					tag:"正在开抢中"

@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
@@ -48,7 +48,7 @@
 			</view> 
 		</view>
 		<!-- 保证 -->
-		<view class="promise p10 pt5 pb5 fsb">
+		<view class="promise p10  pb5 fsb" >
 			<view class="ftm">
 				<image :src="`${baseImageUrl}/checklist@2x.png`" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
 				<text class="fz11" style="color: #666;">产地直供，品质保证</text>
@@ -64,7 +64,7 @@
 		</view>
 
 		<!-- 分类列表 -->
-		<view class="goodss">
+		<view :class="['goodss']">
 			<view class="nav p10" style="padding-top: 0px;padding-bottom: 0px;">
 				<van-grid column-num="5" :border="false">
 					<van-grid-item use-slot v-for="(item,index) in cateList" :key="index" v-if="index<8">
@@ -128,7 +128,7 @@
 		
 
 		<!-- 今日推荐 -->
-		<view class="intro p10" style="padding-top: 0px;">
+		<view class="intro p10 hot" style="padding-top: 0px;">
 			<view class="shadow">
 				<view class="navbar pr">
 					<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
@@ -265,6 +265,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				bannerIndex:1,
 				banners:[
 					{url:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:"445"},
@@ -410,9 +411,15 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+	.goodss{
+		min-height: 142rpx;
+	}
 	.shadow{
-		box-shadow: 1rpx 9rpx 34rpx 0rpx 
-				rgba(118, 127, 123, 0.16);
+		box-shadow: 1rpx 5rpx 34rpx 0rpx 
+				#F1F1F1;
+	}
+	.hot{
+		min-height: 40rpx;
 	}
 	
 	.navs{
@@ -485,7 +492,7 @@
 			width: 100%;
 
 			.single {
-				box-shadow: 2px 2px 5px #f1f1f1;
+				
 				border-radius: 5px;
 			}
 
@@ -513,7 +520,7 @@
 	}
 
 	.new_goods {
-		@include wh(100%, 340rpx);
+		@include wh(100%, 320rpx);
 
 		.new_content {
 			.count_tag{

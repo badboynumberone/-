@@ -1,5 +1,5 @@
 <template>
-	<view v-if="baseImageUrl">
+	<view >
 		<view v-if="true" class="first p10 fsb">
 			<view class="left ftm">
 				<Pic :src="`${baseImageUrl}/Order-complete@2x.png`" :height="'45rpx'" :width="'45rpx'" :mode="'aspectFill'" :round="true" :back="'#fff'"></Pic>
@@ -29,7 +29,7 @@
 		},
 		data() {
 			return {
-				
+				baseImageUrl:getApp().globalData.baseImageUrl,
 			};
 		}
 	}

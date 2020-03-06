@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main" v-if="isLoaded" >
 		<!-- 左上角返回按钮 -->
 		<view class="back pf pr" @click="back">
 			<van-icon class="center" style="margin-top: 2px;" name="arrow-left" color="#fff" />
@@ -12,7 +12,7 @@
 				<swiper-item v-if="pageData.stock>0" class="swiper-item" v-for="(item,index) in imgList" :key="index">
 					<view class="image-wrapper pr">
 						<image :src="item" class="loaded" mode="aspectFill" @click="previewImgVideo($event,index)" :data-imgs="imgList" :data-src="item"></image>
-						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" src="/static/images/video.png" mode="aspectFit"></image>
+						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image>
 					</view>
 				</swiper-item>
 				<!-- 售空 -->
@@ -20,17 +20,40 @@
 					<view class="image-wrapper pr">
 						<image :src="imgList[0]" class="loaded" mode="aspectFill"></image>
 						<view class="pa fill" style="background-color: rgba(0,0,0,0.5);top: 0px;left: 0rpx;"></view>
-						<image class="center" style="width: 400rpx;height: 400rpx;" src="../../../static/images/empty.png" mode="aspectFill"></image>
+						<image class="center" style="width: 400rpx;height: 400rpx;" :src="`${baseImageUrl}/empty.png`" mode="aspectFill"></image>
 						<!-- <view class=""></view> -->
-						<!-- <image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" src="/static/images/video.png" mode="aspectFit"></image> -->
+						<!-- <image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image> -->
 					</view>
 				</swiper-item>
 			</swiper>
 			<video v-else :src="pageData.albumVideo" autoplay controls style="height: 710upx;width: 100%;" @play="videoStart" @ended="videoEnd" />
 		</view>
-		
+		<view class="seckill pr" style="line-height: 0;">
+			<image style="width: 100%;" :src="`${baseImageUrl}/bg_details@2x.png`" mode="widthFix"></image>
+			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
+				<view class="left">
+					<view class="ftm">
+						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff">¥39.8</text><view class="buyed ml10 cfff fz12">已抢22件</view>
+					</view>
+					<view class="ftm">
+						<text class="cfff fz10">价格 ¥80.8</text> <text class="fz12 cfff ml10">每人限购1件</text>
+					</view>
+				</view>
+				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
+					<view class="fz12 cfff" style="text-align: right;">
+						距离价格变更还剩
+					</view>
+					<view class="time fsb mt5">
+						<view class="hour fz11 fm">01</view>
+						<text>:</text>
+						<view class="minute fz11 fm">20</view>
+						<text>:</text>
+						<view class="second fz11 fm">50</view>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="wrapper">
-			
 			<!-- 商品信息 -->
 			<view class="info_wrapper p10">
 				<view class="detail fsb ">
@@ -76,18 +99,6 @@
 			</view>
 			
 
-			<!-- 推荐 -->
-			<!-- <view class="intro p10">
-				<view class="h1 fz18 fb mb10" style="line-height: 40px;">
-					推荐理由
-				</view>
-				<view class="f">
-					<Pic :height="'40px'" :width="'40px'" :mode="'aspectFill'"></Pic>
-					<div class="intro_content ml20 " style="color: #666;">
-						盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油盐水鸭油
-					</div>
-				</view>
-			</view> -->
 
 			<!-- 图片 -->
 			<view class="image ">
@@ -195,6 +206,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				loadImgNum:0,
 				isVideoing:false,
 				isLoaded:false,
@@ -386,6 +398,43 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+	.seckill{
+		.content{
+			align-items: center;
+			.left >view{
+				line-height: 42rpx;
+				
+			}
+			.right {
+				margin-top: -5rpx;
+				>.fz12{
+					line-height: 30rpx;
+				}	
+				.time{
+					width: 150rpx;
+					>view{
+						width: 35rpx;
+						height: 35rpx;
+						background-color: #222222;
+						border-radius: 4rpx;
+						color: #fff;
+						font-size: 26rpx;
+					}
+					text{
+						line-height: 30rpx;
+					}
+				}
+			}
+			.buyed{
+				background:rgba(20,105,65,1);
+				opacity:0.46;
+				border-radius:19px;
+				overflow: hidden;
+				line-height: 38rpx;
+				padding: 0rpx 15rpx;
+			}
+		}
+	}
 	.business{
 		.label {
 			.info {

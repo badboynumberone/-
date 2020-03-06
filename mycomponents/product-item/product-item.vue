@@ -1,5 +1,5 @@
 <template>
-	<view class="box f p10 pr bb" v-if="baseImageUrl">
+	<view class="box f p10 pr bb" >
 			<view class="pic mr10">
 				<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 			</view>
@@ -19,11 +19,14 @@
 		components:{
 			MyTag
 		},
+		props: {
+			item:{
+				type:Object
+			}
+		},
 		data() {
 			return {
-				item:{
-					type:Object
-				}
+				baseImageUrl:getApp().globalData.baseImageUrl,
 			};
 		}
 	}

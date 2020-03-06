@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="title p10">
 			感谢您提出宝贵的意见,我们将虚心接受您的批评与意见，努力更改。
 		</view>
@@ -29,6 +29,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				content:''//内容
 			};
 		},

@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 编辑栏 -->
 		<view class="top_bar fsb p10" :style="{position: ispf ? 'fixed':'static'}">
 			<text class="good_count fz10">已选{{selectedCount}}件商品</text>
@@ -87,6 +87,7 @@
 
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded:false,
 				ispf: false,
 				contentHeight: 0,

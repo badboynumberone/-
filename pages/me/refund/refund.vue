@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-if="baseImageUrl">
+	<view class="main" >
 		<!-- 导航条 -->
 		<div class="container">
 			<view class="item" v-for="(item,index) in pageData[loadIndex].list"   :key="index" >
@@ -38,6 +38,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded: false,
 				pageData: [{
 					areaName: "初始化",

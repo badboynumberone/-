@@ -1,5 +1,5 @@
 <template>
-	<view class="main pr"  v-if="baseImageUrl">
+	<view class="main pr"  >
 		<div class="container center">
 			<view class="fm mb10">
 				<image :src="`${baseImageUrl}/successful_payment@2x.png`" mode="aspectFill"></image>
@@ -25,6 +25,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				info:[]
 			};
 		},

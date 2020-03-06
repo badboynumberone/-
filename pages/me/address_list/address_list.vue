@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="container" v-if="list.length">
 			<!-- 地址列表 -->
 			<van-cell-group>
@@ -53,7 +53,7 @@
 		},
 		data() {
 			return {
-			
+			baseImageUrl:getApp().globalData.baseImageUrl,
 			}
 		},
 		computed:{

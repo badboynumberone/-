@@ -1,6 +1,5 @@
 <template>
-	<view class="main" v-if="baseImageUrl">
-		
+	<view class="main" >
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
 			<Ser :color="'#38A472'" :back="'#fff'"></Ser>	
@@ -46,6 +45,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded:false,
 				active: 0,
 				scrollHeight:"",

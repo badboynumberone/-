@@ -1,5 +1,5 @@
 <template>
-	<view class="main pr"  v-if="baseImageUrl">
+	<view class="main pr"  >
 		
 		<!-- 输入框 -->
 		<van-cell-group>
@@ -42,6 +42,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				multiArray: [['江苏省'], ['南京市'], ['玄武区', '秦淮区', '鼓楼区', '建邺区', '栖霞区', '雨花台区', '浦口区', '江宁区', '六合区', '溧水区', '高淳区']],
 				id:0,
 				name:"",

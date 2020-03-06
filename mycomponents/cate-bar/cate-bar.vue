@@ -1,5 +1,5 @@
 <template>
-	<view class="wrapper f bb" v-if="baseImageUrl">
+	<view class="wrapper f bb" >
 		<view class="item fm" @click="sortBy(1)">
 			<text :class="{'active':active==1}">综合</text>
 		</view>
@@ -20,6 +20,7 @@
 	export default {
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				active:1,
 				priceSort:true ,//默认降序(价格排序)
 				saleSort:true,//默认降序(价格牌序)

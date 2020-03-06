@@ -53,6 +53,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				pageData:{},
 				refund_type:"refund_money",//两种值 refund_money,refund_money_goods
 				reason:"",//退款原因

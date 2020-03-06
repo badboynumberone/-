@@ -172,6 +172,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				flag:true,
 				cardCur:0,
 				swiperHeight:161

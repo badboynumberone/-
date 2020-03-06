@@ -1,5 +1,5 @@
 <template>
-	<view class="main bt"  v-if="baseImageUrl" style="background: #f1f1f1;">
+	<view class="main bt"   style="background: #f1f1f1;">
 		<view class="wrapper p20 pt10 pb10 b5" style="background: #fff;">
 			<view class="header fsb pb5"  style="align-items: center;">
 				<view class="left f"  style="align-items: center;">
@@ -96,6 +96,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				text:'',
 				isLoaded:false,
 				pageData:{

@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="container">
 			<van-cell-group>
 				<van-field label="收件人" :value="name" placeholder="请输入收件人姓名" border="false" @change="onChange" :data-name="'name'"
@@ -29,6 +29,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				name:'',
 				company: "",
 				logisitics_no: "",

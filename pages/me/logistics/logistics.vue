@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="top f p20">
 			<view class="mr20">
 				<Pic :width="'130rpx'" :height="'130rpx'" :mode="'aspectFit'" :src="pic"></Pic>
@@ -33,6 +33,7 @@
 	export default {
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoaded:false,
 				title:"",
 				pic:"",

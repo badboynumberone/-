@@ -1,5 +1,5 @@
 <template>
-	<view class="box p10"  v-if="baseImageUrl">
+	<view class="box p10"  >
 		<view v-if="isHeader" class="header pb5 fsb bb" style="align-items: center;" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+item.businessId" >
 			<view class="store ftm" v-if="!isOrder">
 				<view class="icon mr5">
@@ -68,6 +68,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				arr:['待付款','待发货','待收货','交易成功','交易关闭']
 			};
 		},

@@ -1,5 +1,5 @@
 <template>
-	<view class="main pr"  v-if="baseImageUrl">
+	<view class="main pr"  >
 		<!-- 登录第一步骤 -->
 		<view v-if="step==1" class="container center" style="width: 100%;margin-top: -60px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">欢迎登录！</view>
@@ -61,6 +61,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				step: 1, //是否第一步
 				phone: "", //手机号
 				code: "", //验证码

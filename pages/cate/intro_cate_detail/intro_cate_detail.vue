@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main" >
 		<view :style="{'opacity':pageData[loadIndex].list.length?0:1,'position': !pageData[loadIndex].list.length?'static':'fixed','z-index':!pageData[loadIndex].list.length?1:-1}">
 			<view class="top pf bt" style="width: 100%;top: 0px;right: 0px;z-index: 9;background: #fff;">
 				<view style="width: 100%;">
@@ -32,7 +32,7 @@
 		},
 		data() {
 			return {
-				isLoaded: false,
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				pageData: [{
 					areaName: "初始化",
 					list: []

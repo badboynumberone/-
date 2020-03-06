@@ -1,5 +1,5 @@
 <template>
-	<view class="main bgf1"  v-if="baseImageUrl">
+	<view class="main bgf1"  >
 		<view style="height: 150rpx;">
 			<SeckillHeader></SeckillHeader>	
 		</view>
@@ -28,6 +28,7 @@
 
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				a:1,
 				b:2
 			};

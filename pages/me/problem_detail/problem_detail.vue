@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<view class="container p20">
 			<view class="question f" style="margin-bottom: 20rpx;">
 				<view class="icon fm mr5">

@@ -1,6 +1,6 @@
 
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 地址选择 -->
 		<view class="address p10">
 			<view class="wrapper pr">
@@ -63,6 +63,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				message: "",
 				item:{},
 				address: {

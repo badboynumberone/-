@@ -1,5 +1,5 @@
 <template>
-	<view class="main"  v-if="baseImageUrl">
+	<view class="main"  >
 		<!-- 内容 -->
 		<view class=" fsb bt">
 			<scroll-view scroll-y="true" :style="{height: scrollHeight,width: '170rpx'}">
@@ -44,6 +44,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				active: 0,
 				scrollHeight: "",
 				pageData: [{
