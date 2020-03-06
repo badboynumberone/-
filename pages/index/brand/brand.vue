@@ -1,5 +1,5 @@
 <template>
-	<view class="main bt">
+	<view class="main bt"  v-if="baseImageUrl">
 		<view class=" fsb">
 			<scroll-view scroll-y="true" :style="{height: scrollHeight,width: '85px'}" >
 				<van-sidebar :active="active" @change="onChange">
@@ -28,6 +28,7 @@
 <script>
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue"
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
+	import {localYunImageUrl as baseImageUrl} from "../../../utils/base.js"
 	export default {
 		components:{
 			uniGrid,uniGridItem
@@ -37,31 +38,31 @@
 				keys: [{
 						text: "待付款",
 						url: "",
-						src: "/static/images/Pending-payment@2x.png",
+						src: baseImageUrl+"/Pending-payment@2x.png",
 						num: 1
 					},
 					{
 						text: "待发货",
 						url: "",
-						src: "/static/images/shipped@2x.png",
+						src: baseImageUrl+"/shipped@2x.png",
 						num: 0
 					},
 					{
 						text: "待收货",
 						url: "",
-						src: "/static/images/Goods-to-be-received@2x.png",
+						src: baseImageUrl+"/Goods-to-be-received@2x.png",
 						num: 0
 					},
 					{
 						text: "已完成",
 						url: "",
-						src: "/static/images/complete@2x.png",
+						src: baseImageUrl+"/complete@2x.png",
 						num: 0
 					},
 					{
 						text: "退货退款",
 						url: "",
-						src: "/static/images/refund@2x.png",
+						src: baseImageUrl+"/refund@2x.png",
 						num: 0
 					}
 				]

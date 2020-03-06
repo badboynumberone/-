@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- 内容 -->
 		<view class="fsb bt">
 			<scroll-view class="br" scroll-y="true" :style="{height: scrollHeight,width: '170rpx',background:'#F8F8F8'}">

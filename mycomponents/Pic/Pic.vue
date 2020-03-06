@@ -8,8 +8,7 @@
 	export default {
 		props:{
 			src:{
-				type:String,
-				default:"/static/images/header.png"
+				type:String
 			},
 			mode:{
 				type:String

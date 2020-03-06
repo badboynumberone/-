@@ -1,15 +1,15 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main"  v-if="baseImageUrl">
 		<view class="header">
 			<view class="top pr">
-				<Pic :src="'/static/images/order-background@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
+				<Pic :src="`${baseImageUrl}/order-background@2x.png`" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 				<view class="pa box fill fsr p20">
 					<view class="fz18 fb" style="color: #fff;">{{pageData.state}}</view>
 					<view style="color: #fff;">订单号：{{pageData.orderNoString}}</view>
 				</view>
 			</view>
 			<view class="bottom ftm pl10 pr10 ">
-				<Pic :src="'/static/images/order-address@2x.png'" :height="'45rpx'" :width="'37rpx'" :mode="'scaleToFill'" :back="'#fff'"></Pic>
+				<Pic :src="`${baseImageUrl}/order-address@2x.png`" :height="'45rpx'" :width="'37rpx'" :mode="'scaleToFill'" :back="'#fff'"></Pic>
 				<view class="box fsr">
 					<text class="fz16 fb" :decode="true">{{pageData.receiverName}} {{pageData.receiverPhone}}</text>
 					<view class="more-hidden" style="width: 310px;line-height: 17px;">{{pageData.address}}</view>

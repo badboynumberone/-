@@ -1,9 +1,9 @@
 <template>
-	<view class="box p10">
+	<view class="box p10"  v-if="baseImageUrl">
 		<view v-if="isHeader" class="header pb5 fsb bb" style="align-items: center;" @click="navigateTo" :data-url="'/pages/index/store_details/store_details?id='+item.businessId" >
 			<view class="store ftm" v-if="!isOrder">
 				<view class="icon mr5">
-					<image style="width: 20px;height: 20px;" src="/static/images/merchant@2x.png" mode="aspectFill"></image>
+					<image style="width: 20px;height: 20px;" :src="`${baseImageUrl}/merchant@2x.png`" mode="aspectFill"></image>
 				</view>
 				<text class="fb">{{item.businessName}}</text>
 				<view class="icon right" v-if="isArrow">

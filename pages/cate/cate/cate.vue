@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-if="isLoaded">
+	<view class="main" v-if="baseImageUrl">
 		
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
@@ -24,7 +24,7 @@
 					<van-grid column-num="4" :border="false">
 						<van-grid-item use-slot  v-for="(item,index) in keys" :key="index" v-if="item.name!='更多'" >
 							<view class="fm" style="flex-flow: column wrap;" @click="navigateTo" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
-								<Pic :src="item.mobilePhoto" :height="'40px'" :width="'40px'" :mode="'aspectFill'" :back="'#f1f1f1'" :round="true"></Pic>
+								<Pic :src="item.mobilePhoto" :height="'40px'" :width="'40px'" :mode="'aspectFill'" :back="'#fff'" :round="true"></Pic>
 								<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.name}}</text>
 							</view>
 						</van-grid-item>
@@ -39,6 +39,7 @@
 	import Ser from "../../../mycomponents/Ser/Ser";
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue"
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
+	import {localYunImageUrl as baseImageUrl} from "../../../utils/base.js"
 	export default {
 		components:{
 			Ser,uniGrid,uniGridItem
@@ -51,31 +52,31 @@
 				keys: [{
 						text: "待付款",
 						url: "",
-						src: "/static/images/Pending-payment@2x.png",
+						src: baseImageUrl+"/Pending-payment@2x.png",
 						num: 1
 					},
 					{
 						text: "待发货",
 						url: "",
-						src: "/static/images/shipped@2x.png",
+						src: baseImageUrl+"/shipped@2x.png",
 						num: 0
 					},
 					{
 						text: "待收货",
 						url: "",
-						src: "/static/images/Goods-to-be-received@2x.png",
+						src: baseImageUrl+"/Goods-to-be-received@2x.png",
 						num: 0
 					},
 					{
 						text: "已完成",
 						url: "",
-						src: "/static/images/complete@2x.png",
+						src: baseImageUrl+"/complete@2x.png",
 						num: 0
 					},
 					{
 						text: "退货退款",
 						url: "",
-						src: "/static/images/refund@2x.png",
+						src: baseImageUrl+"/refund@2x.png",
 						num: 0
 					}
 				]

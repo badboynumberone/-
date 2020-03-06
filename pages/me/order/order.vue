@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- 状态栏 -->
 		<view class="header">
 			<van-tabs :active="active" @change="onTabChange" :line-width="'20'">
@@ -44,7 +44,7 @@
 		</scroll-view >
 
 		<view style="height: 100%;" v-if="isLoaded && !pageData[loadIndex].list.length">
-			<Empty :type="'address'" :text="'您暂时没有订单哦,赶紧去首页看看吧！'" :src="'/static/images/ddwsj@2x.png'" :btnText="'去首页'" :url="'/pages/index/index/index'" />
+			<Empty :type="'address'" :text="'您暂时没有订单哦,赶紧去首页看看吧！'" :src="`${baseImageUrl}/ddwsj@2x.png`" :btnText="'去首页'" :url="'/pages/index/index/index'" />
 		</view>
 
 		<!-- 模态框 -->

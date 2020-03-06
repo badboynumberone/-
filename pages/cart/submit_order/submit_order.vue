@@ -1,10 +1,10 @@
 
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- 地址选择 -->
 		<view class="address p10">
 			<view class="wrapper pr">
-				<Pic :src="'/static/images/order_address_background@2x.png'" :width="'100%'" :height="'90px'"></Pic>
+				<Pic :src="`${baseImageUrl}/order_address_background@2x.png`" :width="'100%'" :height="'90px'"></Pic>
 				<view class="content pa p10 pl15 frm" style="top: 0px;left: 0px;flex-flow: column wrap;" v-if="address.id" @click="navigateTo"
 				 data-url="/pages/me/address_list/address_list">
 					<view class="">

@@ -1,5 +1,5 @@
 <template>
-	<view class="main pr">
+	<view class="main pr"  v-if="baseImageUrl">
 		
 		<!-- 输入框 -->
 		<van-cell-group>

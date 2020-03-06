@@ -1,7 +1,7 @@
 <template>
-	<view>
+	<view v-if="baseImageUrl">
 		<view class="header pr">
-			<image src="/static/images/mb.jpg" mode="widthFix" style="width: 100%;"></image>
+			<image :src="`${baseImageUrl}/mb.jpg`" mode="widthFix" style="width: 100%;"></image>
 			<view class="content f pa ">
 				<view class="item active" v-for=" (item,index) in arr" :key="index">
 					<view :class="['date frm fb cfff','fz'+(25-arr.length*2),'fs'+(21-arr.length*2)]">今日</view>

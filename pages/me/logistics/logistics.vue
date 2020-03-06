@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main"  v-if="baseImageUrl">
 		<view class="top f p20">
 			<view class="mr20">
 				<Pic :width="'130rpx'" :height="'130rpx'" :mode="'aspectFit'" :src="pic"></Pic>

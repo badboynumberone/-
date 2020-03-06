@@ -1,8 +1,8 @@
 <template>
-	<view class="main pr">
+	<view class="main pr"  v-if="baseImageUrl">
 		<div class="container center">
 			<view class="fm mb10">
-				<image src="/static/images/successful_payment@2x.png" mode="aspectFill"></image>
+				<image :src="`${baseImageUrl}/successful_payment@2x.png`" mode="aspectFill"></image>
 			</view>
 			<view class="fm fz14" style="margin-bottom: 30px;">订单支付成功</view>
 			<view class="fm fb theme" style="margin-bottom: 30px;font-size: 75rpx;">￥{{info[0]}}</view>

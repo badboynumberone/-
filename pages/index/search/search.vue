@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- 搜索框 -->
 		<view class="pf" style="width: 100%;top: 0px;left: 0px;">
 			<Ser :isDisabled="false" ref="search" :color="'#38A472'" @startSerch='search'></Ser>
@@ -51,7 +51,7 @@
 			</view>
 			
 			<view class="fm" v-if="!pageData[loadIndex].list.length" style="height: 100%;">
-				<Empty :text="'没有找到商品,请更换条件再试试哦'" :src="'/static/images/ddwsj@2x.png'" style="height: 100%;" />
+				<Empty :text="'没有找到商品,请更换条件再试试哦'" :src="`${baseImageUrl}/ddwsj@2x.png`" style="height: 100%;" />
 			</view>
 		</view>
 

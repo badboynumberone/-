@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-if="isLoaded">
+	<view class="main" v-if="baseImageUrl">
 		<!-- 导航条 -->
 		<div class="container">
 			<view class="item" v-for="(item,index) in pageData[loadIndex].list"   :key="index" >

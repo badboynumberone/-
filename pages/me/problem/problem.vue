@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-show="isLoaded">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- <van-cell-group>
 			<van-cell v-for="(item,index) in problems" :key="index" is-link :title="item.paramKey" link-type="navigateTo" url="/pages/me/problem_detail/problem_detail" />
 		</van-cell-group> -->

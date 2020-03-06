@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<view class="container">
 			<van-cell-group>
 				<van-field label="收件人" :value="name" placeholder="请输入收件人姓名" border="false" @change="onChange" :data-name="'name'"

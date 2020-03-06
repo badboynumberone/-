@@ -1,10 +1,10 @@
 <template>
-	<view class="main pr">
+	<view class="main pr"  v-if="baseImageUrl">
 		<!-- 登录第一步骤 -->
 		<view v-if="step==1" class="container center" style="width: 100%;margin-top: -60px;">
 			<view class="fb p20 mb30" style="font-size: 25px;">欢迎登录！</view>
 			<view class="wx_header">
-				<Pic :src="'/static/images/logo.png'" :height="'100%'" :width="'100%'" :mode="'scaleToFill'" :round="true" :back="'#fff'"></Pic>
+				<Pic :src="`${baseImageUrl}/logo.png`" :height="'100%'" :width="'100%'" :mode="'scaleToFill'" :round="true" :back="'#fff'"></Pic>
 			</view>
 			<view class="button p10">
 				<my-button :text="'登录'" :type="3"></my-button>
@@ -41,7 +41,7 @@
 				</view>
 			</view>
 			<view class="next margin fm" @click="bindPhone">
-				<image src="/static/images/sign in@2x.png" :mode="'aspectFit'" style="width: 60%;"></image>
+				<image :src="`${baseImageUrl}/sign in@2x.png`" :mode="'aspectFit'" style="width: 60%;"></image>
 			</view>
 		</view>
 		<view class="notice cl">

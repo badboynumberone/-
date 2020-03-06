@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 
 		<!-- 搜索框 -->
 		<view class="search_wrapper" @click="navigateTo" data-url="/pages/index/search/search">
@@ -7,9 +7,9 @@
 		</view>
 		<!-- 新品速递 -->
 		<view class="new_goods pr">
-			<image class="back pa" src="/static/images/home-bg@2x.jpg" mode="widthFix"></image>
+			<image class="back pa" :src="`${baseImageUrl}/home-bg@2x.jpg`" mode="widthFix"></image>
 			<view class="new_content cl">
-				<!-- <image class="pa fill" src="/static/images/new_bg@2x.png" mode="scaleToFill"></image>
+				<!-- <image class="pa fill" :src="`${baseImageUrl}/new_bg@2x.png`" mode="scaleToFill"></image>
 				<view class="content pa fill p10">
 					<view class="header fsb mb5" style="align-items: center;">
 						<view class="fz16 fb" style="color: #fff;">新品速递</view>
@@ -25,7 +25,7 @@
 										<text class="price theme fz12">
 											￥{{item.price}}
 										</text>
-										<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
+										<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png"
 										 mode="aspectFit"></image>
 									</view>
 								</view>
@@ -50,15 +50,15 @@
 		<!-- 保证 -->
 		<view class="promise p10 pt5 pb5 fsb">
 			<view class="ftm">
-				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
+				<image :src="`${baseImageUrl}/checklist@2x.png`" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
 				<text class="fz11" style="color: #666;">产地直供，品质保证</text>
 			</view>
 			<view class="ftm">
-				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
+				<image :src="`${baseImageUrl}/checklist@2x.png`" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
 				<text class="fz11" style="color: #666;">7天无忧退货</text>
 			</view>
 			<view class="ftm">
-				<image src="/static/images/checklist@2x.png" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
+				<image :src="`${baseImageUrl}/checklist@2x.png`" mode="scaleToFill" style="width: 13px;height: 13px;margin-right: 5px;"></image>
 				<text class="fz11" style="color: #666;">认证厂商，品牌商品</text>
 			</view>
 		</view>
@@ -81,7 +81,7 @@
 		<!-- <view class="navs f p10">
 			<view class="left p10">
 				<view class="ftm mb5">
-					<image class="mr5" src="../../../static/images/clock.png" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
+					<image class="mr5" :src="`${baseImageUrl}/clock.png`" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
 					<text class="fb fz15">限时秒杀</text>
 				</view>
 				<view class="fz12" style="color: #666;">新鲜好物特惠抢购</view>
@@ -92,34 +92,34 @@
 					<text>:</text>
 					<view class="second fm">50</view>
 				</view>
-				<image src="../../../static/images/yumi.jpg" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
+				<image :src="`${baseImageUrl}/yumi.jpg`" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
 			</view>
 			<view style="width: 20px;"></view>
 			<view class="right fsb" style="flex-direction: column;">
 				<view class="top p10">
 					<view class="ftm">
 						<text class="fb fz15">预售好货</text>
-						<image class="ml5" src="../../../static/images/czhh.jpg" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+						<image class="ml5" :src="`${baseImageUrl}/czhh.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
 					</view>
 					<view class="" style="margin-top: -5px;">
 						<text class="fz12" style="color: #666;" :decode="true">精选好货  超前首发</text>
 					</view>
 					<view class="f">
-						<image src="../../../static/images/fanshu.png" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
-						<image src="../../../static/images/jidan.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image :src="`${baseImageUrl}/fanshu.png`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image :src="`${baseImageUrl}/jidan.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 				</view>
 				<view class="bottom p10">
 					<view class="ftm">
 						<text class="fb fz15">超值拼团</text>
-						<image class="ml5" src="../../../static/images/jghml.jpg" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+						<image class="ml5" :src="`${baseImageUrl}/jghml.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
 					</view>
 					<view class="" style="margin-top: -5px;">
 						<text class="fz12" style="color: #666;" :decode="true">应季美食 潮流护理</text>
 					</view>
 					<view class="f">
-						<image src="../../../static/images/fanqie.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
-						<image src="../../../static/images/mihoutao.jpg" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image :src="`${baseImageUrl}/fanqie.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image :src="`${baseImageUrl}/mihoutao.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 					
 				</view>
@@ -133,9 +133,9 @@
 				<view class="navbar pr">
 					<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
 						<text class="fb fz14" style="text-indent: 50rpx;">优品推荐</text>
-						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
+						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image :src="`${baseImageUrl}/Lowerarrow@2x.png`" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 					</view>
-					<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/bg-bar.png" mode="widthFix"></image>
+					<image class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
 				</view>
 				<view class="content ftm">
 					<scroll-view class="f" scroll-x style="height: 180px;">
@@ -143,7 +143,7 @@
 							<view class="item p10 ml10 pr" v-for="(item,index) in recommandList" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id">
 								<view class="tag pa">
 									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
-									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
+									<image class="fill" :src="`${baseImageUrl}/good_bg@2x.png`" mode=""></image>
 								</view>
 								<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
 								<view class="text-hidden  fz14" style="width: 100%;">{{item.name}}</view>
@@ -151,7 +151,7 @@
 									<text class="price theme fz13">
 										￥{{item.price}}
 									</text>
-									<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" src="/static/images/shopping-Cart-Selection@2x.png"
+									<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"
 									 mode="aspectFit"></image>
 								</view>
 							</view>
@@ -167,9 +167,9 @@
 				<view class="navbar pr">
 					<view class="pa fill fsb p10" style="align-items: center;top: 0px;left: 0px;z-index: 9;">
 						<text class="fb fz14" style="text-indent: 50rpx;" >热销榜</text>
-						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image src="../../../static/images/Lowerarrow@2x.png" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
+						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image :src="`${baseImageUrl}/Lowerarrow@2x.png`" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 					</view>
-					<image class="pa fill" style="top: 0px;left: 0px;" src="/static/images/bg-bar.png" mode="widthFix"></image>
+					<image class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
 				</view>
 				<view class="content p5">
 					<div class="single f p10 mb5" v-for="(item,index) in hotList" :key="index" v-if="index<3" @click="navigateTo"
@@ -177,7 +177,7 @@
 						<view class="mr10 pr" style="width: 180rpx;height:180rpx">
 							<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
 							<image class="pa" style="top: 0px;left: 0px;width: 60rpx;height: 60rpx;" :src="
-							index==0? '../../../static/images/ranking1@2x.png' : index==1? '../../../static/images/ranking2@2x.png' : '../../../static/images/ranking3@2x.png'
+							index==0? `${baseImageUrl}/ranking1@2x.png` : index==1? `${baseImageUrl}/ranking2@2x.png` : `${baseImageUrl}/ranking3@2x.png`
 							"
 							 mode="aspectFill"></image>
 						</view>
@@ -196,7 +196,7 @@
 								<text class="price theme fz16 fb">
 									￥{{item.price}}
 								</text>
-								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" :src="`${baseImageUrl}shopping-Cart-Selection@2x.png`"  
+								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"  
 								 mode="aspectFit"></image>
 							</view>
 						</div>
@@ -209,7 +209,7 @@
 		<!-- 商品列表 -->
 		<view class="goods">
 			<view class="fm pr">
-				<image class="small mr5" src="/static/images/title_bg@2x.png" mode="aspectFill" style="width: 320rpx;height: 100rpx;"></image>
+				<image class="small mr5" :src="`${baseImageUrl}/title_bg@2x.png`" mode="aspectFill" style="width: 320rpx;height: 100rpx;"></image>
 				<text class="center fb">猜你喜欢</text>
 			</view>
 			<swiper  :indicator-dots="false"  :interval="2000" :duration="1000" @change="onSwiperChange" easing-function="easeOutCubic"  >
@@ -225,7 +225,7 @@
 									</text>
 								</view>
 								<view><text class="fz11" style="color: #666;">销量:{{item.sale}}</text></view>
-								<image class="pa" style="width: 30rpx;height: 72rpx;transform: translateY(-2rpx);bottom: 0rpx;right: 15rpx;" src="/static/images/tab-shoppingchart-pre@2x.png"
+								<image class="pa" style="width: 30rpx;height: 72rpx;transform: translateY(-2rpx);bottom: 0rpx;right: 15rpx;" :src="`${baseImageUrl}/tab-shoppingchart-pre@2x.png`"
 								 mode="aspectFit"></image>
 							</view>
 						</view>
@@ -242,9 +242,8 @@
 		<!-- 客服图标 -->
 		
 		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
-			<image class="fill pa" style="bottom: 0px;left: 0px;" src="../../../static/images/contact.png" mode="aspectFill" ></image>
+			<image class="fill pa" style="bottom: 0px;left: 0px;" :src="`${baseImageUrl}/contact.png`" mode="aspectFill" ></image>
 		</button>
-		
 	</view>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-	<view class="main">
+	<view class="main"  v-if="baseImageUrl">
 		<view class="container" v-if="list.length">
 			<!-- 地址列表 -->
 			<van-cell-group>
@@ -29,7 +29,7 @@
 		</view>
 		
 		<view style="height: 100%;" v-if="!list.length">
-			<Empty :type="'address'" :text="'您还没有收货地址哦'" :src="'/static/images/dzwsj@2x.png'" />
+			<Empty :type="'address'" :text="'您还没有收货地址哦'" :src="`${baseImageUrl}/dzwsj@2x.png`" />
 		</view>
 		
 		<!-- 添加地址按钮 -->

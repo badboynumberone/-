@@ -6,5 +6,5 @@ export default {
 	//上传路径
 	uploadurl:"https://gongchengzzz.oss-cn-beijing.aliyuncs.com",
 	//本地云图片
-	localYunImageUrl:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/"
+	localYunImageUrl:"https://mall-wechat.oss-cn-beijing.aliyuncs.com"
 }

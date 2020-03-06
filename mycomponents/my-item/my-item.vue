@@ -1,11 +1,11 @@
 <template>
-	<view class="item p5 fadeIn">
+	<view class="item p5 fadeIn" v-if="baseImageUrl">
 		<view class="pr" style="border-radius: 10rpx;overflow: hidden;">
 			<Pic  :width="'100%'" :height="'325rpx'" :src="item.pic"
 			 :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
-			 <image class="pa"  v-if="item.albumVideo.length" style="bottom: 10px;left: 10px;width: 25px;height: 25px;" src="/static/images/video.png" mode="aspectFit"></image>
+			 <image class="pa"  v-if="item.albumVideo.length" style="bottom: 10px;left: 10px;width: 25px;height: 25px;" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image>
 			 <view class="pa fill" v-if="item.stock<=0"  style="background-color: rgba(0,0,0,0.5);top: 0px;left: 0rpx;z-index: 99;"></view>
-			 <image class="center" v-if="item.stock<=0" style="width: 200rpx;height: 200rpx;z-index: 999;" src="../../static/images/empty.png" mode="aspectFill"></image>
+			 <image class="center" v-if="item.stock<=0" style="width: 200rpx;height: 200rpx;z-index: 999;" :src="`${baseImageUrl}/empty.png`" mode="aspectFill"></image>
 		</view>
 		<view class="mt5" style="transform: scale(0.7,0.7);margin-left: -27px;">
 			<my-tag :type="'first'" :text="item.brandName" />
@@ -24,7 +24,7 @@
 				</view>
 				<view class="fz11" style="color: #666;">销量 {{item.sale}}</view>
 			</view>
-			<image style="width: 45rpx;height: 60rpx;" src="/static/images/shopping-Cart-Selection@2x.png" mode="aspectFit"></image>
+			<image style="width: 45rpx;height: 60rpx;" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`" mode="aspectFit"></image>
 			
 		</view>
 	</view>

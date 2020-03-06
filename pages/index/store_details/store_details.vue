@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-if="isLoaded">
+	<view class="main"  v-if="baseImageUrl">
 		<!-- 店铺信息 -->
 		<view class="store_info">
 			<view class="wrapper pr">
@@ -19,7 +19,7 @@
 					</view>
 				</view>
 				<view style="height: 80px;opacity: 0.6;">
-					<Pic :src="'/static/images/background-Merchant@2x.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
+					<Pic :src="`${baseImageUrl}/background-Merchant@2x.png`" :height="'100%'" :width="'100%'" :mode="'aspectFill'" ></Pic>
 				</view>
 			</view>
 			

@@ -1,12 +1,12 @@
 <template>
-	<view class="main" v-if="isLoaded">
+	<view class="main"  v-if="baseImageUrl">
 			<!-- 头部 -->
 			<div class="top f p20 pr" @click="toLogin" :data-url="'/pages/me/wxlogin/wxlogin'">
 				<!-- <button v-if="!isLogin" class="fill pa" style="top: 0px;left: 0px;opacity: 0;z-index: 99;" open-type="getUserInfo"
 			 @getuserinfo="getUserInfo"></button> -->
 
 				<div class="left mr20">
-					<Pic :src="userInfo.wxPic || '/static/images/header.png'" :height="'100%'" :width="'100%'" :mode="'aspectFill'"
+					<Pic :src="userInfo.wxPic || `${baseImageUrl}/header.png`" :height="'100%'" :width="'100%'" :mode="'aspectFill'"
 					 :round="true"></Pic>
 				</div>
 
@@ -60,27 +60,27 @@
 					<van-grid column-num="4" :border="false">
 						<van-grid-item use-slot>
 							<view class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/address_list/address_list">
-								<image src="/static/images/address@2x.png" />
+								<image :src="`${baseImageUrl}/address@2x.png`" />
 								<view class="mt5">我的地址</view>
 							</view>
 						</van-grid-item>
 						<van-grid-item use-slot>
 							<view  class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/problem/problem">
-								<image src="/static/images/problem@2x.png" />
+								<image :src="`${baseImageUrl}/problem@2x.png`" />
 								<view class="mt5">常见问题</view>
 							</view>
 
 						</van-grid-item>
 						<van-grid-item use-slot>
 							<view  class="fm" style="flex-flow: column wrap;" @click="navigateTo" data-url="/pages/me/feedback/feedback">
-								<image src="/static/images/feedback@2x.png" />
+								<image :src="`${baseImageUrl}/feedback@2x.png`" />
 								<view class="mt5">意见反馈</view>
 							</view>
 
 						</van-grid-item>
 						<van-grid-item use-slot>
 							<view  class="fm" style="flex-flow: column wrap;" @click="callPhone" >
-								<image src="/static/images/service-my@2x.png" />
+								<image :src="`${baseImageUrl}/service-my@2x.png`" />
 								<view class="mt5">官方客服</view>
 							</view>
 
@@ -100,8 +100,10 @@
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue"
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
 	import tag from "../../../mycomponents/num-tag/num-tag.vue";
+	
 	let pages = null;
 	let pageNum = 0;
+	let baseImageUrl = "https://mall-wechat.oss-cn-beijing.aliyuncs.com"
 	export default {
 		components: {
 			uniGrid,
@@ -115,47 +117,45 @@
 						status: 0,
 						text: "待付款",
 						url: "",
-						src: "/static/images/Pending-payment@2x.png",
+						src: baseImageUrl+"/Pending-payment@2x.png",
 						num: 0
 					},
 					{
 						text: "待发货",
 						status: 1,
 						url: "",
-						src: "/static/images/shipped@2x.png",
+						src: baseImageUrl+"/shipped@2x.png",
 						num: 0
 					},
 					{
 						text: "待收货",
 						status: 2,
 						url: "",
-						src: "/static/images/Goods-to-be-received@2x.png",
+						src: baseImageUrl+"/Goods-to-be-received@2x.png",
 						num: 0
 					},
 					{
 						text: "已完成",
 						status: 3,
 						url: "",
-						src: "/static/images/complete@2x.png",
+						src: baseImageUrl+"/complete@2x.png",
 						num: 0
 					},
 					{
 						text: "退货退款",
 						url: "",
-						src: "/static/images/refund@2x.png",
+						src: baseImageUrl+"/refund@2x.png",
 						num: 0
 					}
 				],
-
-
 			}
 		},
 		onLoad() {
-
+		console.log(baseImageUrl)
 
 		},
 		onShow() {
-			this.getOrderCount();
+			// this.getOrderCount();
 		},
 		computed: {
 			isLogin() {

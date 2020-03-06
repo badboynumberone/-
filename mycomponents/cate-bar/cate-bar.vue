@@ -1,17 +1,17 @@
 <template>
-	<view class="wrapper f bb">
+	<view class="wrapper f bb" v-if="baseImageUrl">
 		<view class="item fm" @click="sortBy(1)">
 			<text :class="{'active':active==1}">综合</text>
 		</view>
 		<view class="item fm" @click="sortBy(2)">
 			<text :class="['mr10',{'active':active==2}]">价格</text>
-			<image v-if="priceSort" src="../../static/images/price-01@2x.png" mode="aspectFill"></image>
-			<image v-else src="../../static/images/two_arrow.png" mode="aspectFill"></image>
+			<image v-if="priceSort" :src="`${baseImageUrl}/price-01@2x.png`" mode="aspectFill"></image>
+			<image v-else :src="`${baseImageUrl}/two_arrow.png`" mode="aspectFill"></image>
 		</view>
 		<view class="item fm"  @click="sortBy(3)">
 			<text  :class="['mr10',{'active':active==3}]">销量</text>
-			<image v-if="saleSort" src="../../static/images/price-01@2x.png" mode="aspectFill"></image>
-			<image v-else src="../../static/images/two_arrow.png" mode="aspectFill"></image>
+			<image v-if="saleSort" :src="`${baseImageUrl}/price-01@2x.png`" mode="aspectFill"></image>
+			<image v-else :src="`${baseImageUrl}/two_arrow.png`" mode="aspectFill"></image>
 		</view>
 	</view>
 </template>

@@ -1,6 +1,6 @@
 <template>
-	<view class="item ftm p10 bgfff pr">
-		<Pic :src="'/static/images/successful_payment@2x.png'" :height="'170rpx'" :width="'170rpx'" :mode="'aspectFit'" :back="'#f1f1f1'"/>
+	<view class="item ftm p10 bgfff pr" v-if="baseImageUrl">
+		<Pic :src="`${baseImageUrl}successful_payment@2x.png`" :height="'170rpx'" :width="'170rpx'" :mode="'aspectFit'" :back="'#f1f1f1'"/>
 		<view class="content ml10">
 			<view class="title fz15 fb more-hidden" style="line-height: 46rpx;">
 				水果小黄瓜新鲜青瓜5斤天...水果小黄瓜新sadsadasddsa鲜青瓜5斤天...

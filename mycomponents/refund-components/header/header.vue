@@ -1,8 +1,8 @@
 <template>
-	<view>
+	<view v-if="baseImageUrl">
 		<view v-if="true" class="first p10 fsb">
 			<view class="left ftm">
-				<Pic :src="'/static/images/Order-complete@2x.png'" :height="'45rpx'" :width="'45rpx'" :mode="'aspectFill'" :round="true" :back="'#fff'"></Pic>
+				<Pic :src="`${baseImageUrl}/Order-complete@2x.png`" :height="'45rpx'" :width="'45rpx'" :mode="'aspectFill'" :round="true" :back="'#fff'"></Pic>
 				<text class="fz14 ml10" style="color: #222;">商家已收货，退款成功！</text>
 			</view>
 			<view class="right theme fz14">

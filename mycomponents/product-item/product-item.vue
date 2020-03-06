@@ -1,5 +1,5 @@
 <template>
-	<view class="box f p10 pr bb">
+	<view class="box f p10 pr bb" v-if="baseImageUrl">
 			<view class="pic mr10">
 				<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 			</view>
@@ -8,7 +8,7 @@
 				<view class="tag"><my-tag :text="item.tagName" :type="'second'"></my-tag></view>
 				<view class="price fb theme">￥{{item.price}}</view>
 				<view class="tag fb theme"><my-tag :text="item.brandName" :type="'first'"></my-tag></view>
-				<image class="pa" style="right: 0px;bottom: 0px;" src="../../static/images/shopping-Cart-Selection@2x.png" mode="aspectFit"></image>
+				<image class="pa" style="right: 0px;bottom: 0px;" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`" mode="aspectFit"></image>
 			</view>
 	</view>
 </template>

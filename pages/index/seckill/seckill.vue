@@ -1,5 +1,5 @@
 <template>
-	<view class="main bgf1">
+	<view class="main bgf1"  v-if="baseImageUrl">
 		<view style="height: 150rpx;">
 			<SeckillHeader></SeckillHeader>	
 		</view>
