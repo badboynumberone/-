@@ -107,30 +107,28 @@
 				if (!this.checkForm(2)) {
 					return;
 				}
-				await this.sendBindPhone(2);
-				wx.showToast({
-					title:"绑定成功",
-					duration:1500,
-					icon:"success",
-					success:async ()=>{
-						wx.showLoading({
-							title:"请稍后..."
-						})
-						await this.$store.dispatch("autoLoginIn");
-						let timer = setTimeout(function(){
-							wx.switchTab({
-								url:"/pages/me/me/me"
-							})
-							wx.hideLoading();
-							clearTimeout(timer)
-						},1500);
-					}
+				const data = await this.sendBindPhone(2);
+				console.log(data)
+				if(!data.token){
+					this.$tools.Toast("验证码错误!")
+					return
+				}
+				debugger;
+				uni.setStorageSync("accessToken", `Bearer ${data.token}`);
+				wx.showLoading({
+					title:"登录中..."
 				})
+				await this.$store.dispatch("autoLoginIn");
+				wx.switchTab({
+					url:"/pages/me/me/me"
+				})
+				wx.hideLoading();
 			},
 			//绑定手机号
 			async sendBindPhone(type){
 				const result = await this.$net.sendRequest(`/sso/wx/regByOpenid`,{type:type,openid:this.openid,telephone:this.phone,authCode:this.code,wxPic:this.userinfo.avatarUrl,wxName:this.userinfo.nickName});
-				
+				const res = await this.$net.sendRequest(`/sso/wx/regByOpenid`,{type:type,openid:this.openid,telephone:this.phone,authCode:this.code,wxPic:this.userinfo.avatarUrl,wxName:this.userinfo.nickName});
+				return result
 			},
 			checkForm(checkNum) {
 				if (checkNum == 1 && !/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(this.phone)) {

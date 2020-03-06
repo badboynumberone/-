@@ -51,6 +51,10 @@ export function sendRequest(url, params = {}, method = "POST") {
 							duration:1500
 						})
 					}
+					
+					if(result.code==500&&result.message=='验证码错误'){
+						resolve({token:""})
+					}
 
 					//各页面返回数据异常处理
 

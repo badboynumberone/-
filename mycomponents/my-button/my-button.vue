@@ -127,8 +127,8 @@
 				const result = await this.$net.sendRequest("/sso/wx/wxOneReg",data);
 				const res = await this.$net.sendRequest("/sso/wx/wxOneReg",data);
 					//已经绑定手机号,直接登录
-					if (result.token) {
-						uni.setStorageSync("accessToken", `Bearer ${result.token}`);
+					if (result) {
+						uni.setStorageSync("accessToken", `Bearer ${result}`);
 						//用户相关地址和信息
 						this.$store.dispatch("autoLoginIn");
 						// 提示登录成功
