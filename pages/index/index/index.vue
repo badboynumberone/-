@@ -212,15 +212,11 @@
 				<image class="small mr5" src="/static/images/title_bg@2x.png" mode="aspectFill" style="width: 320rpx;height: 100rpx;"></image>
 				<text class="center fb">猜你喜欢</text>
 			</view>
-			<swiper  :indicator-dots="false"  :interval="2000" :duration="1000" @change="onSwiperChange" >
-				<swiper-item class="p10" style="box-sizing: border-box;" v-for="(single,idx) in pageData[0].list" :key="idx" >
+			<swiper  :indicator-dots="false"  :interval="2000" :duration="1000" @change="onSwiperChange" easing-function="easeOutCubic"  >
+				<swiper-item class="p10" style="box-sizing: border-box;" v-for="(single,idx) in pageData[0].list" :key="idx" v-if="idx<2" >
 					<view class="swiper-item">
-						<view class="fsb" v-for="(s,i) in single" :key="i" >
-							<view class="item p5  pr shadow"  v-for="(item,index) in s" :key="index"  @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id" >
-								<view class="tag pa">
-									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
-									<image class="fill" src="/static/images/good_bg@2x.png" mode=""></image>
-								</view>
+						<view class="f" v-for="(s,i) in single" :key="i" >
+							<view class="item p5  pr shadow" style="margin-left: 12.5rpx;"  v-for="(item,index) in s" :key="index"  @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id" >
 								<Pic :src="item.pic" :height="'200rpx'" :width="'200rpx'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
 								<view class="text-hidden  fz14" style="width: 200rpx;" >{{item.name}}</view>
 								<view class="fsb" style="align-items: center;margin-top: -2px;">
@@ -272,10 +268,10 @@
 			return {
 				bannerIndex:1,
 				banners:[
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:"445"},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:"373"},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner03.jpg",id:"401"},
-					{url:"https://agriculturaproductsmall.oss-cn-beijing.aliyuncs.com/banner04.jpg",id:"409"}
+					{url:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner01.jpg",id:"445"},
+					{url:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner02.jpg",id:"373"},
+					{url:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner03.jpg",id:"401"},
+					{url:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner04.jpg",id:"409"}
 				],
 				hotList: [],
 				newList: [],
@@ -316,7 +312,7 @@
 				if(this.pageData[0]==undefined){
 					return 0
 				}else{
-					return Math.floor(this.pageData[0].list.length)
+					return 2
 				}
 				
 			}
@@ -560,9 +556,6 @@
 	.goods {
 		swiper{
 			height: 800rpx;
-			.fsb:nth-child(odd){
-				margin-bottom: 15px;
-			}
 		}
 		.dots{
 			width: 100%;

@@ -1,7 +1,6 @@
 
 <template>
 	<view class="main">
-		<view>{{'asdasd'}}</view>
 		<!-- 地址选择 -->
 		<view class="address p10">
 			<view class="wrapper pr">
