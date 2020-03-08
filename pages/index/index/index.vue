@@ -86,7 +86,13 @@
 				</view>
 				<view class="fz12" style="color: #666;">新鲜好物特惠抢购</view>
 				<view class="mb10 mt5">
-					<MyTimer ref="timer" ></MyTimer>
+					<view class="time fsb">
+						<view class="hour fm">{{hour}}</view>
+						<text>:</text>
+						<view class="minute fm">{{minute}}</view>
+						<text>:</text>
+						<view class="second fm">{{second}}</view>
+					</view>
 				</view>
 				
 				<image :src="`${baseImageUrl}/yumi.jpg`" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
@@ -253,6 +259,7 @@
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
 	import MyTag from '../../../mycomponents/my-tag/my-tag.vue';
 	import MyTimer from "../../../mycomponents/my-timer/my-timer.vue";
+	let timer =null;
 	export default {
 		
 		components: {
@@ -281,7 +288,10 @@
 				pageData: [],
 				selectarea: "全部",
 				isLoaded: false,
-				activeIndex:0
+				activeIndex:0,
+				hour:'00',
+				minute:'00',
+				second:'00'
 			}
 		},
 		async onLoad() {
@@ -294,20 +304,14 @@
 			this.$mp.page.hook = this.getData;
 			
 		},
-		created() {
-			this.$emit('test', 'hi')
-			this.$on('test', function (msg) {
-			  console.log(msg)
-			})
-		},
 		onShow() {
-			this.$refs.timer.timer();
+			this.starttimer();
 		},
 		onHide() {
-			this.$refs.timer.clearTimer();
+			clearInterval(timer)
 		},
 		onUnload() {
-			this.$refs.timer.clearTimer();
+			clearInterval(timer)
 		},
 		onReachBottom() {
 			//如果正在加载则不允许点击
@@ -335,6 +339,20 @@
 			}
 		},
 		methods: {
+			starttimer(){
+				timer = setInterval(()=>{this.updateTime()},1000);
+			},
+			updateTime(){
+				console.log("haha")
+				let startTime = this.startTime ? new Date(this.startTime) : new Date();
+				let endTime = this.endTime ? new Date(this.endTime) : this.$tools.getNextHour();
+				const addZero = this.$tools.addZero;
+				const seconds =Math.floor((endTime.getTime() -startTime.getTime())/1000);
+				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];
+			},
+			clearTimer(){
+				clearInterval(timer);
+			},
 			toProductDetail(id){
 				this.$tools.navigateTo(`/pages/index/product/product?id=${id}`)
 			},
