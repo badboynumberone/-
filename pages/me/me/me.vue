@@ -151,12 +151,8 @@
 				],
 			}
 		},
-		onLoad() {
-		console.log(baseImageUrl)
-
-		},
 		onShow() {
-			// this.getOrderCount();
+			this.getOrderCount();
 		},
 		computed: {
 			isLogin() {
