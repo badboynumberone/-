@@ -63,6 +63,7 @@
 		},
 		data() {
 			return {
+				orderInfo:null,
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				message: "",
 				item:{},
@@ -218,8 +219,11 @@
 				// 如果正在下单停止下单
 				
 				wx.showLoading({mask:true});
-				//生成订单
-				const result = await this.generateOrder();
+				if(!this.orderInfo){
+					//生成订单
+					this.orderInfo = await this.generateOrder();
+				}
+				const result = this.orderInfo;
 
 				
 
