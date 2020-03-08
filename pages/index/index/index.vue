@@ -78,20 +78,17 @@
 		</view>
 		
 		<!-- 专项栏目 -->
-		<!-- <view class="navs f p10">
-			<view class="left p10">
-				<view class="ftm mb5">
+		<view class="navs f p10">
+			<view class="left p10" @click="navigateTo" :data-url="'/pages/index/seckill/seckill'">
+				<view class="ftm mb5" >
 					<image class="mr5" :src="`${baseImageUrl}/clock.png`" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
 					<text class="fb fz15">限时秒杀</text>
 				</view>
 				<view class="fz12" style="color: #666;">新鲜好物特惠抢购</view>
-				<view class="time fsb mb10 mt5">
-					<view class="hour fm">01</view>
-					<text>:</text>
-					<view class="minute fm">20</view>
-					<text>:</text>
-					<view class="second fm">50</view>
+				<view class="mb10 mt5">
+					<MyTimer ref="timer" ></MyTimer>
 				</view>
+				
 				<image :src="`${baseImageUrl}/yumi.jpg`" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
 			</view>
 			<view style="width: 20px;"></view>
@@ -124,7 +121,7 @@
 					
 				</view>
 			</view>
-		</view> -->
+		</view>
 		
 
 		<!-- 今日推荐 -->
@@ -244,6 +241,7 @@
 		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
 			<image class="fill pa" style="bottom: 0px;left: 0px;" :src="`${baseImageUrl}/contact.png`" mode="aspectFill" ></image>
 		</button>
+		<button type="primary" @click="a">12</button>
 	</view>
 </template>
 
@@ -254,14 +252,17 @@
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue";
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
 	import MyTag from '../../../mycomponents/my-tag/my-tag.vue';
+	import MyTimer from "../../../mycomponents/my-timer/my-timer.vue";
 	export default {
+		
 		components: {
 			Ser,
 			BwSwiper,
 			MyList,
 			uniGrid,
 			uniGridItem,
-			MyTag
+			MyTag,
+			MyTimer
 		},
 		data() {
 			return {
@@ -284,13 +285,29 @@
 			}
 		},
 		async onLoad() {
+			
 			await this.getAllData();
 			//第一次加载获取数据
 			this.selectarea = "全部";
 			this.getData();
 			//提供钩子
 			this.$mp.page.hook = this.getData;
-
+			
+		},
+		created() {
+			this.$emit('test', 'hi')
+			this.$on('test', function (msg) {
+			  console.log(msg)
+			})
+		},
+		onShow() {
+			this.$refs.timer.timer();
+		},
+		onHide() {
+			this.$refs.timer.clearTimer();
+		},
+		onUnload() {
+			this.$refs.timer.clearTimer();
 		},
 		onReachBottom() {
 			//如果正在加载则不允许点击

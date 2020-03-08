@@ -44,11 +44,7 @@
 						距离价格变更还剩
 					</view>
 					<view class="time fsb mt5">
-						<view class="hour fz11 fm">01</view>
-						<text>:</text>
-						<view class="minute fz11 fm">20</view>
-						<text>:</text>
-						<view class="second fz11 fm">50</view>
+						<MyTimer ref="timer"></MyTimer>
 					</view>
 				</view>
 			</view>
@@ -200,9 +196,10 @@
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
+	import MyTimer from "../../../mycomponents/my-timer/my-timer.vue";
 	export default {
 		components: {
-			MyButton,MyTag
+			MyButton,MyTag,MyTimer
 		},
 		data() {
 			return {
@@ -412,6 +409,7 @@
 				}	
 				.time{
 					width: 150rpx;
+					transform: scale(0.8,0.8);
 					>view{
 						width: 35rpx;
 						height: 35rpx;
