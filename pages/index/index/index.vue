@@ -258,7 +258,6 @@
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue";
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
 	import MyTag from '../../../mycomponents/my-tag/my-tag.vue';
-	import MyTimer from "../../../mycomponents/my-timer/my-timer.vue";
 	let timer =null;
 	export default {
 		
@@ -268,8 +267,7 @@
 			MyList,
 			uniGrid,
 			uniGridItem,
-			MyTag,
-			MyTimer
+			MyTag
 		},
 		data() {
 			return {
