@@ -55,6 +55,7 @@
 		},
 		data() {
 			return {
+				baseImageUrl:getApp().globalData.baseImageUrl,
 				isLoadMore:true,//是否加载更多
 				isLoaded: false,//是否加载完
 				pageData: [{
