@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-if="isLoaded" >
+	<view class="main" v-show="isLoaded" >
 		<!-- 左上角返回按钮 -->
 		<view class="back pf pr" @click="back">
 			<van-icon class="center" style="margin-top: 2px;" name="arrow-left" color="#fff" />
@@ -28,23 +28,29 @@
 			</swiper>
 			<video v-else :src="pageData.albumVideo" autoplay controls style="height: 710upx;width: 100%;" @play="videoStart" @ended="videoEnd" />
 		</view>
-		<view class="seckill pr" style="line-height: 0;">
+		<view class="seckill pr" style="line-height: 0;" v-if="status!=0">
 			<image style="width: 100%;" :src="`${baseImageUrl}/bg_details@2x.png`" mode="widthFix"></image>
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff">¥39.8</text><view class="buyed ml10 cfff fz12">已抢22件</view>
+						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff" >¥{{killInfo.productQgNumber}}</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10">价格 ¥80.8</text> <text class="fz12 cfff ml10">每人限购1件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz11 cfff ml10" >累计销量{{pageData.sale}}{{pageData.unit}}</text> <text class="fz12 cfff ml10" v-if="pageData.xiangou">每人限购{{pageData.xiangou}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
 					<view class="fz12 cfff" style="text-align: right;">
-						距离价格变更还剩
+						{{status==1?'距离抢购时间还剩':status==2?'距离价格变更还剩':'活动已结束'}}
 					</view>
 					<view class="time fsb mt5">
-						<MyTimer ref="timer"></MyTimer>
+
+							<view class="hour fm">{{hour}}</view>
+							<text>:</text>
+							<view class="minute fm">{{minute}}</view>
+							<text>:</text>
+							<view class="second fm">{{second}}</view>
+
 					</view>
 				</view>
 			</view>
@@ -68,7 +74,7 @@
 						<my-tag v-if="pageData.tagName && pageData.tagName!='无'" class="ml10" :type="'second'" :text="pageData.tagName"/>
 						<my-tag v-if="pageData.xiangou==1" class="ml10" :type="'three'" :text="pageData.xiangouNumber"/>
 				</view>
-				<view class="price_box fsb mt20 mb10">
+				<view class="price_box fsb mt20 mb10" v-if="status==0">
 					<text class="price fb fz18">￥{{pageData.price}}</text>
 					<text class="sal">销量{{pageData.sale}}{{pageData.unit}}</text>
 				</view>
@@ -196,10 +202,10 @@
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
-	import MyTimer from "../../../mycomponents/my-timer/my-timer.vue";
+	let timer =null;let attrs=null;
 	export default {
 		components: {
-			MyButton,MyTag,MyTimer
+			MyButton,MyTag
 		},
 		data() {
 			return {
@@ -222,11 +228,21 @@
 				specList: [],
 				pageData:null,
 				specChildList: [
-				]
+				],
+				startTime:"",
+				endTime:"",
+				killInfo:{
+					
+				},
+				status:0,
+				hour:'00',
+				minute:'00',
+				second:'00'
 			};
 		},
 		computed:{
 			cartCount(){
+				
 				let length = 0;
 				if(this.$store.state.cart.length){
 					this.$store.state.cart.forEach(function(item){
@@ -243,7 +259,56 @@
 			});
 			this.getData(options);
 		},
+		onShow() {
+			this.starttimer();
+		},
+		onHide() {
+			clearInterval(timer)
+		},
+		onUnload() {
+			clearInterval(timer)
+		},
 		methods:{
+			starttimer(){
+				if(this.killInfo.beginTime==undefined){
+					return;
+				}
+				timer = setInterval(()=>{this.updateTime()},1000);
+			},
+			updateTime(){
+				let now = new Date();
+				let startTime = new Date(this.killInfo.beginTime);
+				let endTime = new Date(this.killInfo.endTime);
+				//测试数据
+				// let endTime = new Date("2020-03-08 21:00:00");
+				// let startTime = new Date("2020-03-08 20:30:00");
+
+				let s_n = startTime.getTime()-now.getTime();
+				let e_n = endTime.getTime()-now.getTime();
+				let seconds = null;
+				
+				//活动未开始
+				if(s_n>0){
+					seconds =s_n;
+					this.status = 1;
+				}
+				//活动进行中需要更换商品属性的价格
+				if(s_n<0 && e_n>0){
+					seconds =e_n;
+					this.status = 2;
+				}
+				//活动已结束,跟换商品属性
+				if(e_n<0){
+					this.status = 0;
+				}
+				const addZero = this.$tools.addZero;
+				seconds =Math.floor(seconds/1000);
+				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];
+
+			},
+			clearTimer(){
+				clearInterval(timer);
+			},
 			//加载图片
 			loadImg(){
 				this.loadImgNum++;
@@ -263,6 +328,7 @@
 			},
 			//获取数据
 			async getData(options){
+				//获取商品详情
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
 				this.isLoaded=true;this.$toast.clear();
 				this.imgList = result.albumPics.split(",");
@@ -272,7 +338,10 @@
 				if(result.attrs.length){
 					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 
 				}
-				
+				//获取秒杀信息
+				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:500,...options.killId?{killId:options.killId}:{}},"GET");
+				this.killInfo = res; 
+				// console.log(res)
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")

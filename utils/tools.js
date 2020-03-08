@@ -99,7 +99,17 @@ const chunk = (arr, size) =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
     arr.slice(i * size, i * size + size)
   );
-
+function getNextHour(){
+	let date = new Date();
+	date.setHours(new Date().getHours()+1)
+	date.setMinutes(0)
+	date.setSeconds(0)
+	date.setMilliseconds(0)
+	return date;
+}
+function addZero(num){
+	return num<10 ? '0'+num:num;
+}
 export default {
 	navigateTo,
 	redirectTo,
@@ -111,5 +121,7 @@ export default {
 	deepFlatten,
 	sleep,
 	shuffle,
-	chunk
+	chunk,
+	getNextHour,
+	addZero
 }

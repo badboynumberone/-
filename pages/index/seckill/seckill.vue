@@ -1,55 +1,213 @@
 <template>
 	<view class="main bgf1"  >
 		<view style="height: 150rpx;">
-			<SeckillHeader></SeckillHeader>	
+			<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
 		</view>
 		<view class="wrapper pl10 pr10 pr">
-			<SeckillItem></SeckillItem>
+			<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index">
+				<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
+				<view class="item ftm p10 bgfff pr" >
+					<view class="pr">
+						<Pic :src="item.pic" :height="'170rpx'" :width="'170rpx'" :mode="'aspectFit'" :back="'#f1f1f1'"/>
+				
+						<image v-if="item.productQgNumber-item.correntStock==item.productQgNumber" class="center" :src="`${baseImageUrl}/spike_sellout@2x.png`" mode="scaleToFill" style="width: 120rpx;height: 120rpx;"></image>
+					</view>
+					
+					<view class="content ml10">
+						<view class="title fz15 fb more-hidden" style="line-height: 46rpx;">
+							{{item.name}}
+						</view>
+						<view class="limit_count fz12">
+							限量{{item.productQgNumber}}件
+						</view>
+						<view class="limit_time fz12">
+							{{utils.getHourMinute(item.beginTime)}}开抢
+						</view>
+						<view class="progress ftm pt5">
+							
+							<view class="line">
+								
+								<view class="length" :style="[{width:getPercent(item.productQgNumber-item.correntStock,item.productQgNumber),'height':'100%'}]"></view>
+							</view>
+							<view class="text ml10 cccc fz12">已抢{{item.productQgNumber-item.correntStock}}件</view>
+						</view>
+						<view class="">
+							<!-- <TextTimer :startTime="'2020-03-08 18:04:00'" :endTime="'2020-03-08 20:00:00'" ref="texttimer" @update="updateStatus"></TextTimer> -->
+							<view>
+								<view class="left_time" v-if="status==1">
+									<text class="fz12 c666">活动即将开始:</text>
+									<text class="fz12 c666" style="color: #1AAE68;">{{hour}}:{{minute}}:{{second}}</text>
+								</view>
+								<view class="left_time" v-if="status==2">
+									<text class="fz12 c666">正在抢购中:</text>
+								</view>
+								<view class="left_time" v-if="status==0">
+									<text class="fz12 c666">活动已结束</text>
+								</view>
+							</view>
+						</view>
+						
+						
+						<view class="price">
+							<text class="now fz21 fb">¥{{item.productQgNumber}}</text>
+							<text class="old fz13">¥{{item.productPrice}}</text>
+						</view>
+					</view>
+					
+					<view class="button pa">
+						<!-- <view class="go ftm cfff">去抢购<van-icon name="arrow" style="margin-top: 7.9rpx;" /></view> -->
+						<!-- <view class="out ftm cfff">已抢完</view> -->
+						<view class="ready ftm cfff" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">查看详情</view>
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
-
-<script module="test" lang="wxs">
-    function split(str){
-		return str+"sadsadsad"
-	}
-    module.exports = {
-      split: split
-    }
-</script>
+<script module="utils" lang="wxs" src="../../../utils/util.wxs" />
 <script>
 	import SeckillHeader from '../../../mycomponents/seckill-header/seckill-header.vue'
-	import SeckillItem from '../../../mycomponents/seckill-item/seckill-item.vue'
 	let opt = null,pages=null;
 	export default {
 		components:{
-			SeckillHeader,SeckillItem
+			SeckillHeader
 		},
 
 		data() {
 			return {
 				baseImageUrl:getApp().globalData.baseImageUrl,
-				a:1,
-				b:2
+				list:[],
+				activeIndex:0,
+				timerState:true,
+				status:0
 			};
 		},
 		computed:{
-			
+			getPercent(){
+				return function(left=0,all=0){
+					return Math.ceil((left/all)*100)+'%'
+				}
+			}
 		},
-		onLoad(options) {
-			//页面信息答应
-			this.setPage(options);
+		async onLoad(options) {
+			await this.getKillData();
+		},
+		onShow() {
+			console.log("assadsad")
+			this.timerState = true;
+		},
+		onHide() {
+			console.log("asd")
+			this.timerState = false;
+		},
+		onUnload() {
+			console.log("asdasdasd")
+			this.timerState = false;
 		},
 		methods:{
-			setPage(options){
-				this.config.optionMergeStrategies.
-				console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
-				opt = options;pages=getCurrentPages();
+			//获取对应的信息
+			getMatchData(){
+				this.activeIndex = this.$refs.header.activeIndex
+			},
+			//获取秒杀商品数据
+			async getKillData(){
+				let result = await this.$net.sendRequest("/qiangGou/getRedisQgGoods",{},"GET");
+				this.list = [result.todayList,result.tomorrowList,result.houTianList];
+			},
+			//页面跳转
+			navigateTo(e) {
+				this.$nextTick(()=>{
+					this.$tools.navigateTo(e.currentTarget.dataset.url)
+				})
+			},
+			starttimer(){
+				this.timer = setInterval(()=>{this.updateTime()},1000);
+			},
+			updateTime(){
+				let now = new Date();
+				let startTime = new Date(this.startTime);
+				let endTime = new Date(this.endTime);
+				let s_n = startTime.getTime()-now.getTime();
+				let e_n = endTime.getTime()-now.getTime();
+				let seconds = null;
+				
+				//活动未开始
+				if(s_n>0){
+					seconds =s_n;
+					this.status = 1;
+				}
+				//活动进行中
+				if(s_n<0 && e_n>0){
+					seconds =e_n;
+					this.status = 2;
+				}
+				//活动已结束
+				if(e_n<0){
+					this.status = 0;
+				}
+				this.$emit("update")
+				seconds =Math.floor(seconds/1000);
+				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];
+			},
+			clearTimer(){
+				clearInterval(this.timer);
 			}
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-
+.item{
+		border-radius:18rpx;
+		overflow: hidden;
+		min-height: 210rpx;
+		.progress{
+			
+		}
+		.line{
+			@include wh(220rpx,8rpx);
+			border-radius: 8rpx;
+			overflow: hidden;
+			border: 1px solid #1AAE68;
+			.length{
+				background:linear-gradient(101deg,rgba(26,174,104,1) 0%,rgba(136,207,118,1) 100%);
+			}
+		}
+		.limit_count{
+			color: #33BAC5;
+		}
+		.limit_time{
+			color: #23B166;
+		}
+		.price{
+			.now{
+				color: #1AAE68;
+			}
+			.old{
+				color: #C2C2C2;
+				text-decoration: line-through;
+				margin-left:15rpx;
+			}
+		}
+		
+		.button{
+			bottom:20rpx;
+			right: 20rpx;
+			>view{
+				padding: 7.5rpx 20rpx;
+				border-radius:26px;
+				overflow: hidden;
+			}
+			.go{
+				background:linear-gradient(101deg,rgba(26,174,104,1) 0%,rgba(136,207,118,1) 100%);
+				box-shadow:1px 8px 18px 0px rgba(125,203,117,0.48);
+			}
+			.out{
+				background: #C9C9C9;
+			}
+			.ready{
+				background: #59C08F;
+			}
+		}
+	}
 </style>

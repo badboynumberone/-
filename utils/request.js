@@ -55,6 +55,10 @@ export function sendRequest(url, params = {}, method = "POST") {
 					if(result.code==500&&result.message=='验证码错误'){
 						resolve({token:""})
 					}
+					
+					if(result.code==500&&result.message=='无此商品'){
+						resolve(null)
+					}
 
 					//各页面返回数据异常处理
 

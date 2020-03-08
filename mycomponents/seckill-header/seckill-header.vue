@@ -3,10 +3,10 @@
 		<view class="header pr">
 			<image :src="`${baseImageUrl}/mb.jpg`" mode="widthFix" style="width: 100%;"></image>
 			<view class="content f pa ">
-				<view class="item active" v-for=" (item,index) in arr" :key="index">
-					<view :class="['date frm fb cfff','fz'+(25-arr.length*2),'fs'+(21-arr.length*2)]">今日</view>
+				<view :class="['item',activeIndex==index ? 'active':'']" v-for=" (item,index) in arr" :key="index" @click="itemclickHandler(index)">
+					<view :class="['date frm cfff',activeIndex==index ? 'fb ' + 'fz'+(25-arr.length*2): 'fs'+(21-arr.length*2)]">{{item.title}}</view>
 					<!-- <view :class="['date frm fb ','fs'+(21-arr.length*2)]">今日</view> -->
-					<view :class="['state frm ','fz'+(15-arr.length)]">正在开抢中</view>
+					<view :class="['state frm ', activeIndex==index ? 'fz'+(16-arr.length):'fz'+(15-arr.length)]">{{item.tag}}</view>
 				</view>
 			</view>
 		</view>
@@ -23,31 +23,26 @@
 		data() {
 			return {
 				baseImageUrl:getApp().globalData.baseImageUrl,
+				activeIndex:0,
 				arr:[{
-					title:"今日",
+					title:"今天",
 					tag:"正在开抢中"
 				},
 				{
-					title:"今日",
-					tag:"正在开抢中"
+					title:"明天",
+					tag:"即将开抢"
 				},
 				{
-					title:"今日",
-					tag:"正在开抢中"
-				},
-				{
-					title:"今日",
-					tag:"正在开抢中"
-				},
-				{
-					title:"今日",
-					tag:"正在开抢中"
-				}],
-				b:"ad"
+					title:"后天",
+					tag:"即将开抢"
+				}]
 			};
 		},
-		mounted() {
-			console.log(this.$data)
+		methods:{
+			itemclickHandler(index){
+				this.activeIndex = index;
+				this.$emit("menuclick");
+			}
 		}
 	}
 </script>
@@ -67,6 +62,9 @@
 			flex: 1;
 			&.active{
 				background:linear-gradient(180deg,rgb(32,155,180) 0%,rgba(119,219,237,-1.62) 100%);
+			}
+			.date,.state{
+				transition: all 0.2s;
 			}
 		}
 	}

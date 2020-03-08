@@ -1,0 +1,9 @@
+module.exports = {
+        getHourMinute: function(str=''){
+			return str.slice(-8)
+		},
+		getPercent:function(left=0,all=100){
+			
+			return Math.ceil((left/all)*100)+'%'
+		}
+}

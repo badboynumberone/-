@@ -1,6 +1,6 @@
 export default {
 	//请求基础路径
-	apiHost:"https://api.hopeforever.cn",
+	apiHost:"http://121.41.49.151:8086",
 	//用户图片基础路径
 	imageBaseUrl:"https://mall-user.oss-cn-beijing.aliyuncs.com/user-dir-prefix/",
 	//上传路径
