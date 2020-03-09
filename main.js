@@ -43,5 +43,6 @@ import Pic from './mycomponents/Pic/Pic.vue'
 Vue.component('Pic', Pic)
 import Imgs from './mycomponents/Imgs/Imgs.vue'
 Vue.component('Imgs', Imgs)
-
+import Layer from './mycomponents/layer/layer.vue'
+Vue.component('Layer', Layer)
 

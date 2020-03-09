@@ -1,7 +1,7 @@
 <template>
 	<view >
 		<view class="header pr">
-			<image :src="`${baseImageUrl}/mb.jpg`" mode="widthFix" style="width: 100%;"></image>
+			<image :src="`${baseImageUrl}/bg_Presale@2x.png`" mode="widthFix" style="width: 100%;"></image>
 			<view class="content f pa ">
 				<view :class="['item',activeIndex==index ? 'active':'']" v-for=" (item,index) in arr" :key="index" @click="itemclickHandler(index)">
 					<view :class="['date frm cfff',activeIndex==index ? 'fb ' + 'fz'+(25-arr.length*2): 'fs'+(21-arr.length*2)]">{{item.title}}</view>

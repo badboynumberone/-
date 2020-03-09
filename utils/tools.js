@@ -110,6 +110,17 @@ function getNextHour(){
 function addZero(num){
 	return num<10 ? '0'+num:num;
 }
+
+function fn(){
+		let flag = false;
+		return function(fun){
+			if(!flag){
+				flag=true;
+				fun();
+			}
+		}
+	}
+const once = fn();
 export default {
 	navigateTo,
 	redirectTo,
@@ -123,5 +134,6 @@ export default {
 	shuffle,
 	chunk,
 	getNextHour,
-	addZero
+	addZero,
+	once
 }

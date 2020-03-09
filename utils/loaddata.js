@@ -39,10 +39,7 @@ async function fn(a) {
 
 	let e = this.pageData[t];
 
-	e.pageNum = ++e.pageNum, this.$set(this.pageData, t, e); 1 == this.pageData[t].pageNum && wx.showLoading({
-		title: "加载中",
-		mask: !0
-	});
+	e.pageNum = ++e.pageNum, this.$set(this.pageData, t, e); 1 == this.pageData[t].pageNum ;
 
 	let s = this.pageData[t];
 
@@ -55,8 +52,6 @@ async function fn(a) {
 	const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 	
 	await sleep(100);
-	wx.hideLoading();
-	
 
 	let g = this.pageData[t];
 
