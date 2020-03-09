@@ -24,6 +24,7 @@
 		<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" />
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 	</view>
 </template>
 

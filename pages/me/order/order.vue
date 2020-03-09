@@ -46,7 +46,7 @@
 		<view style="height: 100%;" v-if="isLoaded && !pageData[loadIndex].list.length">
 			<Empty :type="'address'" :text="'您暂时没有订单哦,赶紧去首页看看吧！'" :src="`${baseImageUrl}/ddwsj@2x.png`" :btnText="'去首页'" :url="'/pages/index/index/index'" />
 		</view>
-
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 		<!-- 模态框 -->
 		<van-dialog id="van-dialog" />
 		<van-toast id="van-toast" />

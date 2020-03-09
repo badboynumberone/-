@@ -4,7 +4,7 @@
 			<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
 		</view>
 		<view class="wrapper pl10 pr10 pr">
-			<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index">
+			<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">
 				<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
 				<view class="item ftm p10 bgfff pr" >
 					<view class="pr">
@@ -34,14 +34,14 @@
 						<view class="">
 							<!-- <TextTimer :startTime="'2020-03-08 18:04:00'" :endTime="'2020-03-08 20:00:00'" ref="texttimer" @update="updateStatus"></TextTimer> -->
 							<view>
-								<view class="left_time" v-if="status==1">
-									<text class="fz12 c666">活动即将开始:</text>
-									<text class="fz12 c666" style="color: #1AAE68;">{{hour}}:{{minute}}:{{second}}</text>
+								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==1">
+									<text class="fz12 c666">活动即将开始</text>
+									<!-- <text class="fz12 c666" style="color: #1AAE68;">{{hour}}:{{minute}}:{{second}}</text> -->
 								</view>
-								<view class="left_time" v-if="status==2">
-									<text class="fz12 c666">正在抢购中:</text>
+								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==2">
+									<text class="fz12" style="color: red;">正在抢购中</text>
 								</view>
-								<view class="left_time" v-if="status==0">
+								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0">
 									<text class="fz12 c666">活动已结束</text>
 								</view>
 							</view>
@@ -54,14 +54,11 @@
 						</view>
 					</view>
 					
-					<view class="button pa">
-						<!-- <view class="go ftm cfff">去抢购<van-icon name="arrow" style="margin-top: 7.9rpx;" /></view> -->
-						<!-- <view class="out ftm cfff">已抢完</view> -->
-						<view class="ready ftm cfff" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">查看详情</view>
-					</view>
+					
 				</view>
 			</view>
 		</view>
+		<Layer :isLoaded="isLoaded" class="fill" ></Layer>
 	</view>
 </template>
 <script module="utils" lang="wxs" src="../../../utils/util.wxs" />
@@ -75,6 +72,7 @@
 
 		data() {
 			return {
+				isLoaded:false,
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				list:[],
 				activeIndex:0,
@@ -86,6 +84,32 @@
 			getPercent(){
 				return function(left=0,all=0){
 					return Math.ceil((left/all)*100)+'%'
+				}
+			},
+			getStatus(){
+				return function(startTime="",endTime=""){
+					let now = new Date();
+					startTime = new Date(startTime);
+					endTime = new Date(endTime);
+					let s_n = startTime.getTime()-now.getTime();
+					let e_n = endTime.getTime()-now.getTime();
+					let seconds = null;
+					let status = null;
+					//活动未开始
+					if(s_n>0){
+						seconds =s_n;
+						status = 1;
+					}
+					//活动进行中
+					if(s_n<0 && e_n>0){
+						seconds =e_n;
+						status = 2;
+					}
+					//活动已结束
+					if(e_n<0){
+						status = 0;
+					}
+					return status
 				}
 			}
 		},
@@ -113,6 +137,7 @@
 			async getKillData(){
 				let result = await this.$net.sendRequest("/qiangGou/getRedisQgGoods",{},"GET");
 				this.list = [result.todayList,result.tomorrowList,result.houTianList];
+				this.isLoaded = true;
 			},
 			//页面跳转
 			navigateTo(e) {

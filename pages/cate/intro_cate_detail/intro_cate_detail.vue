@@ -16,7 +16,7 @@
 		<view class="fm" v-if="!pageData[loadIndex].list.length" style="height: 100%;">
 			<Empty :text="'没有找到商品,请更换分类再试试哦'" :src="`${baseImageUrl}/ddwsj@2x.png`" style="height: 100%;" />
 		</view>
-		
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 	</view>
 </template>
 
@@ -32,6 +32,7 @@
 		},
 		data() {
 			return {
+				isLoaded:false,
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				pageData: [{
 					areaName: "初始化",
@@ -91,6 +92,7 @@
 							pageNum: v.pageNum,
 							pageSize: 20
 						}, "GET")
+						this.isLoaded = true;
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						reslove(result);

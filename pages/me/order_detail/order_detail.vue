@@ -61,6 +61,7 @@
 			</view>
 		</view>
 		<van-dialog id="van-dialog" />
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 	</view>
 </template>
 

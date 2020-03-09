@@ -55,7 +55,7 @@
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Pic from "../../../mycomponents/Pic/Pic.vue";
 	import Api from "../../../utils/api.js";
-	let lastPage = null;
+	let lastPage = null,killId=null;
 	export default {
 		components: {
 			MyGoodsCard,
@@ -83,7 +83,8 @@
 					}],
 					note: ""
 				}],
-				freight: 0
+				freight: 0,
+				killId:0
 			};
 		},
 		computed: {
@@ -125,6 +126,7 @@
 			//获取提交的订单
 			getSubmitProducts(options) {
 				this.orders = JSON.parse(options.items);
+				this.killId = options.killId;
 				if (this.address!={}) {
 					this.getOrderDetail();
 				}
@@ -144,9 +146,10 @@
 					}
 					// 单独下单
 					if (lastPage.route == 'pages/index/product/product'&&JSON.stringify(this.address) != '{}') {
-						result = await this.$net.sendRequest("/order/getPrice", {
+						result = await this.$net.sendRequest(parseInt(this.killId)? "/killgoodsSpec/getPrice" : "/order/getPrice", {
 							addressId: this.address.id,
-							attrId: this.orders[0].items[0].attrId
+							attrId: this.orders[0].items[0].attrId,
+							quantity:1
 						});
 						this.freight = result.freight;
 					}
@@ -154,11 +157,6 @@
 					//TODO handle the exception
 					console.log(e)
 				}
-				
-				
-				
-				
-				
 			},
 			//页面跳转
 			navigateTo(e) {
@@ -175,17 +173,17 @@
 			},
 			// 下单
 			async generateOrder() {
-				
-
 				let result = null;
 				//下单
 				if (lastPage.route == 'pages/index/product/product') {
-					result = await this.$net.sendRequest("/order/generateOrder", {
+					result = await this.$net.sendRequest( parseInt(this.killId)?  "/killgoodsSpec/submit":"/order/generateOrder", {
 						addressId: this.address.id,
 						appSource: 'weixin',
 						attrId: this.orders[0].items[0].attrId,
 						note: this.orders[0].note,
-						quantity: this.orders[0].items[0].quantity
+						quantity: this.orders[0].items[0].quantity,
+						product:this.orders[0].items[0].productId,
+						killId:parseInt(this.killId)
 					});
 				}
 
@@ -227,11 +225,11 @@
 
 				
 
-				// 支付
+				// 获取秘钥
 				const res = await this.$net.sendRequest("/pay/miniAppPay", {
 					orderNo: result.orderNo
 				});
-				console.log('支付接口信息', res);
+				console.log('秘钥的信息', res);
 				wx.hideLoading();
 				//调用支付接口
 				uni.requestPayment({

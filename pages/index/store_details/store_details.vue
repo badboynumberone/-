@@ -42,6 +42,7 @@
 			<!-- 加载更多 -->
 			<load-more :tip="pageData[loadIndex].text" :loading="pageData[loadIndex].isLoading" />
 		</view>
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 	</view>
 </template>
 

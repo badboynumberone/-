@@ -1,5 +1,5 @@
 <template>
-	<view class="main" v-show="isLoaded" >
+	<view class="main">
 		<!-- 左上角返回按钮 -->
 		<view class="back pf pr" @click="back">
 			<van-icon class="center" style="margin-top: 2px;" name="arrow-left" color="#fff" />
@@ -33,7 +33,7 @@
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff" >¥{{killInfo.productQgNumber}}</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
+						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff" >¥{{killInfo.productQgPrice}}</text><text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
 					</view>
 					<view class="ftm">
 						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz11 cfff ml10" >累计销量{{pageData.sale}}{{pageData.unit}}</text> <text class="fz12 cfff ml10" v-if="pageData.xiangou">每人限购{{pageData.xiangou}}件</text>
@@ -128,7 +128,7 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button text="加入购物车" :color="'#222'" @click="showModal(false)" />
+					<van-goods-action-button v-if="!killInfo" text="加入购物车" :color="'#222'" @click="showModal(false)" />
 					<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 				</view>
 				<view style="width: 10px;height: 100%;"></view>
@@ -147,7 +147,8 @@
 						<Pic :src="imgList[0]" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 					</view>
 					<view class="right">
-						<text class="price">¥{{selectedItem.price}}</text>
+						<view><text class="price">¥{{selectedItem.price}}</text><text class="cccc fz12 ml5" style="text-decoration: line-through;">¥{{selectedItem.originPrice}}</text></view>
+						
 						<text class="stock">库存：{{selectedItem.stockNum}}{{pageData.unit}}</text>
 						<view class="selected">
 							已选：
@@ -192,6 +193,7 @@
 			</view>
 		</view>
 		<van-toast id="van-toast" />
+		<Layer :isLoaded="isLoaded" class="fill"></Layer>
 	</view>
 </template>
 
@@ -203,6 +205,7 @@
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
 	let timer =null;let attrs=null;
+	
 	export default {
 		components: {
 			MyButton,MyTag
@@ -231,13 +234,12 @@
 				],
 				startTime:"",
 				endTime:"",
-				killInfo:{
-					
-				},
+				killInfo:null,
 				status:0,
 				hour:'00',
 				minute:'00',
-				second:'00'
+				second:'00',
+				flag:false,
 			};
 		},
 		computed:{
@@ -254,9 +256,7 @@
 		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
-			this.$toast.loading({
-			  message: '加载中...'
-			});
+			
 			this.getData(options);
 		},
 		onShow() {
@@ -270,7 +270,7 @@
 		},
 		methods:{
 			starttimer(){
-				if(this.killInfo.beginTime==undefined){
+				if(this.killInfo==null){
 					return;
 				}
 				timer = setInterval(()=>{this.updateTime()},1000);
@@ -296,6 +296,26 @@
 				if(s_n<0 && e_n>0){
 					seconds =e_n;
 					this.status = 2;
+					if(this.flag){
+						return
+					}
+					const attrs = this.killInfo.productAttr.killAttrs.map(item=>{
+						let obj = {
+							id:item.killProAttId,
+							productId:item.productId,
+							name:item.attName,
+							stockNum:item.stockNum,
+							price:item.killPrice,
+							selected:false,
+							originPrice:item.price,
+							killId:item.killId
+						}
+						return obj
+					})
+					this.flag = true;
+					this.selectItems = attrs
+					attrs[0].selected=true;
+					this.selectedItem =this.selectItems[0];
 				}
 				//活动已结束,跟换商品属性
 				if(e_n<0){
@@ -303,7 +323,7 @@
 				}
 				const addZero = this.$tools.addZero;
 				seconds =Math.floor(seconds/1000);
-				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];
+				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor((seconds%3600)/60)),addZero(seconds%60)];
 
 			},
 			clearTimer(){
@@ -330,7 +350,7 @@
 			async getData(options){
 				//获取商品详情
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
-				this.isLoaded=true;this.$toast.clear();
+				this.isLoaded=true;
 				this.imgList = result.albumPics.split(",");
 				result.detailPics = result.detailPics.length>0 ? result.detailPics.split(",") : [];
 				
@@ -339,8 +359,9 @@
 					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 
 				}
 				//获取秒杀信息
-				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:500,...options.killId?{killId:options.killId}:{}},"GET");
-				this.killInfo = res; 
+				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:this.pageData.id,...options.killId?{killId:options.killId}:{}},"GET");
+				this.killInfo = res;
+				this.starttimer();
 				// console.log(res)
 			},
 			toCart(){
@@ -446,7 +467,8 @@
 						],
 						note:""
 					}];
-					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}`);
+					const killId = this.killInfo ? this.killInfo.id:0;
+					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}`);
 				}else{
 					//添加购物车
 					const result  =await this.$net.sendRequest("/cart/add",{productAttrId:this.selectedItem.id,quantity:this.count});
@@ -515,6 +537,7 @@
 		bottom: 0;
 		left: 0;
 		width: 100%;
+		z-index: 9;
 		.bar{
 			@include wh(100%,60rpx);
 			line-height: 60rpx;

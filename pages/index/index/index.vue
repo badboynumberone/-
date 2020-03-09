@@ -247,7 +247,7 @@
 		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
 			<image class="fill pa" style="bottom: 0px;left: 0px;" :src="`${baseImageUrl}/contact.png`" mode="aspectFill" ></image>
 		</button>
-		<button type="primary" @click="a">12</button>
+	
 	</view>
 </template>
 
@@ -341,7 +341,6 @@
 				timer = setInterval(()=>{this.updateTime()},1000);
 			},
 			updateTime(){
-				console.log("haha")
 				let startTime = this.startTime ? new Date(this.startTime) : new Date();
 				let endTime = this.endTime ? new Date(this.endTime) : this.$tools.getNextHour();
 				const addZero = this.$tools.addZero;
