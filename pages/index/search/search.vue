@@ -1,7 +1,7 @@
 <template>
 	<view class="main"  >
 		<!-- 搜索框 -->
-		<view class="pf" style="width: 100%;top: 0px;left: 0px;">
+		<view class="pf" style="width: 100%;top: 0px;left: 0px;z-index: 9;">
 			<Ser :isDisabled="false" ref="search" :color="'#38A472'" @startSerch='search'></Ser>
 		</view>
 		<view style="height: 45px;"></view>
@@ -39,7 +39,7 @@
 		<!-- 已经搜索 -->
 		<view class="searched"  :style="{'opacity':isHistory?0:1,'position': !isHistory?'static':'fixed','z-index':!isHistory?1:-1}">
 			<!-- 状态栏 -->
-			<view class="pf" style="width: 100%;top: 45px;">
+			<view class="pf" style="width: 100%;top: 45px;z-index: 9;">
 				<cate-bar ref='cate' @get="reload"></cate-bar>
 			</view>
 			<view style="height: 44px;"></view>
