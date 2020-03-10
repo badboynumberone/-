@@ -1,63 +1,64 @@
 <template>
-	<view class="main bgf1"  >
-		<view style="height: 150rpx;">
-			<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
-		</view>
-		<view class="wrapper pl10 pr10 pr">
-			<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">
-				<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
-				<view class="item ftm p10 bgfff pr" >
-					<view class="pr">
-						<Pic :src="item.pic" :height="'170rpx'" :width="'170rpx'" :mode="'aspectFit'" :back="'#f1f1f1'"/>
-				
-						<image v-if="item.productQgNumber-item.correntStock==item.productQgNumber" class="center" :src="`${baseImageUrl}/spike_sellout@2x.png`" mode="scaleToFill" style="width: 120rpx;height: 120rpx;"></image>
-					</view>
+	<view class="main">
+		<view class="container" style="background-color: #f1f1f1;">
+			<view style="height: 150rpx;">
+				<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
+			</view>
+			<view class="wrapper pl10 pr10 pr pb10">
+				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">
+					<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
+					<view class="item ftm p10 bgfff pr" >
+						<view class="pr">
+							<Pic :src="item.pic" :height="'170rpx'" :width="'170rpx'" :mode="'aspectFit'" :back="'#f1f1f1'"/>
 					
-					<view class="content ml10">
-						<view class="title fz15 fb more-hidden" style="line-height: 46rpx;">
-							{{item.name}}
+							<image v-if="item.productQgNumber-item.correntStock==item.productQgNumber" class="center" :src="`${baseImageUrl}/spike_sellout@2x.png`" mode="scaleToFill" style="width: 120rpx;height: 120rpx;"></image>
 						</view>
-						<view class="limit_count fz12">
-							限量{{item.productQgNumber}}件
-						</view>
-						<view class="limit_time fz12">
-							{{utils.getHourMinute(item.beginTime)}}开抢
-						</view>
-						<view class="progress ftm pt5">
-							
-							<view class="line">
+						
+						<view class="content ml10">
+							<view class="title fz15 fb more-hidden" style="line-height: 46rpx;">
+								{{item.name}}
+							</view>
+							<view class="limit_count fz12">
+								限量{{item.productQgNumber}}件
+							</view>
+							<view class="limit_time fz12">
+								{{utils.getHourMinute(item.beginTime)}}开抢
+							</view>
+							<view class="progress ftm pt5">
 								
-								<view class="length" :style="[{width:getPercent(item.productQgNumber-item.correntStock,item.productQgNumber),'height':'100%'}]"></view>
+								<view class="line">
+									
+									<view class="length" :style="[{width:getPercent(item.productQgNumber-item.correntStock,item.productQgNumber),'height':'100%'}]"></view>
+								</view>
+								<view class="text ml10 cccc fz12">已抢{{item.productQgNumber-item.correntStock}}件</view>
 							</view>
-							<view class="text ml10 cccc fz12">已抢{{item.productQgNumber-item.correntStock}}件</view>
-						</view>
-						<view class="">
-							<!-- <TextTimer :startTime="'2020-03-08 18:04:00'" :endTime="'2020-03-08 20:00:00'" ref="texttimer" @update="updateStatus"></TextTimer> -->
-							<view>
-								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==1">
-									<text class="fz12 c666">活动即将开始</text>
-									<!-- <text class="fz12 c666" style="color: #1AAE68;">{{hour}}:{{minute}}:{{second}}</text> -->
-								</view>
-								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==2">
-									<text class="fz12" style="color: red;">正在抢购中</text>
-								</view>
-								<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0">
-									<text class="fz12 c666">活动已结束</text>
+							<view class="">
+								<!-- <TextTimer :startTime="'2020-03-08 18:04:00'" :endTime="'2020-03-08 20:00:00'" ref="texttimer" @update="updateStatus"></TextTimer> -->
+								<view>
+									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==1">
+										<text class="fz12 c666">活动即将开始</text>
+										<!-- <text class="fz12 c666" style="color: #1AAE68;">{{hour}}:{{minute}}:{{second}}</text> -->
+									</view>
+									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==2">
+										<text class="fz12" style="color: red;">正在抢购中</text>
+									</view>
+									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0">
+										<text class="fz12 c666">活动已结束</text>
+									</view>
 								</view>
 							</view>
-						</view>
-						
-						
-						<view class="price">
-							<text class="now fz21 fb">¥{{item.productQgNumber}}</text>
-							<text class="old fz13">¥{{item.productPrice}}</text>
+							
+							
+							<view class="price">
+								<text class="now fz21 fb">¥{{item.productQgNumber}}</text>
+								<text class="old fz13">¥{{item.productPrice}}</text>
+							</view>
 						</view>
 					</view>
-					
-					
 				</view>
 			</view>
 		</view>
+		
 		<Layer :isLoaded="isLoaded" class="fill" ></Layer>
 	</view>
 </template>

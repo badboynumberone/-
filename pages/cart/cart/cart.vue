@@ -328,7 +328,6 @@
 						item.note = "";
 						return item
 					});
-					console.log(checkedResult)
 					if(!batchCheckLimit(checkedResult.reduce((all,next)=>{return [...all,...next.items]},[]))){
 						return;
 					}

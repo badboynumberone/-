@@ -98,8 +98,8 @@
 				<image :src="`${baseImageUrl}/yumi.jpg`" mode="aspectFit" style="width: 282rpx;height: 243rpx;"></image>
 			</view>
 			<view style="width: 20px;"></view>
-			<view class="right fsb" style="flex-direction: column;">
-				<view class="top p10">
+			<view class="right fsb" style="flex-direction: column;" >
+				<view class="top p10" @click="commingsoon">
 					<view class="ftm">
 						<text class="fb fz15">预售好货</text>
 						<image class="ml5" :src="`${baseImageUrl}/czhh.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
@@ -112,7 +112,7 @@
 						<image :src="`${baseImageUrl}/jidan.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 				</view>
-				<view class="bottom p10">
+				<view class="bottom p10" @click="commingsoon">
 					<view class="ftm">
 						<text class="fb fz15">超值拼团</text>
 						<image class="ml5" :src="`${baseImageUrl}/jghml.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
@@ -247,7 +247,7 @@
 		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
 			<image class="fill pa" style="bottom: 0px;left: 0px;" :src="`${baseImageUrl}/contact.png`" mode="aspectFill" ></image>
 		</button>
-	
+		<van-dialog id="van-dialog" />
 	</view>
 </template>
 
@@ -258,6 +258,7 @@
 	import uniGrid from "../../../mycomponents/uni-grid/uni-grid.vue";
 	import uniGridItem from "../../../mycomponents/uni-grid-item/uni-grid-item.vue"
 	import MyTag from '../../../mycomponents/my-tag/my-tag.vue';
+	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js'
 	let timer =null;
 	export default {
 		
@@ -337,6 +338,14 @@
 			}
 		},
 		methods: {
+			//敬请期待
+			commingsoon(){
+				uni.showModal({
+					content:"敬请期待",
+					showCancel: false
+				});
+				
+			},
 			starttimer(){
 				timer = setInterval(()=>{this.updateTime()},1000);
 			},

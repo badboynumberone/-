@@ -33,10 +33,10 @@
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">秒杀价</text><text class="fz20 fb ml5 cfff" >¥{{killInfo.productQgPrice}}</text><text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
+						<text class="fz12 cfff">秒杀价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice}}</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz11 cfff ml10" >累计销量{{pageData.sale}}{{pageData.unit}}</text> <text class="fz12 cfff ml10" v-if="pageData.xiangou">每人限购{{pageData.xiangou}}件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz11 cfff ml10" >累计销量{{pageData.sale}}{{pageData.unit}}</text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">

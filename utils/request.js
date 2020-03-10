@@ -50,14 +50,26 @@ export function sendRequest(url, params = {}, method = "POST") {
 							mask:true,
 							duration:1500
 						})
+						return
 					}
 					
 					if(result.code==500&&result.message=='验证码错误'){
 						resolve({token:""})
+						return
 					}
 					
 					if(result.code==500&&result.message=='无此商品'){
 						resolve(null)
+						return
+					}
+					const route =  getCurrentPages()[getCurrentPages().length - 1].route
+					
+					if(result.code==500&&route=='pages/cart/submit_order/submit_order'){
+						uni.showModal({
+							content: result.message,
+							showCancel: false
+						});
+						resolve()
 					}
 
 					//各页面返回数据异常处理
@@ -68,6 +80,7 @@ export function sendRequest(url, params = {}, method = "POST") {
 
 			},
 			fail: (error) => {
+				console.info("请求错误:",error)
 				uni.showToast({
 					title: 'net error',
 					icon: 'none',

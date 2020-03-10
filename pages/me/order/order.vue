@@ -146,7 +146,7 @@
 				const item =e.currentTarget.dataset.item;
 				
 				//限制购买
-				const islimit = await Api.isLimitBuy(item.items.map(item=>item.productId));
+				const islimit = await Api.isLimitBuy(item.items.map(item=>item.productId),item.items.map(item=>item.name));
 				if(!islimit){
 					return;
 				}
