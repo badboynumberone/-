@@ -147,7 +147,7 @@
 						<Pic :src="imgList[0]" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 					</view>
 					<view class="right">
-						<view><text class="price">¥{{selectedItem.price}}</text><text class="cccc fz12 ml5" style="text-decoration: line-through;">¥{{selectedItem.originPrice}}</text></view>
+						<view><text class="price">¥{{selectedItem.price}}</text><text class="cccc fz12 ml5" v-if="killInfo" style="text-decoration: line-through;">¥{{selectedItem.originPrice}}</text></view>
 						
 						<text class="stock">库存：{{selectedItem.stockNum}}{{pageData.unit}}</text>
 						<view class="selected">
