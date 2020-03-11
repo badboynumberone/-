@@ -416,11 +416,11 @@
 				
 				list.splice(5,0,...[{
 						id:9,
-						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner01.png",
+						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/cate06%403x.png",
 						name:"在线客服"
 					},{
 						id:10,
-						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner02.png",
+						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/cate07%403x.png",
 						name:"会员系统"
 					}])
 				console.log(list)
