@@ -67,10 +67,11 @@
 		<view :class="['goodss']">
 			<view class="nav p10" style="padding-top: 0px;padding-bottom: 0px;">
 				<van-grid column-num="5" :border="false">
-					<van-grid-item use-slot v-for="(item,index) in cateList" :key="index" v-if="index<8">
-						<view class="fm" style="flex-flow: column wrap;" @click="toCateDetail($event,item)" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
+					<van-grid-item use-slot v-for="(item,index) in cateList" :key="index" >
+						<view class="fm pr" style="flex-flow: column wrap;" @click="toCateDetail($event,item,index)" :data-url="'/pages/cate/intro_cate_detail/intro_cate_detail?id='+item.id+'&name='+item.name">
 							<Pic :src="item.mobilePhoto" :height="'40px'" :width="'40px'" :mode="'aspectFill'" :back="'#f1f1f1'" :round="true"></Pic>
 							<text class="text fz12" style="color: #222;margin-top: 5rpx;">{{item.name}}</text>
+							<button class="fill pa" v-if="index==5" open-type="contact"  bindcontact="handleContact" style="opacity: 0;top: 0;left: 0;" type="primary"></button>
 						</view>
 					</van-grid-item>
 				</van-grid>
@@ -243,10 +244,6 @@
 		</view>
 		
 		<!-- 客服图标 -->
-		
-		<button class="contact pf" style="bottom: 50px;right: 0px;width: 50px;height: 50px;background: transparent;border-radius: 5px;overflow: hidden;" open-type="contact"  bindcontact="handleContact">
-			<image class="fill pa" style="bottom: 0px;left: 0px;" :src="`${baseImageUrl}/contact.png`" mode="aspectFill" ></image>
-		</button>
 		<van-dialog id="van-dialog" />
 	</view>
 </template>
@@ -370,13 +367,8 @@
 				console.log(e)
 				this.activeIndex = e.detail.current
 			},
-			toCateDetail(e, item) {
-				if (item.name == '更多') {
-					uni.switchTab({
-						url: "/pages/cate/cate/cate"
-					})
-					return;
-				}
+			toCateDetail(e, item,index) {
+				if(index==5 ||index==6){return}
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//跳往列表页
@@ -420,7 +412,22 @@
 					appSource: 'weixin'
 				}, "GET");
 				const mapPrice = (arr)=>arr.map(item=>{item.price=item.price.split("~")[0];return item});
-				this.cateList = result.catList.reverse(), this.hotList = result.hotProducts, this.newList = mapPrice(result.newProducts) ,
+				let list = result.catList.reverse();
+				
+				list.splice(5,0,...[{
+						id:9,
+						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner01.png",
+						name:"在线客服"
+					},{
+						id:10,
+						mobilePhoto:"https://mall-wechat.oss-cn-beijing.aliyuncs.com/banner02.png",
+						name:"会员系统"
+					}])
+				console.log(list)
+				this.cateList = list
+					
+					
+					, this.hotList = result.hotProducts, this.newList = mapPrice(result.newProducts) ,
 					this.recommandList = mapPrice(result.recommandProducts) ;
 			},
 			//获取数据
