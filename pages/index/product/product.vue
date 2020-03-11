@@ -41,7 +41,7 @@
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
 					<view class="fz12 cfff" style="text-align: right;">
-						{{status==1?'距离抢购时间还剩':status==2?'距离价格变更还剩':'活动已结束'}}
+						{{status==1?'距离秒杀开始还剩':status==2?'距离秒杀结束还剩':'活动已结束'}}
 					</view>
 					<view class="time fsb mt5">
 
@@ -147,7 +147,7 @@
 						<Pic :src="imgList[0]" :height="'100%'" :width="'100%'" :mode="'aspectFill'"></Pic>
 					</view>
 					<view class="right">
-						<view><text class="price">¥{{selectedItem.price}}</text><text class="cccc fz12 ml5" v-if="killInfo" style="text-decoration: line-through;">¥{{selectedItem.originPrice}}</text></view>
+						<view><text class="price">¥{{selectedItem.price}}</text><text class="cccc fz12 ml5" v-if="selectedItem.originPrice" style="text-decoration: line-through;">¥{{selectedItem.originPrice}}</text></view>
 						
 						<text class="stock">库存：{{selectedItem.stockNum}}{{pageData.unit}}</text>
 						<view class="selected">
@@ -273,16 +273,12 @@
 				if(this.killInfo==null){
 					return;
 				}
-				timer = setInterval(()=>{this.updateTime()},1000);
+				timer = setInterval(()=>{this.updateTime();},1000);
 			},
 			updateTime(){
 				let now = new Date();
-				let startTime = new Date(this.killInfo.beginTime);
-				let endTime = new Date(this.killInfo.endTime);
-				//测试数据
-				// let endTime = new Date("2020-03-08 21:00:00");
-				// let startTime = new Date("2020-03-08 20:30:00");
-
+				let startTime = new Date(this.killInfo.beginTime.replace(/-/g,"/"));
+				let endTime = new Date(this.killInfo.endTime.replace(/-/g,"/"));
 				let s_n = startTime.getTime()-now.getTime();
 				let e_n = endTime.getTime()-now.getTime();
 				let seconds = null;
@@ -290,41 +286,40 @@
 				//活动未开始
 				if(s_n>0){
 					seconds =s_n;
-					this.status = 1;
+					(this.status!=1)&&(this.status = 1)
 				}
 				//活动进行中需要更换商品属性的价格
 				if(s_n<0 && e_n>0){
+					(this.status!=2)&&(this.status = 2)
 					seconds =e_n;
 					this.status = 2;
-					if(this.flag){
-						return
+					if(!this.flag){
+						const attrs = this.killInfo.productAttr.killAttrs.map(item=>{
+							let obj = {
+								id:item.killProAttId,
+								productId:item.productId,
+								name:item.attName,
+								stockNum:item.stockNum,
+								price:item.killPrice,
+								selected:false,
+								originPrice:item.price,
+								killId:item.killId
+							}
+							return obj
+						})
+						this.flag = true;
+						this.selectItems = attrs;
+						this.selectItems[0].selected=true;
+						this.selectedItem =this.selectItems[0];
 					}
-					const attrs = this.killInfo.productAttr.killAttrs.map(item=>{
-						let obj = {
-							id:item.killProAttId,
-							productId:item.productId,
-							name:item.attName,
-							stockNum:item.stockNum,
-							price:item.killPrice,
-							selected:false,
-							originPrice:item.price,
-							killId:item.killId
-						}
-						return obj
-					})
-					this.flag = true;
-					this.selectItems = attrs
-					attrs[0].selected=true;
-					this.selectedItem =this.selectItems[0];
 				}
 				//活动已结束,跟换商品属性
 				if(e_n<0){
-					this.status = 0;
+					(this.status!=0)&&(this.status = 0)
 				}
 				const addZero = this.$tools.addZero;
 				seconds =Math.floor(seconds/1000);
-				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor((seconds%3600)/60)),addZero(seconds%60)];
-
+				this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
 			},
 			clearTimer(){
 				clearInterval(timer);
@@ -361,6 +356,7 @@
 				//获取秒杀信息
 				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:this.pageData.id,...options.killId?{killId:options.killId}:{}},"GET");
 				this.killInfo = res;
+				console.log("数据获取完成")
 				this.starttimer();
 				// console.log(res)
 			},

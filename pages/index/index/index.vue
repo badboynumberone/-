@@ -352,6 +352,7 @@
 			updateTime(){
 				let startTime = this.startTime ? new Date(this.startTime) : new Date();
 				let endTime = this.endTime ? new Date(this.endTime) : this.$tools.getNextHour();
+				
 				const addZero = this.$tools.addZero;
 				const seconds =Math.floor((endTime.getTime() -startTime.getTime())/1000);
 				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];

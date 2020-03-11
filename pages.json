@@ -297,7 +297,7 @@
             "path" : "pages/index/seckill/seckill",
             "style" : {
 				"navigationBarTitleText":"限时秒杀",
-				"backgroundColor":"#000000"
+				"backgroundColor":"#f1f1f1"
 			}
         }
     ],

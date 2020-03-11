@@ -65,6 +65,7 @@ export function sendRequest(url, params = {}, method = "POST") {
 					const route =  getCurrentPages()[getCurrentPages().length - 1].route
 					
 					if(result.code==500&&route=='pages/cart/submit_order/submit_order'){
+						wx.hideLoading();
 						uni.showModal({
 							content: result.message,
 							showCancel: false

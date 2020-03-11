@@ -1,11 +1,11 @@
 <template>
-	<view class="main">
+	<view class="main"  style="background-color: #f1f1f1;">
 		<view class="container" style="background-color: #f1f1f1;">
 			<view style="height: 150rpx;">
 				<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
 			</view>
 			<view class="wrapper pl10 pr10 pr pb10">
-				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId">
+				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId+'&killId='+item.id">
 					<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
 					<view class="item ftm p10 bgfff pr" >
 						<view class="pr">
@@ -18,11 +18,8 @@
 							<view class="title fz15 fb more-hidden" style="line-height: 46rpx;">
 								{{item.name}}
 							</view>
-							<view class="limit_count fz12">
-								限量{{item.productQgNumber}}件
-							</view>
-							<view class="limit_time fz12">
-								{{utils.getHourMinute(item.beginTime)}}开抢
+							<view >
+								<text class="limit_time fz12 mr5">{{utils.getHourMinute(item.beginTime)}}开抢</text> <text class="limit_count fz12">限量{{item.productQgNumber}}件</text> 
 							</view>
 							<view class="progress ftm pt5">
 								
@@ -50,9 +47,16 @@
 							
 							
 							<view class="price">
-								<text class="now fz21 fb">¥{{item.productQgNumber}}</text>
+								<text class="now fz21 fb">¥{{item.productQgPrice}}</text>
 								<text class="old fz13">¥{{item.productPrice}}</text>
 							</view>
+							
+						</view>
+						
+						<view class="button pa">
+							<view class="go ftm cfff" v-if="getStatus(item.beginTime,item.endTime)==2">去抢购<van-icon name="arrow" style="margin-top: 7.9rpx;" /></view>
+							<view class="out ftm cfff" v-if="getStatus(item.beginTime,item.endTime)==0">已抢完</view>
+							<view class="go ftm cfff"  v-if="getStatus(item.beginTime,item.endTime)==1">查看详情</view>
 						</view>
 					</view>
 				</view>
@@ -90,8 +94,8 @@
 			getStatus(){
 				return function(startTime="",endTime=""){
 					let now = new Date();
-					startTime = new Date(startTime);
-					endTime = new Date(endTime);
+					startTime = new Date(startTime.replace(/-/g,"/"));
+					endTime = new Date(endTime.replace(/-/g,"/"));
 					let s_n = startTime.getTime()-now.getTime();
 					let e_n = endTime.getTime()-now.getTime();
 					let seconds = null;
@@ -171,9 +175,6 @@
 				if(e_n<0){
 					this.status = 0;
 				}
-				this.$emit("update")
-				seconds =Math.floor(seconds/1000);
-				[this.hour,this.minute,this.second] = [addZero(Math.floor(seconds/3600)),addZero(Math.floor(seconds/60)),addZero(seconds%60)];
 			},
 			clearTimer(){
 				clearInterval(this.timer);
