@@ -128,7 +128,7 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button v-if="!killInfo" text="加入购物车" :color="'#222'" @click="showModal(false)" />
+					<van-goods-action-button v-if="status!=2" text="加入购物车" :color="'#222'" @click="showModal(false)" />
 					<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 				</view>
 				<view style="width: 10px;height: 100%;"></view>
@@ -316,6 +316,8 @@
 				//活动已结束,跟换商品属性
 				if(e_n<0){
 					(this.status!=0)&&(this.status = 0)
+					this.killInfo=null;
+					clearInterval(timer)
 				}
 				const addZero = this.$tools.addZero;
 				seconds =Math.floor(seconds/1000);
@@ -433,13 +435,9 @@
 				} 
 				
 				//限制购买
-				const islimit = await Api.isLimitBuy([this.pageData.id]);
+				const islimit = await Api.isLimitBuy([{id:this.pageData.id,name:this.pageData.name,count:this.count}]);
 				if(!islimit){
 					return;
-				}
-				//限购数量
-				if(this.pageData.xiangou&&this.pageData.xiangouNumber>0&&this.count>this.pageData.xiangouNumber){
-					this.$tools.Toast(`该商品限购${this.pageData.xiangouNumber}${this.pageData.unit},请重新选择数量!`);return;
 				}
 				//关闭弹窗
 				this.toggleSpec();

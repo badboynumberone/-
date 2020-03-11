@@ -159,7 +159,7 @@
 			// 立即支付
 			async comfirmPay() {
 				//限制购买
-				const islimit = await Api.isLimitBuy(this.pageData.items.map(item=>item.id));
+				const islimit = await Api.isLimitBuy(this.pageData.items.map(item=>{return {id:item.productId,name:item.productName,count:item.productQuantity}}));
 				if(!islimit){
 					return;
 				}
