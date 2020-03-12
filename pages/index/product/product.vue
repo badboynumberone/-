@@ -36,7 +36,7 @@
 						<text class="fz12 cfff">秒杀价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice}}</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz11 cfff ml10" >累计销量{{pageData.sale}}{{pageData.unit}}</text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
@@ -121,15 +121,16 @@
 
 
 		<!-- 商品提交条 -->
-		<view class="bottom_bar">
+		<view class="bottom_bar" v-if="isLoaded">
 			<view class="bar fz14" v-if="pageData.stock<=5 || !pageData.publishStatus">{{ !pageData.publishStatus ?  '当前商品已下架,快去看看其他商品吧!' :  pageData.stock<=0 ? '当前商品已售罄，可查看更多商品':`当前商品库存仅剩${pageData.stock}件`}}</view>
 			<van-goods-action>
 				<van-goods-action-icon @click="contact" icon="chat-o" text="客服" />
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button v-if="status!=2" text="加入购物车" :color="'#222'" @click="showModal(false)" />
-					<van-goods-action-button text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
+					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime+'即将开抢'" :color="'#F0AC41'" />
+					<van-goods-action-button v-if="status!=2&&status!=1" text="加入购物车" :color="'#222'" @click="showModal(false)" />
+					<van-goods-action-button v-if="status!=1" text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 				</view>
 				<view style="width: 10px;height: 100%;"></view>
 			</van-goods-action>

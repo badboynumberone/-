@@ -7,7 +7,7 @@
 		</view>
 		<!-- 新品速递 -->
 		<view class="new_goods pr">
-			<image class="back pa" :src="`${baseImageUrl}/home-bg@2x.jpg`" mode="widthFix"></image>
+			<image class="back pa" :src="`${baseImageUrl}/home-bg@2x.jpg`" lazy-load="true" mode="widthFix"></image>
 			<view class="new_content cl">
 				<!-- <image class="pa fill" :src="`${baseImageUrl}/new_bg@2x.png`" mode="scaleToFill"></image>
 				<view class="content pa fill p10">
@@ -37,7 +37,7 @@
 					<swiper :autoplay="true" :circular="true" :interval="4000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
 						<swiper-item v-for="(item,index) in banners" :key="index" @click="toProductDetail(item.id)">
 							<view class="swiper-item fill">
-								<image class="fill" :src="item.url" mode="scaleToFill"></image>
+								<image class="fill" :src="item.url" lazy-load="true" mode="scaleToFill"></image>
 							</view>
 						</swiper-item>
 					</swiper>
@@ -82,7 +82,7 @@
 		<view class="navs f p10">
 			<view class="left p10" @click="navigateTo" :data-url="'/pages/index/seckill/seckill'">
 				<view class="ftm mb5" >
-					<image class="mr5" :src="`${baseImageUrl}/clock.png`" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
+					<image class="mr5" lazy-load="true" :src="`${baseImageUrl}/clock.png`" mode="aspectFit" style="width: 30rpx;height:33rpx;"></image>
 					<text class="fb fz15">限时秒杀</text>
 				</view>
 				<view class="fz12" style="color: #666;">新鲜好物特惠抢购</view>
@@ -103,27 +103,27 @@
 				<view class="top p10" @click="commingsoon">
 					<view class="ftm">
 						<text class="fb fz15">预售好货</text>
-						<image class="ml5" :src="`${baseImageUrl}/czhh.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+						<image class="ml5" lazy-load="true" :src="`${baseImageUrl}/czhh.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
 					</view>
 					<view class="" style="margin-top: -5px;">
 						<text class="fz12" style="color: #666;" :decode="true">精选好货  超前首发</text>
 					</view>
 					<view class="f">
-						<image :src="`${baseImageUrl}/fanshu.png`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
-						<image :src="`${baseImageUrl}/jidan.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image lazy-load="true" :src="`${baseImageUrl}/fanshu.png`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image lazy-load="true" :src="`${baseImageUrl}/jidan.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 				</view>
 				<view class="bottom p10" @click="commingsoon">
 					<view class="ftm">
 						<text class="fb fz15">超值拼团</text>
-						<image class="ml5" :src="`${baseImageUrl}/jghml.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
+						<image  lazy-load="true" class="ml5" :src="`${baseImageUrl}/jghml.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
 					</view>
 					<view class="" style="margin-top: -5px;">
 						<text class="fz12" style="color: #666;" :decode="true">应季美食 潮流护理</text>
 					</view>
 					<view class="f">
-						<image :src="`${baseImageUrl}/fanqie.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
-						<image :src="`${baseImageUrl}/mihoutao.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image lazy-load="true" :src="`${baseImageUrl}/fanqie.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
+						<image lazy-load="true" :src="`${baseImageUrl}/mihoutao.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 					
 				</view>
@@ -139,7 +139,7 @@
 						<text class="fb fz14" style="text-indent: 50rpx;">优品推荐</text>
 						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('recommandList')"><text>更多推荐</text><image :src="`${baseImageUrl}/Lowerarrow@2x.png`" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 					</view>
-					<image class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
+					<image lazy-load="true" class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
 				</view>
 				<view class="content ftm">
 					<scroll-view class="f" scroll-x style="height: 180px;">
@@ -147,7 +147,7 @@
 							<view class="item p10 ml10 pr" v-for="(item,index) in recommandList" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.id">
 								<view class="tag pa">
 									<text class="center fz10" style="color: #fff;line-height: 36rpx;text-align: center;white-space: nowrap;">好货</text>
-									<image class="fill" :src="`${baseImageUrl}/good_bg@2x.png`" mode=""></image>
+									<image lazy-load="true" class="fill" :src="`${baseImageUrl}/good_bg@2x.png`" mode=""></image>
 								</view>
 								<Pic :src="item.pic" :height="'100px'" :width="'100px'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
 								<view class="text-hidden  fz14" style="width: 100%;">{{item.name}}</view>
@@ -155,7 +155,7 @@
 									<text class="price theme fz13">
 										￥{{item.price}}
 									</text>
-									<image style="width: 15px;height: 36rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"
+									<image lazy-load="true" style="width: 15px;height: 36rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"
 									 mode="aspectFit"></image>
 								</view>
 							</view>
@@ -173,14 +173,14 @@
 						<text class="fb fz14" style="text-indent: 50rpx;" >热销榜</text>
 						<view class="more fz10 ftm" style="color: #666;border-color: #666;" @click="toList('hotList')"><text>更多热销</text><image :src="`${baseImageUrl}/Lowerarrow@2x.png`" mode="aspectFill" style="width: 14px;height: 4px;margin-left: 2px;"></image></view>
 					</view>
-					<image class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
+					<image lazy-load="true" class="pa fill" style="top: 0px;left: 0px;" :src="`${baseImageUrl}/bg-bar.png`" mode="widthFix"></image>
 				</view>
 				<view class="content p5">
 					<div class="single f p10 mb5" v-for="(item,index) in hotList" :key="index" v-if="index<3" @click="navigateTo"
 					 :data-url="'/pages/index/product/product?id='+item.id">
 						<view class="mr10 pr" style="width: 180rpx;height:180rpx">
 							<Pic :src="item.pic" :height="'100%'" :width="'100%'" :mode="'aspectFill'" :back="'#f1f1f1'"></Pic>
-							<image class="pa" style="top: 0px;left: 0px;width: 60rpx;height: 60rpx;" :src="
+							<image lazy-load="true" class="pa" style="top: 0px;left: 0px;width: 60rpx;height: 60rpx;" :src="
 							index==0? `${baseImageUrl}/ranking1@2x.png` : index==1? `${baseImageUrl}/ranking2@2x.png` : `${baseImageUrl}/ranking3@2x.png`
 							"
 							 mode="aspectFill"></image>
@@ -200,7 +200,7 @@
 								<text class="price theme fz16 fb">
 									￥{{item.price}}
 								</text>
-								<image style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"  
+								<image lazy-load="true" style="width: 22.5px;height: 54rpx;transform: translateY(-2px);" :src="`${baseImageUrl}/shopping-Cart-Selection@2x.png`"  
 								 mode="aspectFit"></image>
 							</view>
 						</div>
@@ -229,7 +229,7 @@
 									</text>
 								</view>
 								<view><text class="fz11" style="color: #666;">销量:{{item.sale}}</text></view>
-								<image class="pa" style="width: 30rpx;height: 72rpx;transform: translateY(-2rpx);bottom: 0rpx;right: 15rpx;" :src="`${baseImageUrl}/tab-shoppingchart-pre@2x.png`"
+								<image lazy-load="true" class="pa" style="width: 30rpx;height: 72rpx;transform: translateY(-2rpx);bottom: 0rpx;right: 15rpx;" :src="`${baseImageUrl}/tab-shoppingchart-pre@2x.png`"
 								 mode="aspectFit"></image>
 							</view>
 						</view>
