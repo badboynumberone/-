@@ -3,10 +3,10 @@
 		<view class="header pr">
 			<image :src="`${baseImageUrl}/bg_Presale@2x.png`" mode="widthFix" style="width: 100%;"></image>
 			<view class="content f pa ">
-				<view :class="['item',activeIndex==index ? 'active':'']" v-for=" (item,index) in arr" :key="index" @click="itemclickHandler(index)">
-					<view :class="['date frm cfff',activeIndex==index ? 'fb ' + 'fz'+(25-arr.length*2): 'fs'+(21-arr.length*2)]">{{item.title}}</view>
-					<!-- <view :class="['date frm fb ','fs'+(21-arr.length*2)]">今日</view> -->
-					<view :class="['state frm ', activeIndex==index ? 'fz'+(16-arr.length):'fz'+(15-arr.length)]">{{item.tag}}</view>
+				<view :class="['item',activeIndex==index ? 'active':'']" v-for=" (item,index) in navs" :key="index" @click="itemclickHandler(index)">
+					<view :class="['date frm cfff',activeIndex==index ? 'fb ' + 'fz'+(23-navs.length*2): 'fs'+(21-navs.length*2)]">{{item.title}}</view>
+					<!-- <view :class="['date frm fb ','fs'+(21-navs.length*2)]">今日</view> -->
+					<view :class="['state frm ', activeIndex==index ? 'fz'+(16-navs.length):'fz'+(15-navs.length)]">{{item.tag}}</view>
 				</view>
 			</view>
 		</view>
@@ -24,18 +24,7 @@
 			return {
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				activeIndex:0,
-				arr:[{
-					title:"今天",
-					tag:"正在开抢中"
-				},
-				{
-					title:"明天",
-					tag:"即将开抢"
-				},
-				{
-					title:"后天",
-					tag:"即将开抢"
-				}]
+				
 			};
 		},
 		methods:{

@@ -62,14 +62,13 @@
 				</view>
 			</view>
 		</view>
-		
 		<Layer :isLoaded="isLoaded" class="fill" ></Layer>
 	</view>
 </template>
 <script module="utils" lang="wxs" src="../../../utils/util.wxs" />
 <script>
 	import SeckillHeader from '../../../mycomponents/seckill-header/seckill-header.vue'
-	let opt = null,pages=null;
+	let opt = null,pages=null;let timer = null;
 	export default {
 		components:{
 			SeckillHeader
@@ -98,6 +97,7 @@
 			};
 		},
 		computed:{
+			
 			getPercent(){
 				return function(left=0,all=0){
 					return Math.ceil((left/all)*100)+'%'

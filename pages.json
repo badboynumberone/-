@@ -300,6 +300,12 @@
 				"backgroundColor":"#f1f1f1"
 			}
         }
+        ,{
+            "path" : "pages/index/presell/presell",
+            "style" : {
+				"navigationBarTitleText":"预售好货"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

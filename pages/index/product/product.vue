@@ -12,7 +12,7 @@
 				<swiper-item v-if="pageData.stock>0" class="swiper-item" v-for="(item,index) in imgList" :key="index">
 					<view class="image-wrapper pr">
 						<image :src="item" class="loaded" mode="aspectFill" @click="previewImgVideo($event,index)" :data-imgs="imgList" :data-src="item"></image>
-						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image>
+						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" @click="videoStart" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image>
 					</view>
 				</swiper-item>
 				<!-- 售空 -->
@@ -33,15 +33,15 @@
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">秒杀价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice}}</text><view class="buyed ml10 cfff fz12">已抢{{killInfo.productQgNumber-killInfo.correntStock}}件</view>
+						<text class="fz12 cfff">预售价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.price}}</text><view class="buyed ml10 cfff fz12">已抢{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale)}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock}}件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.activityPrice}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock || preSaleInfo.productStock-preSaleInfo.sale}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
 					<view class="fz12 cfff" style="text-align: right;">
-						{{status==1?'距离秒杀开始还剩':status==2?'距离秒杀结束还剩':'活动已结束'}}
+						{{noticeText}}
 					</view>
 					<view class="time fsb mt5">
 
@@ -205,7 +205,7 @@
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
-	let timer =null;let attrs=null;
+	let timer =null;let attrs=null;let opt=null;
 	
 	export default {
 		components: {
@@ -213,6 +213,7 @@
 		},
 		data() {
 			return {
+				activityType:0,//0代表没有活动,1代表有秒杀活动,2代表有预售活动,3代表有拼团活动
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				loadImgNum:0,
 				isVideoing:false,
@@ -241,6 +242,8 @@
 				minute:'00',
 				second:'00',
 				flag:false,
+				preSaleInfo:null,
+				noticeText:""
 			};
 		},
 		computed:{
@@ -257,7 +260,7 @@
 		},
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length-1].route,options)
-			
+			opt = options;
 			this.getData(options);
 		},
 		onShow() {
@@ -270,6 +273,22 @@
 			clearInterval(timer)
 		},
 		methods:{
+			//获取活动
+			getActivity(){
+				
+			},
+			//获取预售详情
+			async getPreSaleDetail(preSaleId=0){
+				const result =await this.$net.sendRequest("/yuShou/getPmsProductYuShouByProIdOrYsId",{
+					...preSaleId?{preSaleId:1}:{proId:this.pageData.id}
+				},"GET");
+				this.preSaleInfo=result;this.starttimer();
+			},
+			//获取秒杀详情
+			async getKillDetail(){
+				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:this.pageData.id,...opt.killId?{killId:opt.killId}:{}},"GET");
+				this.killInfo = res;this.starttimer();
+			},
 			//发送模板消息给用户
 			sendMsgToConsumer(){
 				wx.requestSubscribeMessage({
@@ -296,13 +315,70 @@
 			},
 			// 开启定时
 			starttimer(){
-				if(this.killInfo==null){
+				if(this.killInfo!=null || this.preSaleInfo!=null){
 					return;
 				}
 				timer = setInterval(()=>{this.updateTime();},1000);
 			},
 			//更新时间和状态
 			updateTime(){
+				if(this.killInfo!=null){
+					this.killListener();
+				}
+				if(this.preSaleInfo!=null){
+					this.preSaleListener();
+				}
+			},
+			//预售监听
+			preSaleListener(){
+				let now = new Date();
+				let startTime = new Date(this.preSaleInfo.beginTime.replace(/-/g,"/"));
+				let endTime = new Date(this.preSaleInfo.endTime.replace(/-/g,"/"));
+				let s_n = startTime.getTime()-now.getTime();
+				let e_n = endTime.getTime()-now.getTime();
+				let seconds = null;
+				//活动未开始
+				if(s_n>0){
+					seconds =s_n;
+					(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离预售开始还剩')
+				}
+				//活动进行中需要更换商品属性的价格
+				if(s_n<0 && e_n>0){
+					(this.status!=2)&&(this.status = 2)&&(this.noticeText='距离价格变更还剩')
+					seconds =e_n;
+					this.status = 2;
+					if(!this.flag){
+						const attrs = this.preSaleInfo.yuShouAttributes.map(item=>{
+							let obj = {
+								id:item.proAttId,
+								productId:item.productId,
+								name:"啦啦啦",
+								stockNum:item.number,
+								price:item.activityPrice,
+								selected:false,
+								presaleId:item.activityId,
+							}
+							return obj
+						})
+						this.flag = true;
+						this.selectItems = attrs;
+						this.selectItems[0].selected=true;
+						this.selectedItem =this.selectItems[0];
+					}
+				}
+				//活动已结束,跟换商品属性
+				if(e_n<0){
+					(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
+					this.killInfo=null;
+					clearInterval(timer)
+				}
+				
+				const addZero = this.$tools.addZero;
+				seconds =Math.floor(seconds/1000);
+				this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
+			},
+			//秒杀监听
+			killListener(){
 				let now = new Date();
 				let startTime = new Date(this.killInfo.beginTime.replace(/-/g,"/"));
 				let endTime = new Date(this.killInfo.endTime.replace(/-/g,"/"));
@@ -313,11 +389,11 @@
 				//活动未开始
 				if(s_n>0){
 					seconds =s_n;
-					(this.status!=1)&&(this.status = 1)
+					(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离秒杀开始还剩')
 				}
 				//活动进行中需要更换商品属性的价格
 				if(s_n<0 && e_n>0){
-					(this.status!=2)&&(this.status = 2)
+					(this.status!=2)&&(this.status = 2)&&(this.noticeText='距离秒杀结束还剩')
 					seconds =e_n;
 					this.status = 2;
 					if(!this.flag){
@@ -342,7 +418,7 @@
 				}
 				//活动已结束,跟换商品属性
 				if(e_n<0){
-					(this.status!=0)&&(this.status = 0)
+					(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
 					this.killInfo=null;
 					clearInterval(timer)
 				}
@@ -383,11 +459,9 @@
 					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 
 				}
 				//获取秒杀信息
-				const res = await this.$net.sendRequest("/qiangGou/getQgProductById",{productId:this.pageData.id,...options.killId?{killId:options.killId}:{}},"GET");
-				this.killInfo = res;
-				console.log("数据获取完成")
-				this.starttimer();
-				// console.log(res)
+				this.getKillDetail();
+				//获取预售信息
+				this.getPreSaleDetail();
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")

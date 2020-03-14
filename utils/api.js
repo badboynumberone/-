@@ -8,7 +8,7 @@ export default {
 				Promise.all(pormises).then(res=>{
 					resolve(res.every((item,index)=>{ 
 						if(item.xianGouStatus>=1&&items[index].count>item.num){ //超买
-							Toast(items.length>1?items[index].name+"为活动限购商品,不要太贪哦!": "活动限购商品,不要太贪哦!");
+							Toast(items.length>1?items[index].name+"为活动限购商品,超出了限购范围哦!": "活动限购商品,超出了限购范围哦!");
 							return false
 						}
 					return true}))
