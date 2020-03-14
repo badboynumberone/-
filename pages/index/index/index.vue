@@ -35,13 +35,13 @@
 				</view> -->
 				<view class="pr">
 					<swiper :autoplay="true" :circular="true" :interval="4000" :duration="1000" @change="indexChange" style="background-color: #f1f1f1; border-radius: 20px;overflow: hidden;height: 320rpx;">
-						<swiper-item v-for="(item,index) in banners" :key="index" @click="toProductDetail(item.id)">
+						<swiper-item v-for="(item,index) in banners" :key="index" @click="toProductDetail(item.productId)">
 							<view class="swiper-item fill">
-								<image class="fill" :src="item.url" lazy-load="true" mode="scaleToFill"></image>
+								<image class="fill" :src="item.photoUrl" lazy-load="true" mode="scaleToFill"></image>
 							</view>
 						</swiper-item>
 					</swiper>
-					<view class="count_tag pa fz11 fm" style="bottom: 15rpx;right: 15rpx;color: #fff;">{{bannerIndex}}/4</view>
+					<view class="count_tag pa fz11 fm" style="bottom: 15rpx;right: 15rpx;color: #fff;">{{bannerIndex}}/{{banners.length}}</view>
 				</view>
 				
 				
@@ -368,7 +368,11 @@
 				this.activeIndex = e.detail.current
 			},
 			toCateDetail(e, item,index) {
-				if(index==5 ||index==6){return}
+				if(index==5){return}
+				if(index==6){uni.showModal({
+					content:"敬请期待",
+					showCancel: false
+				});return}
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//跳往列表页
@@ -424,11 +428,8 @@
 						name:"会员系统"
 					}])
 				console.log(list)
-				this.cateList = list
-					
-					
-					, this.hotList = result.hotProducts, this.newList = mapPrice(result.newProducts) ,
-					this.recommandList = mapPrice(result.recommandProducts) ;
+				this.cateList = list, this.hotList = result.hotProducts, this.newList = mapPrice(result.newProducts) ,
+				this.recommandList = mapPrice(result.recommandProducts) ;this.banners = result.banners
 			},
 			//获取数据
 			getData() {
