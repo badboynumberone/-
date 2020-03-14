@@ -2,10 +2,10 @@
 	<view class="main"  style="background-color: #f1f1f1;">
 		<view class="container" style="background-color: #f1f1f1;">
 			<view style="height: 150rpx;">
-				<SeckillHeader ref="header" @menuclick="getMatchData"></SeckillHeader>	
+				<SeckillHeader ref="header" :navs="arr" @menuclick="getMatchData"></SeckillHeader>	
 			</view>
 			<view class="wrapper pl10 pr10 pr pb10">
-				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo" :data-url="'/pages/index/product/product?id='+item.productId+'&killId='+item.id">
+				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo($event,item)" :data-url="'/pages/index/product/product?id='+item.productId+'&killId='+item.id">
 					<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
 					<view class="item ftm p10 bgfff pr" >
 						<view class="pr">
@@ -82,7 +82,19 @@
 				list:[],
 				activeIndex:0,
 				timerState:true,
-				status:0
+				status:0,
+				arr:[{
+					title:"今天",
+					tag:"正在开抢中"
+				},
+				{
+					title:"明天",
+					tag:"即将开抢"
+				},
+				{
+					title:"后天",
+					tag:"即将开抢"
+				}]
 			};
 		},
 		computed:{
@@ -145,7 +157,10 @@
 				this.isLoaded = true;
 			},
 			//页面跳转
-			navigateTo(e) {
+			navigateTo(e,item) {
+				if(!this.getStatus(item.beginTime,item.endTime)){
+					return
+				}
 				this.$nextTick(()=>{
 					this.$tools.navigateTo(e.currentTarget.dataset.url)
 				})

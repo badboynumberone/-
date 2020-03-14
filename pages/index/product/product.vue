@@ -128,7 +128,7 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime+'即将开抢'" :color="'#F0AC41'" />
+					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime+'即将开抢'" @click="sendMsgToConsumer" :color="'#F0AC41'" />
 					<van-goods-action-button v-if="status!=2&&status!=1" text="加入购物车" :color="'#222'" @click="showModal(false)" />
 					<van-goods-action-button v-if="status!=1" text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 				</view>
@@ -270,12 +270,38 @@
 			clearInterval(timer)
 		},
 		methods:{
+			//发送模板消息给用户
+			sendMsgToConsumer(){
+				wx.requestSubscribeMessage({
+					tmplIds: ["MUtLwsw0xCndRULTgNHiXwGDyHJ-ZwAFL-b3kALcl0c"],
+					success: (res) => {
+					  if (res['MUtLwsw0xCndRULTgNHiXwGDyHJ-ZwAFL-b3kALcl0c'] === 'accept'){
+						wx.showToast({
+						  title: '订阅OK！',
+						  duration: 1000,
+						  success(data) {
+							//成功
+							resolve()
+						  }
+						})
+					  }
+					},
+					fail(err) {
+					  //失败
+					  console.error(err);
+					  reject()
+					}
+				})
+				
+			},
+			// 开启定时
 			starttimer(){
 				if(this.killInfo==null){
 					return;
 				}
 				timer = setInterval(()=>{this.updateTime();},1000);
 			},
+			//更新时间和状态
 			updateTime(){
 				let now = new Date();
 				let startTime = new Date(this.killInfo.beginTime.replace(/-/g,"/"));
@@ -430,8 +456,8 @@
 				if(JSON.stringify(this.selectedItem)==JSON.stringify({name:"",price:0,stockNum:0})){
 					this.$tools.Toast("请选择商品种类");return;
 				}
-				//判断是否已经选中商品
-				if(!this.selectedItem.stockNum){
+				//判断库存是否充足
+				if(this.selectedItem.stockNum<=0){
 					this.$tools.Toast("商品库存不足,请重新选择数量!");return;
 				} 
 				
