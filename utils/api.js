@@ -32,5 +32,31 @@ export default {
 				 }
 			 })
 		 });
+	},
+	// 监听时间
+	timelistener(startTime="",endTime="",fn1,fn2,fn3,fn4=()=>{}){
+		let now = new Date();
+		startTime = new Date(startTime.replace(/-/g,"/"));
+		endTime = new Date(endTime.replace(/-/g,"/"));
+		let s_n = startTime.getTime()-now.getTime();
+		let e_n = endTime.getTime()-now.getTime();
+		let seconds = null;
+		let status = null;
+		//活动未开始
+		if(s_n>0){
+			seconds =s_n;
+			fn1();
+		}
+		//活动进行中
+		if(s_n<0 && e_n>0){
+			seconds =e_n;
+			fn2(seconds);
+		}
+		//活动已结束
+		if(e_n<0){
+			fn3();
+		}
+		fn4(seconds);
+		
 	}
 }

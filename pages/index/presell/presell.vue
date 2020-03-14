@@ -22,7 +22,7 @@
 							<view>
 								<text class="limit_time fz12 mr5">{{utils.getHourMinute(item.beginTime)}}开售</text> <text class="limit_count fz12">限量{{item.productStock}}件</text>
 							</view>
-							<view class="progress ftm pt5">
+							<view class="progress ftm">
 
 								<view class="line">
 
@@ -30,16 +30,16 @@
 								</view>
 								<view class="text ml10 cccc fz12">已抢{{item.sale}}件</view>
 							</view>
-							<view class="">
+							<view class="" style="height: 17px;">
 								<!-- <TextTimer :startTime="'2020-03-08 18:04:00'" :endTime="'2020-03-08 20:00:00'" ref="texttimer" @update="updateStatus"></TextTimer> -->
 								<view>
-									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==1">
+									<view class="left_time" v-if="item.status==1">
 										<text class="fz12 c666">活动即将开始</text>
 									</view>
-									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==2">
-										<text class="fz12" style="color: red;">火热进行中</text>
+									<view class="left_time" v-if="item.status==2">
+										<text class="fz12 c666">距离价格变更还剩:</text><text class="fz12" style="color: red;">{{item.time || "00:00:00"}}</text>
 									</view>
-									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0">
+									<view class="left_time" v-if="item.status==0">
 										<text class="fz12 c666">预售已结束</text>
 									</view>
 								</view>
@@ -47,17 +47,16 @@
 
 
 							<view class="price">
-								<text class="now fz21 fb">¥{{item.price}}</text>
+								<text class="now fz19 fb">¥{{item.price}}</text>
 							</view>
-
 						</view>
 
 						<view class="button pa">
-							<view class="go ftm cfff" v-if="getStatus(item.beginTime,item.endTime)==2">抢先购
+							<view class="go ftm cfff" v-if="item.status==2">抢先购
 								<van-icon name="arrow" style="margin-top: 7.9rpx;" />
 							</view>
-							<view class="out ftm cfff" v-if="getStatus(item.beginTime,item.endTime)==0">已预售完</view>
-							<view class="go ftm cfff" v-if="getStatus(item.beginTime,item.endTime)==1">查看详情</view>
+							<view class="out ftm cfff" v-if="item.status==0">已预售完</view>
+							<view class="go ftm cfff" v-if="item.status==1">查看详情</view>
 						</view>
 					</view>
 				</view>
@@ -73,7 +72,8 @@
 	let opt = null,
 		pages = null;
 	import SeckillHeader from '../../../mycomponents/seckill-header/seckill-header.vue'
-	
+	import Api from "../../../utils/api.js"
+	let timer =null;
 	export default {
 		components: {
 			SeckillHeader
@@ -82,39 +82,14 @@
 			return {
 				isLoaded: false,
 				list: [],
-				dates: []
+				dates: [],
+				timer:null
 			};
 		},
 		computed: {
 			getPercent(){
 				return function(left=0,all=0){
 					return Math.ceil((left/all)*100)+'%'
-				}
-			},
-			getStatus(){
-				return function(startTime="",endTime=""){
-					let now = new Date();
-					startTime = new Date(startTime.replace(/-/g,"/"));
-					endTime = new Date(endTime.replace(/-/g,"/"));
-					let s_n = startTime.getTime()-now.getTime();
-					let e_n = endTime.getTime()-now.getTime();
-					let seconds = null;
-					let status = null;
-					//活动未开始
-					if(s_n>0){
-						seconds =s_n;
-						status = 1;
-					}
-					//活动进行中
-					if(s_n<0 && e_n>0){
-						seconds =e_n;
-						status = 2;
-					}
-					//活动已结束
-					if(e_n<0){
-						status = 0;
-					}
-					return status
 				}
 			}
 		},
@@ -125,44 +100,35 @@
 			this.getNextDates();
 			//获取列表
 			this.getMatchData();
-
 		},
+
+		onUnload() {
+			clearInterval(this.timer);
+		},
+
 		methods: {
 			//开启监听器
 			starttimer(){
-				let timer = setInterval(()=>{
-					let that = this;
-					function computed(startTime="",endTime="",index){
-						let now = new Date();
-						startTime = new Date(startTime.replace(/-/g,"/"));
-						endTime = new Date(endTime.replace(/-/g,"/"));
-						let s_n = startTime.getTime()-now.getTime();
-						let e_n = endTime.getTime()-now.getTime();
-						let seconds = null;
-						let status = null;
-						//活动未开始
-						if(s_n>0){
-							seconds =s_n;
-							status = 1;
-						}
-						//活动进行中
-						if(s_n<0 && e_n>0){
-							seconds =e_n;
-							status = 2;
-							debugger
-							that.$set(that.list[index],'time',that.$tools.dateFormat("YYYY-mm-dd HH:MM:SS", new Date(seconds)))
-						}
-						//活动已结束
-						if(e_n<0){
-							status = 0;
-						}
-						return status
-					}
+				this.timer = setInterval(()=>{
 					this.list.forEach((item,index)=>{
-						computed(item.startTime,item.endTime,index)
-					})
+						Api.timelistener(
+							item.beginTime.replace(/-/g,"/"),	
+							item.endTime.replace(/-/g,"/"),
+							()=>{
+								this.$set(this.list[index],'status',1)
+							},
+							(seconds)=>{
+								this.$set(this.list[index],'status',2)
+								const addZero = this.$tools.addZero;
+								seconds =Math.floor(seconds/1000);
+								this.$set(this.list[index],'time',addZero(Math.floor(seconds/3600))+":"+addZero(Math.floor((seconds%3600)/60))+":"+addZero(seconds%60))
+							},
+							()=>{
+								this.$set(this.list[index],'status',0)
+							}
+						)
+					})					
 				},1000)
-				
 			},
 			setPage(options) {
 				// console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
@@ -186,7 +152,7 @@
 							[3, "周三"],
 							[4, "周四"],
 							[5, "周五"],
-							[6, "周刘"],
+							[6, "周六"],
 						])
 						return map.get(number)
 					}

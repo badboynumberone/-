@@ -263,9 +263,6 @@
 			opt = options;
 			this.getData(options);
 		},
-		onShow() {
-			this.starttimer();
-		},
 		onHide() {
 			clearInterval(timer)
 		},
@@ -331,103 +328,94 @@
 			},
 			//预售监听
 			preSaleListener(){
-				let now = new Date();
-				let startTime = new Date(this.preSaleInfo.beginTime.replace(/-/g,"/"));
-				let endTime = new Date(this.preSaleInfo.endTime.replace(/-/g,"/"));
-				let s_n = startTime.getTime()-now.getTime();
-				let e_n = endTime.getTime()-now.getTime();
-				let seconds = null;
-				//活动未开始
-				if(s_n>0){
-					seconds =s_n;
-					(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离预售开始还剩')
-				}
-				//活动进行中需要更换商品属性的价格
-				if(s_n<0 && e_n>0){
-					(this.status!=2)&&(this.status = 2)&&(this.noticeText='距离价格变更还剩')
-					seconds =e_n;
-					this.status = 2;
-					if(!this.flag){
-						const attrs = this.preSaleInfo.yuShouAttributes.map(item=>{
-							let obj = {
-								id:item.proAttId,
-								productId:item.productId,
-								name:"啦啦啦",
-								stockNum:item.number,
-								price:item.activityPrice,
-								selected:false,
-								presaleId:item.activityId,
-							}
-							return obj
-						})
-						this.flag = true;
-						this.selectItems = attrs;
-						this.selectItems[0].selected=true;
-						this.selectedItem =this.selectItems[0];
+				Api.timelistener(
+					this.preSaleInfo.beginTime.replace(/-/g,"/"),
+					this.preSaleInfo.endTime.replace(/-/g,"/"),
+					()=>{
+						(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离预售开始还剩')
+					},
+					(seconds)=>{
+						(this.status!=2)&&(this.status = 2);
+						this.noticeText = this.preSaleInfo.endTime==this.preSaleInfo.lastTime ? '距离活动结束还剩':'距离价格变更还剩'
+						if(!this.flag){
+							const attrs = this.preSaleInfo.yuShouAttributes.map(item=>{
+								let obj = {
+									id:item.proAttId,
+									productId:item.productId,
+									name:"啦啦啦",
+									stockNum:item.number,
+									price:item.activityPrice,
+									selected:false,
+									presaleId:item.activityId,
+								}
+								return obj
+							})
+							this.flag = true;
+							this.selectItems = attrs;
+							this.selectItems[0].selected=true;
+							this.selectedItem =this.selectItems[0];
+						}
+					},
+					()=>{
+						(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
+						this.killInfo=null;
+						clearInterval(timer)
+						if(this.preSaleInfo.endTime!=this.preSaleInfo.lastTime){
+							//获取预售信息
+							this.getPreSaleDetail();
+							this.starttimer();
+						}
+						
+					},
+					(seconds)=>{
+						const addZero = this.$tools.addZero;
+						seconds =Math.floor(seconds/1000);
+						this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
 					}
-				}
-				//活动已结束,跟换商品属性
-				if(e_n<0){
-					(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
-					this.killInfo=null;
-					clearInterval(timer)
-				}
-				
-				const addZero = this.$tools.addZero;
-				seconds =Math.floor(seconds/1000);
-				this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
+				)
 			},
 			//秒杀监听
 			killListener(){
-				let now = new Date();
-				let startTime = new Date(this.killInfo.beginTime.replace(/-/g,"/"));
-				let endTime = new Date(this.killInfo.endTime.replace(/-/g,"/"));
-				let s_n = startTime.getTime()-now.getTime();
-				let e_n = endTime.getTime()-now.getTime();
-				let seconds = null;
-				
-				//活动未开始
-				if(s_n>0){
-					seconds =s_n;
-					(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离秒杀开始还剩')
-				}
-				//活动进行中需要更换商品属性的价格
-				if(s_n<0 && e_n>0){
-					(this.status!=2)&&(this.status = 2)&&(this.noticeText='距离秒杀结束还剩')
-					seconds =e_n;
-					this.status = 2;
-					if(!this.flag){
-						const attrs = this.killInfo.productAttr.killAttrs.map(item=>{
-							let obj = {
-								id:item.killProAttId,
-								productId:item.productId,
-								name:item.attName,
-								stockNum:item.stockNum,
-								price:item.killPrice,
-								selected:false,
-								originPrice:item.price,
-								killId:item.killId
-							}
-							return obj
-						})
-						this.flag = true;
-						this.selectItems = attrs;
-						this.selectItems[0].selected=true;
-						this.selectedItem =this.selectItems[0];
+				Api.timelistener(
+					this.killInfo.beginTime.replace(/-/g,"/"),
+					this.killInfo.endTime.replace(/-/g,"/"),
+					()=>{
+						(this.status!=1)&&(this.status = 1)&&(this.noticeText='距离秒杀开始还剩')
+					},
+					(seconds)=>{
+						(this.status!=2)&&(this.status = 2)&&(this.noticeText='距离秒杀结束还剩')
+						this.status = 2;
+						if(!this.flag){
+							const attrs = this.killInfo.productAttr.killAttrs.map(item=>{
+								let obj = {
+									id:item.killProAttId,
+									productId:item.productId,
+									name:item.attName,
+									stockNum:item.stockNum,
+									price:item.killPrice,
+									selected:false,
+									originPrice:item.price,
+									killId:item.killId
+								}
+								return obj
+							})
+							this.flag = true;
+							this.selectItems = attrs;
+							this.selectItems[0].selected=true;
+							this.selectedItem =this.selectItems[0];
+						}
+					},
+					()=>{
+						(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
+						this.killInfo=null;
+						clearInterval(timer)
+					},
+					(seconds)=>{
+						const addZero = this.$tools.addZero;
+						seconds =Math.floor(seconds/1000);
+						this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
 					}
-				}
-				//活动已结束,跟换商品属性
-				if(e_n<0){
-					(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
-					this.killInfo=null;
-					clearInterval(timer)
-				}
-				const addZero = this.$tools.addZero;
-				seconds =Math.floor(seconds/1000);
-				this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
-			},
-			clearTimer(){
-				clearInterval(timer);
+				)
 			},
 			//加载图片
 			loadImg(){
@@ -462,6 +450,8 @@
 				this.getKillDetail();
 				//获取预售信息
 				this.getPreSaleDetail();
+				//启动定时器
+				this.starttimer();
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")

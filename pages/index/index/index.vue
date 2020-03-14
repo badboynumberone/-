@@ -100,7 +100,7 @@
 			</view>
 			<view style="width: 20px;"></view>
 			<view class="right fsb" style="flex-direction: column;" >
-				<view class="top p10" @click="commingsoon">
+				<view class="top p10" @click="navigateTo" :data-url="'/pages/index/presell/presell'">
 					<view class="ftm">
 						<text class="fb fz15">预售好货</text>
 						<image class="ml5" lazy-load="true" :src="`${baseImageUrl}/czhh.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
