@@ -306,6 +306,19 @@
 				"navigationBarTitleText":"预售好货"
 			}
         }
+        ,{
+            "path" : "pages/index/grouping/grouping",
+            "style" : {
+				"navigationBarTitleText":"拼团"
+			}
+        }
+        ,{
+            "path" : "pages/index/grouping_play/grouping_play",
+            "style" : {
+				"navigationBarTitleText":"拼团玩法"
+			}
+			
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

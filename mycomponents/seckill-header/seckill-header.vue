@@ -2,7 +2,7 @@
 	<view >
 		<view class="header pr">
 			<image :src="`${baseImageUrl}/bg_Presale@2x.png`" mode="widthFix" style="width: 100%;"></image>
-			<view class="content f pa ">
+			<view class="content f pa " id="content" >
 				<view :class="['item',activeIndex==index ? 'active':'']" v-for=" (item,index) in navs" :key="index" @click="itemclickHandler(index)">
 					<view :class="['date frm cfff',activeIndex==index ? 'fb ' + 'fz'+(23-navs.length*2): 'fs'+(21-navs.length*2)]">{{item.title}}</view>
 					<!-- <view :class="['date frm fb ','fs'+(21-navs.length*2)]">今日</view> -->
@@ -24,7 +24,6 @@
 			return {
 				baseImageUrl:getApp().globalData.baseImageUrl,
 				activeIndex:0,
-				
 			};
 		},
 		methods:{

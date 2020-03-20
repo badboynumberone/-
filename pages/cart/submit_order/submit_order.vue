@@ -84,7 +84,8 @@
 					note: ""
 				}],
 				freight: 0,
-				killId:0
+				killId:0,
+				cycleRuleId:0
 			};
 		},
 		computed: {
@@ -114,9 +115,6 @@
 			//获取提交的商品
 			this.getSubmitProducts(options);
 		},
-		onShow(){
-			console.log("haha")
-		},
 		methods: {
 			//绑定备注
 			bindNote(e,index){
@@ -125,8 +123,7 @@
 			},
 			//获取提交的订单
 			getSubmitProducts(options) {
-				this.orders = JSON.parse(options.items);
-				this.killId = options.killId;
+				this.orders = JSON.parse(options.items),this.killId = options.killId,this.cycleRuleId = options.cycleRuleId;
 				if (this.address!={}) {
 					this.getOrderDetail();
 				}
@@ -146,10 +143,14 @@
 					}
 					// 单独下单
 					if (lastPage.route == 'pages/index/product/product'&&JSON.stringify(this.address) != '{}') {
-						result = await this.$net.sendRequest(parseInt(this.killId)? "/killgoodsSpec/getPrice" : "/order/getPrice", {
+						let requestUrl = "/order/getPrice";
+						parseInt(this.killId)&&(requestUrl="/killgoodsSpec/getPrice");
+						parseInt(this.cycleRuleId)&&(requestUrl="/yuShou/getPrice");
+						result = await this.$net.sendRequest(requestUrl, {
 							addressId: this.address.id,
 							attrId: this.orders[0].items[0].attrId,
-							quantity:1
+							quantity:this.orders[0].items[0].quantity,
+							... this.cycleRuleId ? {cycleRuleId:this.cycleRuleId}:{}
 						});
 						this.freight = result.freight;
 					}
@@ -176,14 +177,18 @@
 				let result = null;
 				//下单
 				if (lastPage.route == 'pages/index/product/product') {
-					result = await this.$net.sendRequest( parseInt(this.killId)?  "/killgoodsSpec/submit":"/order/generateOrder", {
+					let requestUrl = "/order/generateOrder";
+					parseInt(this.killId)&&(requestUrl= "/killgoodsSpec/submit");
+					parseInt(this.cycleRuleId)&&(requestUrl="/yuShou/generateOrder");
+					result = await this.$net.sendRequest(requestUrl, {
 						addressId: this.address.id,
 						appSource: 'weixin',
 						attrId: this.orders[0].items[0].attrId,
 						note: this.orders[0].note,
 						quantity: this.orders[0].items[0].quantity,
 						product:this.orders[0].items[0].productId,
-						killId:parseInt(this.killId)
+						...parseInt(this.killId)?{killId:parseInt(this.killId)}:{},
+						...this.cycleRuleId?{cycleRuleId:this.cycleRuleId}:{}
 					});
 				}
 

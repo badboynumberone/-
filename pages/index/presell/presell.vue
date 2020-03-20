@@ -1,11 +1,11 @@
 <template>
 	<view class="main" style="background-color: #f1f1f1;">
 		<view class="container" style="background-color: #f1f1f1;">
-			<view style="height: 150rpx;">
-				<SeckillHeader ref="header" :navs="dates" @menuclick="getMatchData"></SeckillHeader>
+			<view id="content" style="height: 150rpx;">
+				<SeckillHeader ref="header" :navs="dates" @menuclick="getMatchData"  ></SeckillHeader>
 			</view>
 			<view class="wrapper pl10 pr10 pr pb10">
-				<view class="mb15" v-for="(item,index) in list" :key="index" @click="navigateTo($event,item)" :data-url="'/pages/index/product/product?id='+item.productId">
+				<view class="mb15" v-if="list.length" v-for="(item,index) in list" :key="index" @click="navigateTo($event,item)" :data-url="'/pages/index/product/product?id='+item.productId+'&preSaleId='+item.productCycleId">
 					<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
 					<view class="item ftm p10 bgfff pr">
 						<view class="pr">
@@ -47,7 +47,7 @@
 
 
 							<view class="price">
-								<text class="now fz19 fb">¥{{item.price}}</text>
+								<text class="now fz19 fb">¥{{item.activityPrice||item.price}}</text>
 							</view>
 						</view>
 
@@ -60,6 +60,7 @@
 						</view>
 					</view>
 				</view>
+				<MyEmpty v-if="!list.length" :height="height"></MyEmpty>
 			</view>
 		</view>
 
@@ -73,17 +74,19 @@
 		pages = null;
 	import SeckillHeader from '../../../mycomponents/seckill-header/seckill-header.vue'
 	import Api from "../../../utils/api.js"
+	import MyEmpty from "../../../mycomponents/my-empty/my-empty.vue"
 	let timer =null;
 	export default {
 		components: {
-			SeckillHeader
+			SeckillHeader,MyEmpty
 		},
 		data() {
 			return {
 				isLoaded: false,
 				list: [],
 				dates: [],
-				timer:null
+				timer:null,
+				height:"",
 			};
 		},
 		computed: {
@@ -94,6 +97,8 @@
 			}
 		},
 		onLoad(options) {
+			//计算高度
+			 this.changeHeight();
 			//页面信息答应
 			this.setPage(options);
 			//获取日期
@@ -107,6 +112,19 @@
 		},
 
 		methods: {
+			//计算长方形高度
+			changeHeight(){
+				this.$nextTick(()=>{
+					const query = wx.createSelectorQuery().in(this)
+					   query.select('#content').boundingClientRect((res)=>{
+						   console.log(res.height)
+					     // 这个组件内 #the-id 节点的上边界坐标
+						 console.log(wx.getSystemInfoSync().windowHeight)
+						 this.height = (wx.getSystemInfoSync().windowHeight-res.height-20) + 'px';
+						 // this.$emit("heightEmit",res.height);
+					   }).exec()
+				})				
+			},
 			//开启监听器
 			starttimer(){
 				this.timer = setInterval(()=>{

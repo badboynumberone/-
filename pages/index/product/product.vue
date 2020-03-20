@@ -33,10 +33,10 @@
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">预售价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.price}}</text><view class="buyed ml10 cfff fz12">已抢{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale)}}件</view>
+						<text class="fz12 cfff">预售价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.activityPrice}}</text><view class="buyed ml10 cfff fz12">已抢{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale)}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.activityPrice}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock || preSaleInfo.productStock-preSaleInfo.sale}}件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.price}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock || preSaleInfo.productStock}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
@@ -128,7 +128,7 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime+'即将开抢'" @click="sendMsgToConsumer" :color="'#F0AC41'" />
+					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime || preSaleInfo.beginTime+'即将开售'" @click="sendMsgToConsumer" :color="'#F0AC41'" />
 					<van-goods-action-button v-if="status!=2&&status!=1" text="加入购物车" :color="'#222'" @click="showModal(false)" />
 					<van-goods-action-button v-if="status!=1" text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
 				</view>
@@ -243,7 +243,8 @@
 				second:'00',
 				flag:false,
 				preSaleInfo:null,
-				noticeText:""
+				noticeText:"",
+				preSaleId:0
 			};
 		},
 		computed:{
@@ -275,9 +276,9 @@
 				
 			},
 			//获取预售详情
-			async getPreSaleDetail(preSaleId=0){
+			async getPreSaleDetail(){
 				const result =await this.$net.sendRequest("/yuShou/getPmsProductYuShouByProIdOrYsId",{
-					...preSaleId?{preSaleId:1}:{proId:this.pageData.id}
+					...opt.preSaleId?{productCycleId:opt.preSaleId}:{proId:this.pageData.id}
 				},"GET");
 				this.preSaleInfo=result;this.starttimer();
 			},
@@ -342,14 +343,16 @@
 								let obj = {
 									id:item.proAttId,
 									productId:item.productId,
-									name:"啦啦啦",
+									name:item.attName,
 									stockNum:item.number,
 									price:item.activityPrice,
+									ruleId:item.productCycleRuleId,
 									selected:false,
 									presaleId:item.activityId,
 								}
 								return obj
 							})
+							console.log("xixi")
 							this.flag = true;
 							this.selectItems = attrs;
 							this.selectItems[0].selected=true;
@@ -362,7 +365,7 @@
 						clearInterval(timer)
 						if(this.preSaleInfo.endTime!=this.preSaleInfo.lastTime){
 							//获取预售信息
-							this.getPreSaleDetail();
+							this.getPreSaleDetail(this.preSaleId);
 							this.starttimer();
 						}
 						
@@ -553,7 +556,9 @@
 						note:""
 					}];
 					const killId = this.killInfo ? this.killInfo.id:0;
-					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}`);
+					const cycleRuleId = this.preSaleInfo ? this.selectedItem.ruleId:0;
+					
+					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}&cycleRuleId=${cycleRuleId}`);
 				}else{
 					//添加购物车
 					const result  =await this.$net.sendRequest("/cart/add",{productAttrId:this.selectedItem.id,quantity:this.count});

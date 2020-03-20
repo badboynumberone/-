@@ -1,11 +1,11 @@
 <template>
 	<view class="main"  style="background-color: #f1f1f1;">
 		<view class="container" style="background-color: #f1f1f1;">
-			<view style="height: 150rpx;">
+			<view id="content" style="height: 150rpx;">
 				<SeckillHeader ref="header" :navs="arr" @menuclick="getMatchData"></SeckillHeader>	
 			</view>
 			<view class="wrapper pl10 pr10 pr pb10">
-				<view class="mb15" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo($event,item)" :data-url="'/pages/index/product/product?id='+item.productId+'&killId='+item.id">
+				<view class="mb15" v-if="list[activeIndex].length" v-for="(item,index) in list[activeIndex]" :key="index" @click="navigateTo($event,item)" :data-url="'/pages/index/product/product?id='+item.productId+'&killId='+item.id">
 					<!-- <SeckillItem ref="item" :single="item" :state="timerState"></SeckillItem> -->
 					<view class="item ftm p10 bgfff pr" >
 						<view class="pr">
@@ -60,6 +60,7 @@
 						</view>
 					</view>
 				</view>
+				<MyEmpty v-if="!list[activeIndex].length" :height="height"></MyEmpty>
 			</view>
 		</view>
 		<Layer :isLoaded="isLoaded" class="fill" ></Layer>
@@ -68,10 +69,11 @@
 <script module="utils" lang="wxs" src="../../../utils/util.wxs" />
 <script>
 	import SeckillHeader from '../../../mycomponents/seckill-header/seckill-header.vue'
+	import MyEmpty from "../../../mycomponents/my-empty/my-empty.vue"
 	let opt = null,pages=null;let timer = null;
 	export default {
 		components:{
-			SeckillHeader
+			SeckillHeader,MyEmpty
 		},
 
 		data() {
@@ -93,7 +95,8 @@
 				{
 					title:"后天",
 					tag:"即将开抢"
-				}]
+				}],
+				height:""
 			};
 		},
 		computed:{
@@ -131,10 +134,11 @@
 			}
 		},
 		async onLoad(options) {
+			//计算高度
+			 this.changeHeight();
 			await this.getKillData();
 		},
 		onShow() {
-			console.log("assadsad")
 			this.timerState = true;
 		},
 		onHide() {
@@ -146,6 +150,19 @@
 			this.timerState = false;
 		},
 		methods:{
+			//计算长方形高度
+			changeHeight(){
+				this.$nextTick(()=>{
+					const query = wx.createSelectorQuery().in(this)
+					   query.select('#content').boundingClientRect((res)=>{
+						   console.log(res.height)
+					     // 这个组件内 #the-id 节点的上边界坐标
+						 console.log(wx.getSystemInfoSync().windowHeight)
+						 this.height = (wx.getSystemInfoSync().windowHeight-res.height-20) + 'px';
+						 // this.$emit("heightEmit",res.height);
+					   }).exec()
+				})				
+			},
 			//获取对应的信息
 			getMatchData(){
 				this.activeIndex = this.$refs.header.activeIndex
