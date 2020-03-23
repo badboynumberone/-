@@ -50,4 +50,5 @@
 <style lang="scss">
 	@import './common/uni.css';
 	@import 'static/styles/common.scss';
+	@import  'static/styles/modify.css';
 </style>

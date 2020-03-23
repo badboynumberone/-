@@ -36,14 +36,14 @@ export default {
 	// 监听时间
 	timelistener(startTime="",endTime="",fn1,fn2,fn3,fn4=()=>{}){
 		let now = new Date();
-		startTime = new Date(startTime.replace(/-/g,"/"));
+		startTime = startTime.replace(/-/g,"/") ? new Date(startTime.replace(/-/g,"/")) : new Date(0);
 		endTime = new Date(endTime.replace(/-/g,"/"));
 		let s_n = startTime.getTime()-now.getTime();
 		let e_n = endTime.getTime()-now.getTime();
 		let seconds = null;
 		let status = null;
 		//活动未开始
-		if(s_n>0){
+		if(s_n>=0){
 			seconds =s_n;
 			fn1();
 		}

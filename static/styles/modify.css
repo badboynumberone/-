@@ -1,0 +1,7 @@
+.share .van-popup{
+	background-color: transparent !important;
+}
+
+.masking .van-popup {
+	overflow-y: initial;
+}

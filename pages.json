@@ -309,7 +309,10 @@
         ,{
             "path" : "pages/index/grouping/grouping",
             "style" : {
-				"navigationBarTitleText":"拼团"
+				"navigationBarTitleText":"拼团",
+				"usingComponents":{
+					"load-more": "/wxcomponents/load-more/index"
+				}
 			}
         }
         ,{
@@ -318,6 +321,17 @@
 				"navigationBarTitleText":"拼团玩法"
 			}
 			
+        }
+        ,{
+            "path" : "pages/index/grouping_detail/grouping_detail",
+            "style" : {
+				"navigationBarTitleText":"团详情",
+				"usingComponents":{
+					"van-cell": "/wxcomponents/vant/cell/index",
+					"van-popup": "/wxcomponents/vant/popup/index",
+					"van-action-sheet": "/wxcomponents/vant/action-sheet/index"
+				}
+			}
         }
     ],
 	"globalStyle": {

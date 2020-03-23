@@ -153,7 +153,12 @@
   .br{
 	  border-right: 1rpx solid #f1f1f1;
   }
-  
+  .w100{
+	  width: 100%;
+  }
+  .h100{
+	  width: 100%;
+  }
   .m10{margin:20rpx;}
   .m15{margin:30rpx;}
   .m30{margin:60rpx;}
@@ -274,6 +279,12 @@
   }
   .c666{
 	  color: #666;
+  }
+  .c222{
+	  color: #222;
+  }
+  .c999{
+	  color: #999999;
   }
   
   .noback{

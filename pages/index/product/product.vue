@@ -33,10 +33,12 @@
 			<view class="content fsb fill pa p5" style="top: 0px;left: 0px;align-items: center;">
 				<view class="left">
 					<view class="ftm">
-						<text class="fz12 cfff">预售价</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.activityPrice}}</text><view class="buyed ml10 cfff fz12">已抢{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale)}}件</view>
+						<text class="fz12 cfff">{{
+							killInfo.productQgPrice ? '抢购价' : preSaleInfo.activityPrice ? '预售价' : groupInfo.price ?'拼团价':''
+						}}</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.activityPrice || groupInfo.price}}</text><view class="buyed ml10 cfff fz12">{{groupInfo? '已拼' : '已抢'}}{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale) || (groupInfo.successQuantity)}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.price}}</text> </text> <text class="fz10 cfff ml5">仅剩{{killInfo.correntStock || preSaleInfo.productStock}}件</text>
+						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.price || groupInfo.linePriceScope}}</text> </text> <text class="fz10 cfff ml5" v-if="killInfo.correntStock || preSaleInfo.productStock">仅剩{{killInfo.correntStock || preSaleInfo.productStock}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
@@ -44,13 +46,11 @@
 						{{noticeText}}
 					</view>
 					<view class="time fsb mt5">
-
 							<view class="hour fm">{{hour}}</view>
 							<text>:</text>
 							<view class="minute fm">{{minute}}</view>
 							<text>:</text>
 							<view class="second fm">{{second}}</view>
-
 					</view>
 				</view>
 			</view>
@@ -128,9 +128,12 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime || preSaleInfo.beginTime+'即将开售'" @click="sendMsgToConsumer" :color="'#F0AC41'" />
-					<van-goods-action-button v-if="status!=2&&status!=1" text="加入购物车" :color="'#222'" @click="showModal(false)" />
-					<van-goods-action-button v-if="status!=1" text="立即购买" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
+					<!-- <van-goods-action-button v-if="status==1" :text="killInfo.beginTime || preSaleInfo.beginTime+'即将开售'" @click="sendMsgToConsumer" :color="'#F0AC41'" /> -->
+					<!-- <van-goods-action-button v-if="status!=2&&status!=1&&status!=3" text="加入购物车" :color="'#222'" @click="showModal(false)" /> -->
+					<van-goods-action-button v-if="status!=1" :text="status==3?'单独购买':'立即购买'" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
+					<van-goods-action-button v-if="status==3" :text="groupInfo.groupPeople+'人团'" :color="'#FC9843'" @click="showModal(true)" />
+					<!-- <van-goods-action-button v-if="status==3" :text="'拼团购买'" :color="'#FC9843'" @click="showModal(true)" /> -->
+					
 				</view>
 				<view style="width: 10px;height: 100%;"></view>
 			</van-goods-action>
@@ -205,7 +208,7 @@
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
-	let timer =null;let attrs=null;let opt=null;
+	let timer =null;let attrs=null;let opt=null;let originAttrs = null;
 	
 	export default {
 		components: {
@@ -244,7 +247,8 @@
 				flag:false,
 				preSaleInfo:null,
 				noticeText:"",
-				preSaleId:0
+				preSaleId:0,
+				groupInfo:null
 			};
 		},
 		computed:{
@@ -274,6 +278,11 @@
 			//获取活动
 			getActivity(){
 				
+			},
+			//获取预售信息
+			async getGroupDetail(){
+				const result = await this.$net.sendRequest("/group/findById",{id:this.pageData.id},"GET");
+				this.groupInfo = result;
 			},
 			//获取预售详情
 			async getPreSaleDetail(){
@@ -326,6 +335,59 @@
 				if(this.preSaleInfo!=null){
 					this.preSaleListener();
 				}
+				if(this.groupInfo!=null){
+					this.groupListener();
+				}
+			},
+			//拼团监听
+			groupListener(){
+				Api.timelistener(
+					"",
+					this.groupInfo.endTime.replace(/-/g,"/"),
+					()=>{
+						console.log("不会执行")
+					},
+					(seconds)=>{
+						(this.status!=3)&&(this.status = 3);
+						this.noticeText = '距离活动结束还剩'
+						if(!this.flag){
+							// const attrs = this.groupInfo.yuShouAttributes.map(item=>{
+							// 	let obj = {
+							// 		id:item.proAttId,
+							// 		productId:item.productId,
+							// 		name:item.attName,
+							// 		stockNum:item.number,
+							// 		price:item.activityPrice,
+							// 		ruleId:item.productCycleRuleId,
+							// 		selected:false,
+							// 		presaleId:item.activityId,
+							// 	}
+							// 	return obj
+							// })
+							// console.log("xixi")
+							// this.flag = true;
+							// this.selectItems = attrs;
+							// this.selectItems[0].selected=true;
+							// this.selectedItem =this.selectItems[0];
+						}
+					},
+					()=>{
+						(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
+						this.groupInfo=null;
+						clearInterval(timer)
+						if(this.groupInfo.endTime!=this.groupInfo.lastTime){
+							//获取预售信息
+							this.getPreSaleDetail(this.preSaleId);
+							this.starttimer();
+						}
+						
+					},
+					(seconds)=>{
+						const addZero = this.$tools.addZero;
+						seconds =Math.floor(seconds/1000);
+						this.hour = addZero(Math.floor(seconds/3600)),this.minute = addZero(Math.floor((seconds%3600)/60)),this.second = addZero(seconds%60)
+					}
+				)
 			},
 			//预售监听
 			preSaleListener(){
@@ -361,7 +423,7 @@
 					},
 					()=>{
 						(this.status!=0)&&(this.status = 0)&&(this.noticeText='活动已结束')
-						this.killInfo=null;
+						this.preSaleInfo=null;
 						clearInterval(timer)
 						if(this.preSaleInfo.endTime!=this.preSaleInfo.lastTime){
 							//获取预售信息
@@ -441,20 +503,25 @@
 			async getData(options){
 				//获取商品详情
 				const result =await this.$net.sendRequest("/home/getProduct",{id:parseInt(options.id)},"GET");
-				this.isLoaded=true;
+				
 				this.imgList = result.albumPics.split(",");
 				result.detailPics = result.detailPics.length>0 ? result.detailPics.split(",") : [];
 				
 				this.pageData = result;
 				if(result.attrs.length){
-					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0]; 
+					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0];
+					 originAttrs = result.attrs;
 				}
 				//获取秒杀信息
 				this.getKillDetail();
 				//获取预售信息
 				this.getPreSaleDetail();
+				//获取拼团信息
+				this.getGroupDetail();
 				//启动定时器
 				this.starttimer();
+				setTimeout(()=>{this.isLoaded=true;},1000)
+				
 			},
 			toCart(){
 				this.$tools.switchTab("/pages/cart/cart/cart")
@@ -511,6 +578,9 @@
 				if(!parseInt(this.pageData.publishStatus)){
 					this.$tools.Toast("商品已下架,快去看看其他商品吧")
 					return;
+				}
+				if(status==3){
+					
 				}
 				this.action = action;  
 				this.toggleSpec();
