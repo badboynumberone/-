@@ -1,6 +1,12 @@
 
 <template>
 	<view class="main"  >
+		<!-- 友情提醒 -->
+		<view class="friend_ship fsb p10" style="align-items: center;padding-bottom: 0px;">
+			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">①</text>选择商品，开团/参团</text>
+			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">②</text>邀请好友参团</text>
+			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">③</text>人满成团</text>
+		</view>
 		<!-- 地址选择 -->
 		<view class="address p10">
 			<view class="wrapper pr">
@@ -38,13 +44,14 @@
 		<view class="compute mt10 pt10 pb10 pl15 pr15 " style="background: #fff;">
 			<view class="one fsb"><text class="fz14">商品金额</text><text class="fz14">￥{{totalPrice/100}}</text></view>
 			<view class="one fsb"><text>运费</text><text>￥{{freight}}</text></view>
+			<view class="one fsb"><text>团长优惠</text><text>￥-{{parentPrice}}</text></view>
 		</view>
 
 		<view style="height: 60px;background: #F1F1F1;"></view>
 
 		<!-- 底部结算条 -->
 		<view class="submit_bar pf" style="bottom:0px">
-			<van-submit-bar :price="totalPrice+freight*100" :button-text="'提交订单'" @submit="onSub" :tip="true" />
+			<van-submit-bar :price="totalPrice+freight*100-parentPrice*100" :button-text="'提交订单'" @submit="onSub" :tip="true" />
 		</view>
 
 
@@ -84,8 +91,11 @@
 					note: ""
 				}],
 				freight: 0,
+				parentPrice:0,
 				killId:0,
-				cycleRuleId:0
+				cycleRuleId:0,
+				groupId:0,
+				isGroupBy:false
 			};
 		},
 		computed: {
@@ -123,7 +133,7 @@
 			},
 			//获取提交的订单
 			getSubmitProducts(options) {
-				this.orders = JSON.parse(options.items),this.killId = options.killId,this.cycleRuleId = options.cycleRuleId;
+				this.orders = JSON.parse(options.items),this.killId = options.killId,this.cycleRuleId = options.cycleRuleId;this.groupId = options.groupId,this.isGroupBy = JSON.parse(options.isGroupBuy) ;
 				if (this.address!={}) {
 					this.getOrderDetail();
 				}
@@ -146,13 +156,17 @@
 						let requestUrl = "/order/getPrice";
 						parseInt(this.killId)&&(requestUrl="/killgoodsSpec/getPrice");
 						parseInt(this.cycleRuleId)&&(requestUrl="/yuShou/getPrice");
+						this.isGroupBy&&(requestUrl="/group/getPrice");
+						
 						result = await this.$net.sendRequest(requestUrl, {
 							addressId: this.address.id,
 							attrId: this.orders[0].items[0].attrId,
 							quantity:this.orders[0].items[0].quantity,
-							... this.cycleRuleId ? {cycleRuleId:this.cycleRuleId}:{}
+							... this.cycleRuleId>0 ? {cycleRuleId:this.cycleRuleId}:{},
+							... this.groupId>0 ? {parentSuccessId:this.groupId}:{}
 						});
 						this.freight = result.freight;
+						this.parentPrice = result.parentSpecial;
 					}
 				}catch(e){
 					//TODO handle the exception
@@ -180,6 +194,7 @@
 					let requestUrl = "/order/generateOrder";
 					parseInt(this.killId)&&(requestUrl= "/killgoodsSpec/submit");
 					parseInt(this.cycleRuleId)&&(requestUrl="/yuShou/generateOrder");
+					this.isGroupBy&&(requestUrl="/group/submitGroupOrder");
 					result = await this.$net.sendRequest(requestUrl, {
 						addressId: this.address.id,
 						appSource: 'weixin',
@@ -188,7 +203,8 @@
 						quantity: this.orders[0].items[0].quantity,
 						product:this.orders[0].items[0].productId,
 						...parseInt(this.killId)?{killId:parseInt(this.killId)}:{},
-						...this.cycleRuleId?{cycleRuleId:this.cycleRuleId}:{}
+						...this.cycleRuleId>0?{cycleRuleId:this.cycleRuleId}:{},
+						...this.isGroupBy&&this.groupId>0?{parentGroupSuccessId:this.groupId}:{}
 					});
 				}
 

@@ -99,8 +99,45 @@
 					</view>
 				</van-field>
 			</view>
-			
-
+			<!-- 正在拼团 -->
+			<view class="group" v-if="groupInfo">
+				<view class="grouping_wrapper">
+					<van-cell center>
+						<view class="icon pr" slot="icon" style="top: 8rpx;"  >
+							<van-icon  name="friends-o" size="20px" />
+						</view>
+						<text slot="title" class="fb ml5" style="white-space: nowrap;">以下小伙伴正在参加拼团活动，你可以直接参加</text>
+					</van-cell>
+				</view>
+				<view class="grouping_play pl10 pr10" v-if="groupInfo.groupUserList.length" >
+					<swiper :indicator-dots="false" :autoplay="true" circular="" :interval="5000" :duration="1000" vertical style="height: 140px;">
+						<swiper-item v-for="(item,index) in groupPeoples" :key="index">
+							<view class="swiper-item fsb  pt10 pb10" style="align-items: center;" v-for="(single,idx) in item" :key="idx" v-if="single.seconds>0">
+								<view class="ftm">
+									<image class="mr20" :src="single.icon" mode="aspectFill"></image>
+									<view class="">
+										<view class="fz13 c222">
+											{{single.nickname}}
+										</view>
+										<text class="fz11 c666">
+											还差<text class="theme">{{single.diff}}</text>人成团，{{single.text}}
+										</text>
+									</view>
+								</view>
+								<view class="go ftm cfff" @click="showModal(true,single.id)">去凑团</view>
+							</view>
+							
+						</swiper-item>
+						
+					</swiper>
+				</view>
+				<view class="group-detail bt">
+					<van-cell  is-link value="拼团玩法">
+						
+						<text slot="title"  style="white-space: nowrap;">支付开团邀请1人成团，人数不足自动退款</text>
+					</van-cell>
+				</view>
+			</view>
 
 			<!-- 图片 -->
 			<view class="image ">
@@ -128,12 +165,10 @@
 				<van-goods-action-icon @click='toCart' v-if="!cartCount" icon="cart-o" text="购物车"  />
 				<van-goods-action-icon @click='toCart' v-if="cartCount" icon="cart-o" text="购物车" :info="cartCount" />
 				<view class="f" style="width:100%;border-radius: 25px;overflow: hidden;">
-					<!-- <van-goods-action-button v-if="status==1" :text="killInfo.beginTime || preSaleInfo.beginTime+'即将开售'" @click="sendMsgToConsumer" :color="'#F0AC41'" /> -->
-					<!-- <van-goods-action-button v-if="status!=2&&status!=1&&status!=3" text="加入购物车" :color="'#222'" @click="showModal(false)" /> -->
+					<van-goods-action-button v-if="status==1" :text="killInfo.beginTime || preSaleInfo.beginTime+'即将开售'" @click="sendMsgToConsumer" :color="'#F0AC41'" />
+					<van-goods-action-button v-if="status!=2&&status!=1&&status!=3" text="加入购物车" :color="'#222'" @click="showModal(false)" />
 					<van-goods-action-button v-if="status!=1" :text="status==3?'单独购买':'立即购买'" :color="'linear-gradient(142deg,rgba(26,174,104,1) 0%,rgba(124,206,89,1) 100%)'" @click="showModal(true)" />
-					<van-goods-action-button v-if="status==3" :text="groupInfo.groupPeople+'人团'" :color="'#FC9843'" @click="showModal(true)" />
-					<!-- <van-goods-action-button v-if="status==3" :text="'拼团购买'" :color="'#FC9843'" @click="showModal(true)" /> -->
-					
+					<van-goods-action-button v-if="status==3" :text="groupInfo.groupPeople+'人团'" :color="'#FC9843'" @click="showModal(true,0)" />
 				</view>
 				<view style="width: 10px;height: 100%;"></view>
 			</van-goods-action>
@@ -208,8 +243,7 @@
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog.js';
 	import Toast from "../../../wxcomponents/vant/toast/toast.js";
 	import Api from "../../../utils/api.js";
-	let timer =null;let attrs=null;let opt=null;let originAttrs = null;
-	
+	let timer =null,attrs=null,opt=null,originAttrs = null,isGroupBuy=false
 	export default {
 		components: {
 			MyButton,MyTag
@@ -247,8 +281,10 @@
 				flag:false,
 				preSaleInfo:null,
 				noticeText:"",
-				preSaleId:0,
-				groupInfo:null
+				preSaleId:0,//预售id
+				groupInfo:null,//拼团信息
+				groupPeoples:[],//正在拼团的人
+				groupId:0,//拼团id
 			};
 		},
 		computed:{
@@ -275,6 +311,24 @@
 			clearInterval(timer)
 		},
 		methods:{
+			//计算人
+			computedPeople(){
+				// 计算一个结束时间
+				let groupUsers =  this.groupInfo.groupUserList;
+				groupUsers = groupUsers.map(item=>{
+					let now = new Date();
+					let endTime = new Date(new Date(item.cretaTime.replace(/-/g,"/")).getTime()+24*60*60*1000);   
+					const addZero = this.$tools.addZero;
+					let seconds = Math.floor((endTime.getTime()-now.getTime()) / 1000);
+					const text = "剩余" + Math.floor(seconds / (3600 * 24)) + "天" + addZero(Math.floor(seconds / 3600)) + "时" +
+						addZero(Math.floor((seconds % 3600) / 60)) + "分" + addZero(seconds % 60)+"秒";
+					item.text = text;
+					item.seconds = seconds;
+					return item;
+				})
+				
+				this.groupPeoples =  this.$tools.chunk(groupUsers,2) 
+			},
 			//获取活动
 			getActivity(){
 				
@@ -282,7 +336,22 @@
 			//获取预售信息
 			async getGroupDetail(){
 				const result = await this.$net.sendRequest("/group/findById",{id:this.pageData.id},"GET");
+				result.groupAttrList = result.groupAttrList.map((item,index)=>{
+					let obj = {
+						id:item.productAttrId,
+						productId:item.productId,
+						name:item.attrName,
+						stockNum:item.stock,
+						price:item.price,
+						originPrice:item.linePrice,
+						selected:false
+					}
+					if(index==0){obj.selected=true}
+					return obj
+				})
 				this.groupInfo = result;
+				
+				
 			},
 			//获取预售详情
 			async getPreSaleDetail(){
@@ -322,7 +391,7 @@
 			},
 			// 开启定时
 			starttimer(){
-				if(this.killInfo!=null || this.preSaleInfo!=null){
+				if(this.killInfo!=null || this.preSaleInfo!=null || this.groupInfo!=null){
 					return;
 				}
 				timer = setInterval(()=>{this.updateTime();},1000);
@@ -337,6 +406,7 @@
 				}
 				if(this.groupInfo!=null){
 					this.groupListener();
+					this.computedPeople();
 				}
 			},
 			//拼团监听
@@ -571,18 +641,21 @@
 				this.$tools.navigateTo(e.currentTarget.dataset.url)
 			},
 			//显示模态框
-			showModal(action){
+			showModal(action,groupId){
+				
 				if (!this.$net.checkLogin()) {
 					return;
 				}
+				
 				if(!parseInt(this.pageData.publishStatus)){
 					this.$tools.Toast("商品已下架,快去看看其他商品吧")
 					return;
 				}
-				if(status==3){
-					
-				}
-				this.action = action;  
+				isGroupBuy = groupId!=undefined;
+				this.groupId = groupId==undefined ? 0 : groupId
+				this.action = action; 
+				this.selectItems= this.status==3&&groupId!=undefined ?  this.groupInfo.groupAttrList:originAttrs
+				this.selectedItem = this.selectItems[0];
 				this.toggleSpec();
 			},
 			//提交订单
@@ -627,8 +700,15 @@
 					}];
 					const killId = this.killInfo ? this.killInfo.id:0;
 					const cycleRuleId = this.preSaleInfo ? this.selectedItem.ruleId:0;
+					// buyType 0
+					// 		1 
+					//         2
+					// 		3
+					//单独购买 /order/getprice
+					//自发拼团 /group/getprice 无 groupid
+					//拼团购买 /group/getprice 有 groupid
 					
-					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}&cycleRuleId=${cycleRuleId}`);
+					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}&cycleRuleId=${cycleRuleId}&groupId=${this.groupId}&isGroupBuy=${isGroupBuy}`);
 				}else{
 					//添加购物车
 					const result  =await this.$net.sendRequest("/cart/add",{productAttrId:this.selectedItem.id,quantity:this.count});
@@ -646,6 +726,30 @@
 
 <style lang="scss" scoped>
 	@import './../../../static/styles/mixin.scss';
+	.group{
+		swiper-item{
+			.swiper-item{
+				&:not(:last-child){
+					border-bottom: 1px solid #f1f1f1;
+				}
+				image{
+					@include wh(85rpx,85rpx);
+					overflow: hidden;
+					border-radius: 50%;
+				}
+				
+				.go {
+					background: linear-gradient(101deg, rgba(26, 174, 104, 1) 0%, rgba(136, 207, 118, 1) 100%);
+					box-shadow: 1px 8px 18px 0px rgba(125, 203, 117, 0.48);
+					padding: 0rpx 20rpx;
+					border-radius: 26px;
+					overflow: hidden;
+				}
+			}
+		}
+		
+		
+	}
 	.seckill{
 		.content{
 			align-items: center;

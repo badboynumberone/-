@@ -59,6 +59,9 @@
 			<view class="ml10" v-if="pageData.status==3 || pageData.status==4" @click="delOrder">
 				<van-tag :color="'#666'" plain round size="medium">删除订单</van-tag>
 			</view>
+			<view class="ml10" v-if="pageData.status==15" @click="delOrder">
+				<van-tag :color="'#666'" plain round size="medium">查看团详情</van-tag>
+			</view>
 		</view>
 		<van-dialog id="van-dialog" />
 		<Layer :isLoaded="isLoaded" class="fill"></Layer>
@@ -128,8 +131,9 @@
 			},
 			//处理结果
 			mapResult(res) {
-				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭','','退款','退款退货'];
+				const arr = ['待付款','待成团',  '待发货', '待收货', '交易成功', '交易关闭','待成团','退款','退款退货'];
 				res.state = arr[res.status], res.address = res.receiverProvince + res.receiverCity + res.receiverRegion + res.receiverDetailAddress;
+				(res.status==15)&&(res.state = '待成团')
 				res.items = res.orderItemList;
 				// 更改producId为 id-----------------------------------------------------
 				res.items = res.items.map(item=>{item.id=item.productId;return item})

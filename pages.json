@@ -6,12 +6,12 @@
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black",
 				"backgroundColor": "#fff",
-				"enablePullDownRefresh":true,
+				"enablePullDownRefresh": true,
 				"usingComponents": {
 					"load-more": "/wxcomponents/load-more/index",
 					"van-grid": "/wxcomponents/vant/grid/index",
 					"van-grid-item": "/wxcomponents/vant/grid-item/index"
-					
+
 				}
 			}
 		}, {
@@ -29,7 +29,7 @@
 		},
 		{
 			"path": "pages/cate/cate/cate",
-			
+
 			"style": {
 				"navigationBarTitleText": "分类",
 				"disableScroll": true,
@@ -39,7 +39,7 @@
 					"van-grid": "/wxcomponents/vant/grid/index",
 					"van-grid-item": "/wxcomponents/vant/grid-item/index"
 				}
-				
+
 			}
 		}, {
 			"path": "pages/cart/cart/cart",
@@ -55,7 +55,7 @@
 					"load-more": "/wxcomponents/load-more/index",
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				},
-				"enablePullDownRefresh":true
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/me/address/address",
@@ -88,43 +88,42 @@
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-		}
-	    ,{
-            "path" : "pages/me/logistics/logistics",
-            "style" : {
+		}, {
+			"path": "pages/me/logistics/logistics",
+			"style": {
 				"navigationBarTitleText": "查看物流",
 				"usingComponents": {
 					"van-steps": "/wxcomponents/vant/steps/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/wxlogin/wxlogin",
-            "style" : {
+		}, {
+			"path": "pages/me/wxlogin/wxlogin",
+			"style": {
 				"navigationBarTitleText": "",
 				"usingComponents": {
 					"van-icon": "/wxcomponents/vant/icon/index",
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/product/product",
-            "style" : {
-				"navigationStyle":"custom",
+		}, {
+			"path": "pages/index/product/product",
+			"style": {
+				"navigationStyle": "custom",
 				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-goods-action": "/wxcomponents/vant/goods-action/index",
-					  "van-goods-action-icon": "/wxcomponents/vant/goods-action-icon/index",
-					  "van-goods-action-button": "/wxcomponents/vant/goods-action-button/index",
-					  "load-more": "/wxcomponents/load-more/index",
-					  "van-stepper": "/wxcomponents/vant/stepper/index"
+					"van-goods-action-icon": "/wxcomponents/vant/goods-action-icon/index",
+					"van-goods-action-button": "/wxcomponents/vant/goods-action-button/index",
+					"load-more": "/wxcomponents/load-more/index",
+					"van-stepper": "/wxcomponents/vant/stepper/index",
+					"van-cell": "/wxcomponents/vant/cell/index",
+					"van-cell-group": "/wxcomponents/vant/cell-group/index"
 				}
 			}
-        },
+		},
 		{
-		    "path" : "pages/me/order/order",
-		    "style" : {
+			"path": "pages/me/order/order",
+			"style": {
 				"navigationBarTitleText": "订单列表",
 				"usingComponents": {
 					"van-tab": "/wxcomponents/vant/tab/index",
@@ -135,10 +134,10 @@
 				}
 			}
 		}
-        
-        ,{
-            "path" : "pages/me/refund/refund",
-            "style" : {
+
+		, {
+			"path": "pages/me/refund/refund",
+			"style": {
 				"navigationBarTitleText": "退货退款",
 				"usingComponents": {
 					"van-tab": "/wxcomponents/vant/tab/index",
@@ -148,20 +147,18 @@
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/refund_apply/refund_apply",
-            "style" : {
+		}, {
+			"path": "pages/me/refund_apply/refund_apply",
+			"style": {
 				"navigationBarTitleText": "申请退货退款",
 				"usingComponents": {
 					"van-dialog": "/wxcomponents/vant/dialog/index",
 					"van-field": "/wxcomponents/vant/field/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/store_details/store_details",
-            "style" : {
+		}, {
+			"path": "pages/index/store_details/store_details",
+			"style": {
 				"navigationBarTitleText": "店铺详情",
 				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index",
@@ -169,171 +166,153 @@
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/cart/submit_order/submit_order",
-            "style" : {
+		}, {
+			"path": "pages/cart/submit_order/submit_order",
+			"style": {
 				"navigationBarTitleText": "提交订单",
 				"backgroundColor": "#F1F1F1",
-				"usingComponents":{
+				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-submit-bar": "/wxcomponents/vant/submit-bar/index",
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/order_detail/order_detail",
-            "style" : {
+		}, {
+			"path": "pages/me/order_detail/order_detail",
+			"style": {
 				"navigationBarTitleText": "订单详情",
-				"usingComponents":{
+				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-tag": "/wxcomponents/vant/tag/index",
 					"van-dialog": "/wxcomponents/vant/dialog/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/brand/brand",
-            "style" : {
+		}, {
+			"path": "pages/index/brand/brand",
+			"style": {
 				"navigationBarTitleText": "自由品牌",
-				"usingComponents":{
+				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
 					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/brand_product/brand_product",
-            "style" : {
+		}, {
+			"path": "pages/index/brand_product/brand_product",
+			"style": {
 				"navigationBarTitleText": "",
-				"usingComponents":{
+				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
 					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/cate/cate_detail/cate_detail",
-            "style" : {
-				"usingComponents":{
+		}, {
+			"path": "pages/cate/cate_detail/cate_detail",
+			"style": {
+				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
 					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/cart/pay_success/pay_success",
-            "style" : {
+		}, {
+			"path": "pages/cart/pay_success/pay_success",
+			"style": {
 				"navigationBarTitleText": "支付成功",
-				"usingComponents":{
+				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/cate/intro_cate_detail/intro_cate_detail",
-            "style" : {
-				"usingComponents":{
+		}, {
+			"path": "pages/cate/intro_cate_detail/intro_cate_detail",
+			"style": {
+				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
 					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/list/list",
-            "style" : {
-				"usingComponents":{
+		}, {
+			"path": "pages/index/list/list",
+			"style": {
+				"usingComponents": {
 					"van-sidebar": "/wxcomponents/vant/sidebar/index",
 					"van-sidebar-item": "/wxcomponents/vant/sidebar-item/index",
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/refund_detail/refund_detail",
-            "style" : {
-				"navigationBarTitleText":"退款详情",
-				"backgroundColor":"#f1f1f1"
+		}, {
+			"path": "pages/me/refund_detail/refund_detail",
+			"style": {
+				"navigationBarTitleText": "退款详情",
+				"backgroundColor": "#f1f1f1"
 			}
-        }
-        ,{
-            "path" : "pages/me/add_logistics/add_logistics",
-            "style" : {
-				"navigationBarTitleText":"填写物流信息",
-				"usingComponents":{
+		}, {
+			"path": "pages/me/add_logistics/add_logistics",
+			"style": {
+				"navigationBarTitleText": "填写物流信息",
+				"usingComponents": {
 					"van-field": "/wxcomponents/vant/field/index",
 					"van-cell-group": "/wxcomponents/vant/cell-group/index"
 				}
-				
+
 			}
-        }
-        ,{
-            "path" : "pages/me/problem/problem",
-            "style" : {
-				"navigationBarTitleText":"常见问题",
-				"usingComponents":{
+		}, {
+			"path": "pages/me/problem/problem",
+			"style": {
+				"navigationBarTitleText": "常见问题",
+				"usingComponents": {
 					"van-cell-group": "/wxcomponents/vant/cell-group/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/me/problem_detail/problem_detail",
-            "style" : {
-				"navigationBarTitleText":"问题详情"
+		}, {
+			"path": "pages/me/problem_detail/problem_detail",
+			"style": {
+				"navigationBarTitleText": "问题详情"
 			}
-        }
-        ,{
-            "path" : "pages/me/feedback/feedback",
-            "style" : {
-				"navigationBarTitleText":"意见反馈",
-				"backgroundColor":"#F0F0F0"
+		}, {
+			"path": "pages/me/feedback/feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈",
+				"backgroundColor": "#F0F0F0"
 			}
-        }
-        ,{
-            "path" : "pages/index/seckill/seckill",
-            "style" : {
-				"navigationBarTitleText":"限时秒杀",
-				"backgroundColor":"#f1f1f1"
+		}, {
+			"path": "pages/index/seckill/seckill",
+			"style": {
+				"navigationBarTitleText": "限时秒杀",
+				"backgroundColor": "#f1f1f1"
 			}
-        }
-        ,{
-            "path" : "pages/index/presell/presell",
-            "style" : {
-				"navigationBarTitleText":"预售好货"
+		}, {
+			"path": "pages/index/presell/presell",
+			"style": {
+				"navigationBarTitleText": "预售好货"
 			}
-        }
-        ,{
-            "path" : "pages/index/grouping/grouping",
-            "style" : {
-				"navigationBarTitleText":"拼团",
-				"usingComponents":{
+		}, {
+			"path": "pages/index/grouping/grouping",
+			"style": {
+				"navigationBarTitleText": "拼团",
+				"usingComponents": {
 					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
-        }
-        ,{
-            "path" : "pages/index/grouping_play/grouping_play",
-            "style" : {
-				"navigationBarTitleText":"拼团玩法"
+		}, {
+			"path": "pages/index/grouping_play/grouping_play",
+			"style": {
+				"navigationBarTitleText": "拼团玩法"
 			}
-			
-        }
-        ,{
-            "path" : "pages/index/grouping_detail/grouping_detail",
-            "style" : {
-				"navigationBarTitleText":"团详情",
-				"usingComponents":{
+
+		}, {
+			"path": "pages/index/grouping_detail/grouping_detail",
+			"style": {
+				"navigationBarTitleText": "团详情",
+				"usingComponents": {
 					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-popup": "/wxcomponents/vant/popup/index",
 					"van-action-sheet": "/wxcomponents/vant/action-sheet/index"
 				}
 			}
-        }
-    ],
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -361,7 +340,7 @@
 			"iconPath": "static/images/classify@2x.png",
 			"selectedIconPath": "static/images/classify-Selection@2x.png",
 			"text": "分类"
-		},  {
+		}, {
 			"pagePath": "pages/cart/cart/cart",
 			"iconPath": "static/images/shopping-Cart@2x.png",
 			"selectedIconPath": "static/images/shopping-Cart-Selection@2x.png",

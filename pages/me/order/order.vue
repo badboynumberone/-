@@ -5,6 +5,7 @@
 			<van-tabs :active="active" @change="onTabChange" :line-width="'20'">
 				<van-tab name="all" title="全部" />
 				<van-tab name="waitpay" title="待付款" />
+				<van-tab name="waitgroup" title="待成团" />
 				<van-tab name="waitsend" title="待发货" />
 				<van-tab name="waitaccept" title="待收货" />
 				<van-tab name="finish" title="交易成功" />
@@ -19,7 +20,9 @@
 				<view @click="navigateTo" :data-url="`/pages/me/order_detail/order_detail?orderNo=${item.orderNoString}`">
 					<my-goods-card :item="item" :isShow="true"></my-goods-card>
 				</view>
-				<view class="pay pl5 pr5">
+				<view class="pay pl5 pr5 fsb" style="align-items: center;">
+					<text>剩余拼团时间: <text class="theme">{{item.time}}</text></text>
+					
 					(不含运费)商品总价:<text class="theme fz16 fb">￥{{item.total}}</text>
 				</view>
 				<view class="action f p5">
@@ -59,7 +62,7 @@
 	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
 	import Api from "../../../utils/api.js";
-	const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];
+	const arr = ['待付款','待发货', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];let timer=null;
 	export default {
 		components: {
 			MyGoodsCard,
@@ -95,6 +98,9 @@
 		onReachBottom() {
 			this.getData();
 		},
+		onUnload() {
+			clearInterval(this.timer);
+		},
 		methods: {
 			//查看物流
 			toLogisics(e){
@@ -123,6 +129,7 @@
 			},
 			onTabChange(e) {
 				this.active = parseInt(e.detail.index);
+				console.log(this.active)
 				this.selectarea = this.active == 5 ? '全部' : arr[this.active - 1];
 				this.isLoaded = this.pageData.some(item=>item.areaName==this.selectarea);
 				this.getData();
@@ -140,6 +147,17 @@
 				}).catch(() => {
 				  // on cancel
 				});
+			},
+			//更新时间
+			updateTime(){
+				timer = setInterval(()=>{
+					const addZero = this.$tools.addZero;
+					this.pageData[this.loadIndex].list.forEach((item,index)=>{
+						this.$set(this.pageData[this.loadIndex].list[index],'leftTime',item.leftTime-1000);
+						let seconds = Math.floor(item.leftTime/1000);
+						this.$set(this.pageData[this.loadIndex].list[index],'time',addZero(Math.floor(seconds/3600))+":"+addZero(Math.floor((seconds%3600)/60))+":"+addZero(seconds%60))
+					})
+				},1000)
 			},
 			//立即支付
 			async comfirmPayOrder(e){
@@ -186,16 +204,39 @@
 						const index = parseInt(this.pageData.findIndex(item => item.areaName == this.selectarea));
 						// 获取需要加载的那一项
 						let v = this.pageData[index];
+						const map = new Map([
+							[1,0],
+							[2,15],
+							[3,1],
+							[4,2],
+							[5,3],
+							[6,4],
+							[7,5],
+							[8,6],
+							[9,7],
+							[10,8],
+							[11,9]
+						]); 
 						//发送请求了
 						let  result = await this.$net.sendRequest('/order/list', {
 							pageNo: v.pageNum,
 							pageSize: 20,
 							...this.active == 0 ? {} : {
-								status: this.active - 1
+								status: map.get(this.active)
 							}
 						});
 						// console.log(result)
-						result = result.map(item=>{item.status = arr[item.status];return item})
+						result = result.map(item=>{
+							if(item.status==15){
+								item.status='待成团'
+							}else{
+								item.status = arr[item.status];
+							}
+						return item});
+						//开启定时器
+						if(this.active==2){
+							this.updateTime();
+						}
 						v.list = [...v.list, ...result]
 						this.$set(this.pageData, index, v);
 						this.isLoaded = true;

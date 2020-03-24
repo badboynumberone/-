@@ -21,16 +21,16 @@ function switchTab(url) {
 
 //轻提示
 export async function Toast(title, icon = "none", duration = 1500) {
-	return new Promise((resolve,reject)=>{
+	return new Promise((resolve, reject) => {
 		uni.showToast({
 			title,
 			icon,
 			duration,
 			mask: true
 		});
-		let timer = setTimeout(()=>{
+		let timer = setTimeout(() => {
 			resolve();
-		},duration);
+		}, duration);
 	})
 }
 
@@ -63,23 +63,23 @@ export function getImages() {
 
 //格式化日期
 function dateFormat(fmt, date) {
-    let ret;
-    let opt = {
-        "Y+": date.getFullYear().toString(),        // 年
-        "m+": (date.getMonth() + 1).toString(),     // 月
-        "d+": date.getDate().toString(),            // 日
-        "H+": date.getHours().toString(),           // 时
-        "M+": date.getMinutes().toString(),         // 分
-        "S+": date.getSeconds().toString()          // 秒
-        // 有其他格式化字符需求可以继续添加，必须转化成字符串
-    };
-    for (let k in opt) {
-        ret = new RegExp("(" + k + ")").exec(fmt);
-        if (ret) {
-            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
-        };
-    };
-    return fmt;
+	let ret;
+	let opt = {
+		"Y+": date.getFullYear().toString(), // 年
+		"m+": (date.getMonth() + 1).toString(), // 月
+		"d+": date.getDate().toString(), // 日
+		"H+": date.getHours().toString(), // 时
+		"M+": date.getMinutes().toString(), // 分
+		"S+": date.getSeconds().toString() // 秒
+		// 有其他格式化字符需求可以继续添加，必须转化成字符串
+	};
+	for (let k in opt) {
+		ret = new RegExp("(" + k + ")").exec(fmt);
+		if (ret) {
+			fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+		};
+	};
+	return fmt;
 }
 //平铺数组
 const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFlatten(v) : v)));
@@ -87,39 +87,45 @@ const deepFlatten = arr => [].concat(...arr.map(v => (Array.isArray(v) ? deepFla
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const shuffle = ([...arr]) => {
-  let m = arr.length;
-  while (m) {
-    const i = Math.floor(Math.random() * m--);
-    [arr[m], arr[i]] = [arr[i], arr[m]];
-  }
-  return arr;
+	let m = arr.length;
+	while (m) {
+		const i = Math.floor(Math.random() * m--);
+		[arr[m], arr[i]] = [arr[i], arr[m]];
+	}
+	return arr;
 };
 
 const chunk = (arr, size) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-    arr.slice(i * size, i * size + size)
-  );
-function getNextHour(){
+	Array.from({
+			length: Math.ceil(arr.length / size)
+		}, (v, i) =>
+		arr.slice(i * size, i * size + size)
+	);
+
+function getNextHour() {
 	let date = new Date();
-	date.setHours(new Date().getHours()+1)
+	date.setHours(new Date().getHours() + 1)
 	date.setMinutes(0)
 	date.setSeconds(0)
 	date.setMilliseconds(0)
 	return date;
 }
-function addZero(num){
-	return num<10 ? '0'+num:num;
+
+function addZero(num) {
+	return num < 10 ? '0' + num : num;
 }
 
-function fn(){
-		let flag = false;
-		return function(fun){
-			if(!flag){
-				flag=true;
-				fun();
-			}
+
+
+function fn() {
+	let flag = false;
+	return function(fun) {
+		if (!flag) {
+			flag = true;
+			fun();
 		}
 	}
+}
 const once = fn();
 export default {
 	navigateTo,
