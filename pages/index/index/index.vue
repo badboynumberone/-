@@ -192,6 +192,9 @@
 								</view>
 								<view class="fz11" style="color: #666;">销量 {{item.sale}}</view>
 							</view>
+							<view class="c666 text-hidden" style="max-width: 450rpx;">
+								{{item.shortName}}
+							</view>
 							
 							<view class="mt5 mb5">
 								<my-tag :type="'second'" :text="item.tagName" />
