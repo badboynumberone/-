@@ -41,6 +41,18 @@ function showLoading(title) {
 		mask: true
 	})
 }
+//下载图片
+async function downLoadFile(url){
+	return new Promise((resolve,reject)=>{
+		wx.downloadFile({
+		  url: url,
+		  success: function(res) {
+			  console.log("下载文件路径:"+res.tempFilePath)
+			  resolve(res.tempFilePath) ;
+		  }
+		})
+	})
+}
 
 //获取其中的图片
 export function getImages() {
@@ -141,5 +153,6 @@ export default {
 	chunk,
 	getNextHour,
 	addZero,
-	once
+	once,
+	downLoadFile
 }

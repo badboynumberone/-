@@ -64,7 +64,7 @@ export function sendRequest(url, params = {}, method = "POST") {
 					}
 					const route =  getCurrentPages()[getCurrentPages().length - 1].route
 					
-					if(result.code==500&&route=='pages/cart/submit_order/submit_order'){
+					if(result.code==500&&(['pages/cart/submit_order/submit_order','pages/index/grouping_detail/grouping_detail'].includes(route))){
 						wx.hideLoading();
 						uni.showModal({
 							content: result.message,
@@ -72,9 +72,6 @@ export function sendRequest(url, params = {}, method = "POST") {
 						});
 						resolve()
 					}
-
-					//各页面返回数据异常处理
-
 
 				}
 

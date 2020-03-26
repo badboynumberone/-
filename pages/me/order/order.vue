@@ -21,9 +21,8 @@
 					<my-goods-card :item="item" :isShow="true"></my-goods-card>
 				</view>
 				<view class="pay pl5 pr5 fsb" style="align-items: center;">
-					<text>剩余拼团时间: <text class="theme">{{item.time}}</text></text>
-					
-					(不含运费)商品总价:<text class="theme fz16 fb">￥{{item.total}}</text>
+					<text :class="item.status=='待成团'&&item.leftTime>0?'':'hidden'">剩余拼团时间: <text class="theme">{{item.time}}</text></text>
+					<text>(不含运费)商品总价:<text class="theme fz16 fb">￥{{item.total}}</text></text>
 				</view>
 				<view class="action f p5">
 					<view class="ml5" v-if="item.status=='待付款'" @click="cancelOrder(item)">
@@ -40,6 +39,9 @@
 					</view>
 					<view class="ml5" v-if="item.status=='待收货'" @click="comfirmReceipt" :data-item="item">
 						<van-tag type="success" round size="medium" :color="'#38A472'">确认收货</van-tag>
+					</view>
+					<view class="ml5" v-if="item.status=='待成团'" @click="navigateTo" :data-url="'/pages/index/grouping_detail/grouping_detail?id='+item.groupId">
+						<van-tag type="success" plain round size="medium" :color="'#38A472'">查看团详情</van-tag>
 					</view>
 				</view>
 			</view>
@@ -62,7 +64,7 @@
 	import Empty from '../../../mycomponents/empty-item/empty-item.vue';
 	import Dialog from '../../../wxcomponents/vant/dialog/dialog';
 	import Api from "../../../utils/api.js";
-	const arr = ['待付款','待发货', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];let timer=null;
+	const arr = ['待付款','待发货','待成团', '待收货', '交易成功', '交易关闭', '全部','退款','退货退款'];let timer=null;
 	export default {
 		components: {
 			MyGoodsCard,
@@ -91,8 +93,8 @@
 		onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
 			this.$mp.page.hook = this.refresh;
-			this.active = options.active;
-			this.selectarea = arr[options.active - 1];
+			this.active = options.active >=2 ? parseInt(options.active)+1+"" : options.active ;
+			this.selectarea = arr[this.active - 1];
 			this.getData();
 		},
 		onReachBottom() {
@@ -222,7 +224,7 @@
 							pageNo: v.pageNum,
 							pageSize: 20,
 							...this.active == 0 ? {} : {
-								status: map.get(this.active)
+								status: map.get(parseInt(this.active) )
 							}
 						});
 						// console.log(result)

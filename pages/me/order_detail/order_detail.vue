@@ -20,11 +20,12 @@
 			<my-goods-card :item="pageData" :isClick="true"></my-goods-card>
 			<view class="pt10 pb10 pl15 pr15" style="text-align: right;">
 				<text class="fz14" style="color: #333;">商品总金额:</text>
-				<text class="fz16 fb theme">¥{{pageData.totalAmount}}</text>
+				<text class="fz16 fb theme">¥{{getTotal(pageData.items)}}</text>
 			</view>
 			<van-field :value="'微信支付'" readonly label="支付方式" input-align="right" />
 			<van-field :value="'普通快递'" readonly label="配送方式" input-align="right" />
-			<van-field :value="'￥'+pageData.freightAmount || '￥'+0.00 " readonly label="运费" input-align="right" />
+			<van-field :value="'+￥'+pageData.freightAmount || '+￥'+0.00 " readonly label="运费" input-align="right" />
+			<van-field v-if="pageData.parentSpecial" :value="'-￥'+pageData.parentSpecial" readonly label="团长优惠" input-align="right" />
 			<van-field type="textarea" readonly label="订单备注" input-align="left">
 				<view slot="right-icon" style="width: 250px;height: 50px;text-align: left;">
 					{{pageData.note || '空空如也~'}}
@@ -59,7 +60,7 @@
 			<view class="ml10" v-if="pageData.status==3 || pageData.status==4" @click="delOrder">
 				<van-tag :color="'#666'" plain round size="medium">删除订单</van-tag>
 			</view>
-			<view class="ml10" v-if="pageData.status==15" @click="delOrder">
+			<view class="ml10" v-if="pageData.status==15" @click="groupDetail">
 				<van-tag :color="'#666'" plain round size="medium">查看团详情</van-tag>
 			</view>
 		</view>
@@ -68,6 +69,7 @@
 	</view>
 </template>
 
+<script module="utils" lang="wxs" src="../../../utils/util.wxs" />
 <script>
 	import MyGoodsCard from "../../../mycomponents/my-goods-card/my-goods-card.vue";
 	import Dialog from "../../../wxcomponents/vant/dialog/dialog.js";
@@ -84,6 +86,20 @@
 				pageData: {}, //页面数据
 			};
 		},
+		computed:{
+			getTotal(){
+				return function(items){
+					var total=null;
+					if(items==undefined){
+						return 0
+					}
+					for(var i=0;i<items.length;i++){
+						total+=items[i].productPrice
+					}
+					return total
+				}
+			}
+		},
 		async onLoad(options) {
 			console.log(getCurrentPages()[getCurrentPages().length - 1].route, options)
 			pages = getCurrentPages();
@@ -92,6 +108,12 @@
 			this.isLoaded = true;
 		},
 		methods: {
+			//查看团详情
+			async groupDetail(){
+				const result = await this.$net.sendRequest("/group/findByOrderid",{orderId:this.pageData.id},"GET")
+				console.log(result)
+				this.$tools.navigateTo("/pages/index/grouping_detail/grouping_detail?id="+result.id)
+			},
 			//删除订单
 			delOrder(){
 				Dialog.confirm({
@@ -131,7 +153,7 @@
 			},
 			//处理结果
 			mapResult(res) {
-				const arr = ['待付款','待成团',  '待发货', '待收货', '交易成功', '交易关闭','待成团','退款','退款退货'];
+				const arr = ['待付款', '待发货', '待收货', '交易成功', '交易关闭','待成团','退款','退款退货'];
 				res.state = arr[res.status], res.address = res.receiverProvince + res.receiverCity + res.receiverRegion + res.receiverDetailAddress;
 				(res.status==15)&&(res.state = '待成团')
 				res.items = res.orderItemList;

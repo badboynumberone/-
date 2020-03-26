@@ -15,6 +15,7 @@
 						<image v-if="index==0&&pageData.albumVideo.length" class="pa" style="bottom: 20px;left: 20px;width: 35px;height: 35px;" @click="videoStart" :src="`${baseImageUrl}/video.png`" mode="aspectFit"></image>
 					</view>
 				</swiper-item>
+				
 				<!-- 售空 -->
 				<swiper-item v-else class="swiper-item">
 					<view class="image-wrapper pr">
@@ -35,10 +36,10 @@
 					<view class="ftm">
 						<text class="fz12 cfff">{{
 							killInfo.productQgPrice ? '抢购价' : preSaleInfo.activityPrice ? '预售价' : groupInfo.price ?'拼团价':''
-						}}</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.activityPrice || groupInfo.price}}</text><view class="buyed ml10 cfff fz12">{{groupInfo? '已拼' : '已抢'}}{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale) || (groupInfo.successQuantity)}}件</view>
+						}}</text><text class="fz18 fb ml5 cfff" >¥{{killInfo.productQgPrice  || preSaleInfo.activityPrice || groupInfo.price}}</text><view class="buyed ml10 cfff fz12">{{groupInfo? '已拼' : '已抢'}}{{(killInfo.productQgNumber-killInfo.correntStock) || (preSaleInfo.sale) || (groupInfo.successQuantity) || 0}}件</view>
 					</view>
 					<view class="ftm">
-						<text class="cfff fz10" >原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.price || groupInfo.linePriceScope}}</text> </text> <text class="fz10 cfff ml5" v-if="killInfo.correntStock || preSaleInfo.productStock">仅剩{{killInfo.correntStock || preSaleInfo.productStock}}件</text>
+						<text class="cfff fz10">原价<text style="text-decoration: line-through;">¥{{killInfo.productPrice || preSaleInfo.price || groupInfo.linePriceScope || 0}}</text> </text> <text class="fz10 cfff ml5" v-if="killInfo.correntStock || preSaleInfo.productStock">仅剩{{killInfo.correntStock || preSaleInfo.productStock || 0}}件</text>
 					</view>
 				</view>
 				<view class="right f" style="flex-flow: column wrap;align-items: flex-end;">
@@ -100,8 +101,8 @@
 				</van-field>
 			</view>
 			<!-- 正在拼团 -->
-			<view class="group" v-if="groupInfo">
-				<view class="grouping_wrapper">
+			<view class="group" v-if="groupInfo"> 
+				<view class="grouping_wrapper" v-if="groupInfo.groupUserList.length&&!isShare">
 					<van-cell center>
 						<view class="icon pr" slot="icon" style="top: 8rpx;"  >
 							<van-icon  name="friends-o" size="20px" />
@@ -109,8 +110,8 @@
 						<text slot="title" class="fb ml5" style="white-space: nowrap;">以下小伙伴正在参加拼团活动，你可以直接参加</text>
 					</van-cell>
 				</view>
-				<view class="grouping_play pl10 pr10" v-if="groupInfo.groupUserList.length" >
-					<swiper :indicator-dots="false" :autoplay="true" circular="" :interval="5000" :duration="1000" vertical style="height: 140px;">
+				<view class="grouping_play pl10 pr10" v-if="groupInfo.groupUserList.length&&!isShare" >
+					<swiper :indicator-dots="false" :autoplay="true" circular="" :interval="5000" :duration="1000" vertical :style="{'height':groupInfo.groupUserList.length==1? '70px':'140px'}">
 						<swiper-item v-for="(item,index) in groupPeoples" :key="index">
 							<view class="swiper-item fsb  pt10 pb10" style="align-items: center;" v-for="(single,idx) in item" :key="idx" v-if="single.seconds>0">
 								<view class="ftm">
@@ -124,17 +125,16 @@
 										</text>
 									</view>
 								</view>
-								<view class="go ftm cfff" @click="showModal(true,single.id)">去凑团</view>
+								<view class="go ftm cfff" v-if="userinfo.id!=single.userId" @click="showModal(true,single.id)">去凑团</view>
 							</view>
 							
 						</swiper-item>
 						
 					</swiper>
 				</view>
-				<view class="group-detail bt">
+				<view class="group-detail bt" @click="navigateTo" :data-url="'/pages/index/grouping_play/grouping_play'">
 					<van-cell  is-link value="拼团玩法">
-						
-						<text slot="title"  style="white-space: nowrap;">支付开团邀请1人成团，人数不足自动退款</text>
+						<text slot="title"  style="white-space: nowrap;">支付开团邀请好友成团，人数不足自动退款</text>
 					</van-cell>
 				</view>
 			</view>
@@ -281,13 +281,18 @@
 				flag:false,
 				preSaleInfo:null,
 				noticeText:"",
+				
 				preSaleId:0,//预售id
 				groupInfo:null,//拼团信息
 				groupPeoples:[],//正在拼团的人
 				groupId:0,//拼团id
+				isShare: false,
 			};
 		},
 		computed:{
+			userinfo(){
+				return this.$store.state.userinfo;
+			},
 			cartCount(){
 				
 				let length = 0;
@@ -582,6 +587,7 @@
 					result.attrs[0].selected=true;this.selectItems = result.attrs;this.selectedItem =this.selectItems[0];
 					 originAttrs = result.attrs;
 				}
+				this.isShare = options.groupId!=undefined;
 				//获取秒杀信息
 				this.getKillDetail();
 				//获取预售信息
@@ -651,10 +657,12 @@
 					this.$tools.Toast("商品已下架,快去看看其他商品吧")
 					return;
 				}
-				isGroupBuy = groupId!=undefined;
+				
+				isGroupBuy = opt.groupId!=undefined || groupId!=undefined;
 				this.groupId = groupId==undefined ? 0 : groupId
 				this.action = action; 
-				this.selectItems= this.status==3&&groupId!=undefined ?  this.groupInfo.groupAttrList:originAttrs
+				this.selectItems= this.status==3&&groupId!=undefined ? JSON.parse(JSON.stringify(this.groupInfo.groupAttrList))   :originAttrs
+				
 				this.selectedItem = this.selectItems[0];
 				this.toggleSpec();
 			},
@@ -708,7 +716,7 @@
 					//自发拼团 /group/getprice 无 groupid
 					//拼团购买 /group/getprice 有 groupid
 					
-					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}&cycleRuleId=${cycleRuleId}&groupId=${this.groupId}&isGroupBuy=${isGroupBuy}`);
+					this.$tools.navigateTo(`/pages/cart/submit_order/submit_order?items=${JSON.stringify(submitData)}&killId=${killId}&cycleRuleId=${cycleRuleId}&groupId=${opt.groupId || this.groupId}&isGroupBuy=${isGroupBuy}`);
 				}else{
 					//添加购物车
 					const result  =await this.$net.sendRequest("/cart/add",{productAttrId:this.selectedItem.id,quantity:this.count});

@@ -308,7 +308,8 @@
 				"usingComponents": {
 					"van-cell": "/wxcomponents/vant/cell/index",
 					"van-popup": "/wxcomponents/vant/popup/index",
-					"van-action-sheet": "/wxcomponents/vant/action-sheet/index"
+					"van-action-sheet": "/wxcomponents/vant/action-sheet/index",
+					"load-more": "/wxcomponents/load-more/index"
 				}
 			}
 		}

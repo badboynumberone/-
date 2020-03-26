@@ -39,7 +39,7 @@
 									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==2">
 										<text class="fz12" style="color: red;">正在抢购中</text>
 									</view>
-									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0">
+									<view class="left_time" v-if="getStatus(item.beginTime,item.endTime)==0 || (item.productQgNumber-item.correntStock==item.productQgNumber)">
 										<text class="fz12 c666">活动已结束</text>
 									</view>
 								</view>

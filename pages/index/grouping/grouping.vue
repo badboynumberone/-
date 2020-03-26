@@ -101,7 +101,7 @@
 								this.$set(this.list[index], 'status', 2)
 								const addZero = this.$tools.addZero;
 								seconds = Math.floor(seconds / 1000);
-								const time = "剩余" + Math.floor(seconds / (3600 * 24)) + "天" + addZero(Math.floor(seconds / 3600)) + ":" +
+								const time = "剩余" + Math.floor(seconds / (3600 * 24)) + "天" + addZero(Math.floor((seconds%(3600 * 24)) / 3600)) + ":" +
 									addZero(Math.floor((seconds % 3600) / 60)) + ":" + addZero(seconds % 60);
 								this.$set(this.list[index], 'time', time)
 							},

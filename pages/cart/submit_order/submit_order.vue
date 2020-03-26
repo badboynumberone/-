@@ -2,7 +2,7 @@
 <template>
 	<view class="main"  >
 		<!-- 友情提醒 -->
-		<view class="friend_ship fsb p10" style="align-items: center;padding-bottom: 0px;">
+		<view class="friend_ship fsb p10" style="align-items: center;padding-bottom: 0px;" v-if="isGroupBy">
 			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">①</text>选择商品，开团/参团</text>
 			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">②</text>邀请好友参团</text>
 			<text class="fz13 c666"><text class="pr mr5" style="top: -2rpx;">③</text>人满成团</text>

@@ -113,7 +113,7 @@
 						<image lazy-load="true" :src="`${baseImageUrl}/jidan.jpg`" mode="aspectFit" style="width: 138rpx;height: 91rpx;"></image>
 					</view>
 				</view>
-				<view class="bottom p10" @click="commingsoon">
+				<view class="bottom p10" @click="navigateTo" :data-url="'/pages/index/grouping/grouping'" >
 					<view class="ftm">
 						<text class="fb fz15">超值拼团</text>
 						<image  lazy-load="true" class="ml5" :src="`${baseImageUrl}/jghml.jpg`" mode="aspectFit" style="width: 120rpx;height:34rpx;"></image>
@@ -442,7 +442,7 @@
 					const result = await this.$net.sendRequest("/home/guessLike", {
 						recommandStatus: 1,
 						pageNum: v.pageNum,
-						pageSize: 20,
+						pageSize: 100,
 					}, "GET");
 					
 					
