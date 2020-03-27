@@ -110,9 +110,9 @@
 		methods: {
 			//查看团详情
 			async groupDetail(){
-				const result = await this.$net.sendRequest("/group/findByOrderid",{orderId:this.pageData.id},"GET")
+				const result = await this.$net.sendRequest("/group/findByOrderid",{orderId:this.pageData.id },"GET")
 				console.log(result)
-				this.$tools.navigateTo("/pages/index/grouping_detail/grouping_detail?id="+result.id)
+				this.$tools.navigateTo("/pages/index/grouping_detail/grouping_detail?id="+(result.parentId || result.id) )
 			},
 			//删除订单
 			delOrder(){

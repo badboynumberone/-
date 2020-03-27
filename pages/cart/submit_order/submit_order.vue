@@ -268,7 +268,7 @@
 						await Api.addLimit(addData);
 						wx.hideLoading();
 						this.$tools.redirectTo("/pages/cart/pay_success/pay_success?type="+type+"&orderNo=" + result.orderNo + '&price=' +
-								(this.totalPrice / 100 + this.freight));
+								(this.totalPrice/100+this.freight-this.parentPrice));
 						
 					},
 					fail: (res) => {

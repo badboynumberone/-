@@ -23,8 +23,8 @@
 							<view class="text ml10 c666 fz12">{{item.groupPeople}}人团</view>
 						</view>
 						<view class="price">
-							<text class="now fz19 fb">¥30.00</text>
-							<text class="old fz13">¥20.00</text>
+							<text class="now fz19 fb">¥{{item.miniPrice}}</text>
+							<text class="old fz13">¥{{item.linePrice}}</text>
 						</view>
 					</view>
 

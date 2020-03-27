@@ -72,7 +72,7 @@
 					</view>
 
 					<view class="fz16" v-if="groupStatus==2">
-						还差 <text class="theme">{{pageData.groupPeople -  pageData.groupSuccess}}</text>人，即可拼团成功！
+						还差 <text class="theme">{{pageData.diff}}</text>人，即可拼团成功！
 					</view>
 					<view class="c999 fz13 mb10" v-if="groupStatus==2">
 						分享到群里，成团成功率翻倍

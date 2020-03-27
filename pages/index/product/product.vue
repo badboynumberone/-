@@ -113,7 +113,7 @@
 				<view class="grouping_play pl10 pr10" v-if="groupInfo.groupUserList.length&&!isShare" >
 					<swiper :indicator-dots="false" :autoplay="true" circular="" :interval="5000" :duration="1000" vertical :style="{'height':groupInfo.groupUserList.length==1? '70px':'140px'}">
 						<swiper-item v-for="(item,index) in groupPeoples" :key="index">
-							<view class="swiper-item fsb  pt10 pb10" style="align-items: center;" v-for="(single,idx) in item" :key="idx" v-if="single.seconds>0">
+							<view class="swiper-item fsb  pt10 pb10" style="align-items: center;" v-for="(single,idx) in item" :key="idx">
 								<view class="ftm">
 									<image class="mr20" :src="single.icon" mode="aspectFill"></image>
 									<view class="">
@@ -274,14 +274,13 @@
 				startTime:"",
 				endTime:"",
 				killInfo:null,
-				status:0,
+				status:6,
 				hour:'00',
 				minute:'00',
 				second:'00',
 				flag:false,
 				preSaleInfo:null,
 				noticeText:"",
-				
 				preSaleId:0,//预售id
 				groupInfo:null,//拼团信息
 				groupPeoples:[],//正在拼团的人
@@ -319,26 +318,16 @@
 			//计算人
 			computedPeople(){
 				// 计算一个结束时间
-				let groupUsers =  this.groupInfo.groupUserList;
-				groupUsers = groupUsers.map(item=>{
-					let now = new Date();
-					let endTime = new Date(new Date(item.cretaTime.replace(/-/g,"/")).getTime()+24*60*60*1000);   
+				this.groupInfo.groupUserList.forEach((item,index)=>{
 					const addZero = this.$tools.addZero;
-					let seconds = Math.floor((endTime.getTime()-now.getTime()) / 1000);
+					let seconds = Math.floor(item.diffTime / 1000);
+					this.$set(this.groupInfo.groupUserList[index],'diffTime',item.diffTime-1000);
 					const text = "剩余" + Math.floor(seconds / (3600 * 24)) + "天" + addZero(Math.floor(seconds / 3600)) + "时" +
 						addZero(Math.floor((seconds % 3600) / 60)) + "分" + addZero(seconds % 60)+"秒";
-					item.text = text;
-					item.seconds = seconds;
-					return item;
+					this.$set(this.groupInfo.groupUserList[index],'text',text);
 				})
-				
-				this.groupPeoples =  this.$tools.chunk(groupUsers,2) 
 			},
-			//获取活动
-			getActivity(){
-				
-			},
-			//获取预售信息
+			//获取拼团信息
 			async getGroupDetail(){
 				const result = await this.$net.sendRequest("/group/findById",{id:this.pageData.id},"GET");
 				result.groupAttrList = result.groupAttrList.map((item,index)=>{
@@ -355,7 +344,7 @@
 					return obj
 				})
 				this.groupInfo = result;
-				
+				this.groupPeoples =  this.$tools.chunk(result.groupUserList,2) 
 				
 			},
 			//获取预售详情
